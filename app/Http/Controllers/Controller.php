@@ -86,7 +86,7 @@ class Controller extends BaseController
 
     public function show_pdf()
     {
-        $path = public_path()."/". request()->url;
+        $path =  request()->url;
         return $path;
 
         if(File::exists($path)){
