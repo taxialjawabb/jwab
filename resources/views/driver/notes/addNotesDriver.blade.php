@@ -26,7 +26,7 @@
         <input class="form-control"type="file" name="image" value="{{old('image')}}"  id="file">
 
     <div class="text-center image">
-        <img src="{{ asset('images/pleaceholder/image.png')}}" style="width: 200px; height: 200px" id="profile-img-tag" alt="المرفق">
+        <img src="{{ asset('assets/images/pleaceholder/image.png')}}" style="width: 200px; height: 200px" id="profile-img-tag" alt="المرفق">
     </div>
 
     <button type="submit" class="btn btn-primary">حفظ التغير</button>
@@ -44,6 +44,6 @@
 @endsection
 
 @section('scripts')
-<script src="{{ asset('js/addimg.js') }}" ></script>   
+<script src="{{ asset('assets/js/addimg.js') }}" ></script>   
 
 @endsection

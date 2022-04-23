@@ -27,7 +27,7 @@
     </div>
 
     <div class="text-center image">
-        <img src="{{ asset('images/pleaceholder/image.png')}}" style="width: 200px; height: 200px" id="profile-img-tag" alt="المرفق">
+        <img src="{{ asset('assets/images/pleaceholder/image.png')}}" style="width: 200px; height: 200px" id="profile-img-tag" alt="المرفق">
     </div>
 @if ($errors->any())
 <div class="alert alert-danger m-3 mt-4">
@@ -44,6 +44,6 @@
 @endsection
 
 @section('scripts')
-<script src="{{ asset('js/addimg.js') }}" ></script>   
+<script src="{{ asset('assets/js/addimg.js') }}" ></script>   
 
 @endsection

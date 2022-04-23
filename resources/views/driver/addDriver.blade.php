@@ -96,7 +96,7 @@
    
 
     <div class="text-center image">
-        <img src="{{ asset('images/pleaceholder/image.png')}}" style="width: 200px; height: 200px" id="profile-img-tag" alt="صورة السائق">
+        <img src="{{ asset('assets/images/pleaceholder/image.png')}}" style="width: 200px; height: 200px" id="profile-img-tag" alt="صورة السائق">
     </div>
 
 
@@ -122,6 +122,6 @@
 @endsection
 
 @section('scripts')
-<script src="{{ asset('js/addimg.js') }}" ></script>   
+<script src="{{ asset('assets/js/addimg.js') }}" ></script>   
 
 @endsection
