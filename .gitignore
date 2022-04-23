@@ -1,0 +1,5 @@
+/public/hot
+/public/assets
+/app/Providers/AppServiceProvider.php
+.env
+.env.exmple

@@ -1,0 +1,268 @@
+<?php
+
+namespace App\Http\Controllers\Api\Driver;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use App\Models\Driver;
+use App\Models\Vechile;
+use App\Models\Rider;
+use App\Models\Trip;
+use Illuminate\Support\Facades\Auth;
+use App\Traits\GeneralTrait;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
+
+class TripController extends Controller
+{
+    use GeneralTrait;
+
+    public function request(Request $request)
+    {
+        $request->validate([
+            'trip_id'    => 'required|integer',
+            'driver_id'    => 'required|integer',
+            // 'driver_id'    => 'required|integer',
+            // 'response' => 'required|string|in:accept,reject',
+            // 'reject_driver' => 'array',
+            // 'total_cost' => 'required|numeric',
+            // 'driver_cost' => 'required|numeric',
+            // 'company_cost' => 'required|numeric',
+            // 'cancel_cost' => 'required|numeric',
+            // 'reject_cost' => 'required|numeric',
+            // 'payment_percentage' => 'required|string',
+        ]);
+        $trip = Trip::find($request->trip_id);
+        if($trip->state === "canceled"){
+            return $this->returnError('E003', 'تم إلغاء هذه الرحلة من قبل العميل ');
+        }
+        else if($trip->state !== "request"){
+            return $this->returnError('E003', 'هذه الرحلة لم تعد متاحة ');
+        }
+
+        //$driver = Auth::guard('driver-api') -> user() ;
+        $driver = Driver::find($request->driver_id) ;
+        
+        if($driver === null){
+            return $this->returnError('E003', 'حدث خطاء الرجاء المحاولة فى وقت  لاحق . بعد تسجيل الخروج من التطبيق اولا ');
+        }
+        $trip->driver_id = $driver->id;
+        $trip->state = 'inprogress';
+        $trip->save();
+        //return $trip;
+        $rider = Rider::select(['remember_token'])->find($trip->rider_id);
+        //send notification to driver for new trip
+        
+        // return $availableDriver[0];
+        $trip->driver = $driver;
+        $this->push_notification($rider->remember_token, 'السائق قادم فى الطريق', $trip, 'start');
+        //return $this -> returnData('rider' , $rider,'start trip');
+        return $this->returnSuccessMessage("تم قبول الرحلة بنجاح");
+        
+    }
+    public function trips(Request $request)
+    {
+        $request->validate([
+            'driver_id' =>'required|integer',
+            ]);
+        $trip = Trip::where('driver_id',$request->driver_id)->paginate(15);
+        if($trip){
+            return $this->returnSuccessMessage($trip);
+        }else{
+            return $this->returnError('E003', 'trip not exist');
+        }
+        
+    }
+    public function available()
+    {
+        $token = request()->header('auth-token');
+        if($token){
+            try {
+                $driverData = Auth::guard('driver-api') -> user();
+                $driverData ->available = !$driverData->available ;
+                $driverData->save();
+        }catch(\Exception $ex){
+                return  $this -> returnError('','some thing went wrongs');
+            }
+            return $this -> returnData('available' , $driverData->available,'driver state');
+        }else{
+            return $this->returnError('', 'some thing is wrongs');
+        }
+    }
+    public function location(Request $request)
+    {
+        $request->validate([
+            "driver_id" =>"required|numeric",
+            "current_loc_latitude" =>"required|numeric",
+            "current_loc_longtitude" =>"required|numeric"
+            ]);
+            $driver = Driver::find($request->driver_id);
+        if($driver !== null){
+            try {
+                $driver->current_loc_latitude = $request->current_loc_latitude;
+                $driver->current_loc_longtitude = $request->current_loc_longtitude;
+                $driver->save();
+        }catch(\Exception $ex){
+                return  $this -> returnError('','some thing went wrongs');
+            }
+            return $this->returnSuccessMessage("updated driver location");
+        }else{
+            return $this->returnError('', 'some thing is wrongs');
+        }
+    }
+
+    public function trip_end(Request $request)
+    {
+        $request->validate([
+            'trip_id' =>'required|integer',
+            ]);
+        $trip = Trip::find($request->trip_id);
+        if( $trip !== null){
+            $trip->state = 'expired';
+            $trip->trip_end_time = Carbon::now() ;
+            $trip->save();
+            return $this->returnSuccessMessage("the trip expired");
+        }
+        else{
+            return $this->returnError('E003', 'the trip not exist');
+        }
+    }
+    public function reject($trip_id, $driver_id, $reject_cost,Vechile $vechile  )
+    {
+        $trip = Trip::find($trip_id);
+        if( $trip !== null){
+            $trip->state = 'rejected';
+            $trip->trip_end_time = Carbon::now() ;
+            
+            $driver = Driver::find($driver_id);
+            if($driver !== null){                
+                $boxVechile = \App\Models\Vechile\BoxVechile::create([
+                    'vechile_id' => $driver->current_vechile,
+                    'foreign_type' => 'driver',
+                    'foreign_id' => $driver->id,
+                    'bond_type' => 'take',
+                    'payment_type' => 'internal transfer',
+                    'bond_state' => 'deposited',
+                    'descrpition' => 'تم خصم مبلغ  ' .$reject_cost. ' عائد للمركبة رقم ' .$vechile->id .' على رحلة رقم ' .$trip->id ,
+                    'money' => $reject_cost,
+                    'tax' => 0,
+                    'total_money' => $reject_cost,
+                    'add_date' => Carbon::now(),
+                ]);
+                $driver->account   -=  $reject_cost;
+                $vechile->account +=  $reject_cost;
+                
+                $trip->payment_type = 'internal transfer';
+                $trip->cost =$reject_cost;
+
+                $driver->available  =  1;
+
+                $driver->save();            
+                $vechile->save();
+                $message =  "تم خصم مبلغ  " .$reject_cost . " من حسابك لرفض الرحلة";
+                $this->push_notification( $driver->remember_token , 'تم الخصم من الرصيد',$message, 'discount');
+
+            }
+            
+            $trip->save();
+            return $this->returnSuccessMessage("trip canceled");
+
+        }
+        else{
+            return $this->returnError('E003', 'the trip not exist');
+        }
+    }
+
+    public function driver_send_notification(Request $request)
+    {
+        $request->validate([
+            "rider_id" =>"required",
+            ]);
+
+        $rider = Rider::find($request->rider_id);
+
+        $this->push_notification($rider->remember_token, 'وصول السائق', 'وصل السائق و بداية الرحلة', 'pickedup');
+
+        return $this->returnSuccessMessage("picked up successfully");
+    }
+    public function rider_picked(Request $request)
+    {
+        $request->validate([
+            "rider_id" =>"required",
+            ]);
+
+        $rider = Rider::find($request->rider_id);
+
+        $this->push_notification($rider->remember_token, 'بداء الرحلة ', 'لقد بداء الرحلة مرحبا ', 'riderpicked');
+
+        return $this->returnSuccessMessage("picked up successfully");
+    }
+    public function show_intrnal_trip_to_driver(Request $request)
+    {
+        $request->validate([
+            'current_vechile'    => 'required|integer'
+        ]);
+
+        $data = DB::select("select 
+        trips.id as idTrip, 
+        trips.state, 
+        trips.trip_type, 
+        trips.start_loc_name, 
+        trips.start_loc_latitude,
+        trips.start_loc_longtitude,
+        trips.end_loc_name, 
+        trips.end_loc_latitude,
+        trips.end_loc_longtitude,
+        trips.reqest_time, 
+        trips.trip_time ,
+        trips.cost ,
+        category.basic_price,
+        category.km_cost,
+        category.minute_cost,
+        category.percentage_type,
+        category.category_percent,
+        rider.id as rider_id,
+        rider.phone,
+        rider.name
+        from trips , vechile, category , rider
+        where rider.id= trips.rider_id and  trips.vechile_id= category.id and vechile.category_id = category.id 
+        and trips.trip_type ='internal' and trips.state='request' and vechile.id = ?", [$request->current_vechile]);
+
+        return $this -> returnData('data' , $data, ' trips');   
+        
+    }
+
+    public function start_trip_city(Request $request)
+    {
+        $request->validate([
+            'trip_id'    => 'required',
+        ]);
+        $trip = Trip::find($request->trip_id);
+
+        if($trip !== null){
+            $trip->trip_start_time = Carbon::now();
+            $trip->save();
+            return $this->returnSuccessMessage("تم بدء الرحلة");
+        }
+        else{
+            return $this->returnError('E003', 'خطاء هذه الرحلة غير متاحة');
+        }
+    }
+    public function end_trip_city(Request $request)
+    {
+        $request->validate([
+            'trip_id'    => 'required',
+        ]);
+        $trip = Trip::find($request->trip_id);
+
+        if($trip !== null){
+            $trip->trip_end_time = Carbon::now();
+            $trip->state = 'expired';
+            $trip->save();
+            return $this->returnSuccessMessage("تم انهاء الرحلة");
+        }
+        else{
+            return $this->returnError('E003', 'خطاء هذه الرحلة غير متاحة');
+        }
+    }
+}

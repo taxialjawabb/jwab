@@ -1,0 +1,246 @@
+<?php
+
+namespace App\Http\Controllers\Api\DriverRider;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Traits\GeneralTrait;
+use App\Models\Rider;
+use App\Models\Driver;
+use App\Models\Vechile;
+use App\Models\Driver\BoxDriver;
+use App\Models\Rider\BoxRider;
+use App\Models\Vechile\BoxVechile;
+use Carbon\Carbon;
+use App\Models\Trip;
+
+class DriverRiderController extends Controller
+{
+    use GeneralTrait;
+
+    public function calculate_trip_cost(Request $request)
+    {
+        $request->validate([
+            'category_id' =>'required|integer',
+            'trip_type' =>'required|string|in:internal,city',
+            ]);
+
+            // if trip between cities 
+            if($request->trip_type == "city"){
+                $request->validate([
+                    'city_name' =>'required',
+                    'trip_away' =>'required|string|in:going_cost,going_back_cost',
+                    ]);
+                
+                
+                    $category = DB::select("select percentage_type, going_cost, going_back_cost, city_cancel_cost, city_regect_cost, city_percent  from  category, city  where category.id = city.category_id and category.id = ? and city.city= ? limit 1;", [$request->category_id, $request->city_name]);
+                    if(count($category) > 0){   
+
+                        $total = 0;
+                        if($request->trip_away == 'going_back_cost'){
+                            $total = $category[0]->going_back_cost;
+                        }
+                        else if($request->trip_away == 'going_cost'){
+                            $total = $category[0]->going_cost;
+                        }
+                        $company = 0;
+                        $driver = 0;
+                        if($category[0]->percentage_type == "daily_percent" || $category[0]->percentage_type == "percent"){
+                            $company = $total * ($category[0]->city_percent /100);
+                            $driver = $total - $company;
+                        }
+                    return $this->calculate_data($total , $driver , $company, $category[0]->city_cancel_cost, $category[0]->city_regect_cost , $category[0]->percentage_type);
+                    }
+                    else{
+                        return  $this -> returnError('category not exist','No category is detected');                    
+                    }
+            }
+            else{
+                $request->validate([
+                    'distance' =>'required|numeric',
+                    ]);
+                $category = DB::select("select basic_price, km_cost, reject_cost, cancel_cost, percentage_type, fixed_percentage, category_percent from  category where id = ? limit 1;", [$request->category_id]);
+                if(count($category) > 0){   
+                    $total =$category[0]->basic_price + ($category[0]->km_cost * ($request->distance /1000));
+                    $company = 0;
+                    $driver = 0;
+                    if($category[0]->percentage_type == "daily_percent" || $category[0]->percentage_type == "percent"){
+                        $company = $total * ($category[0]->category_percent /100);
+                        $driver = $total - $company;
+                    }
+                    return $this->calculate_data($total , $driver , $company, $category[0]->cancel_cost, $category[0]->reject_cost , $category[0]->percentage_type);
+                }else{
+                    return  $this -> returnError('category not exist','No category is detected');                    
+                }
+            }
+    }
+
+    public function calculate_data($total = 0 , $driver = 0, $company = 0, $cancel = 0, $reject = 0 , $payment_percentage = '')
+    {
+        $object = (object) [
+                'total' => $total,
+                'driver' => $driver,
+                'company' => $company,
+                'cancel' => $cancel,
+                'reject' => $reject,
+                'payment_percentage' => $payment_percentage,
+            ];
+        return $this -> returnData('trip_cost' , $object,'All data for this trip');
+        
+    }
+
+    public function trip_payment(Request $request)
+    {
+        $request->validate([
+            "payment_type" =>"required|string|in:cash,internal",
+            "total" =>"required|numeric",
+            "company" =>"required|numeric",
+            "driver_id"=> "required|integer",
+            "trip_id"=> "required|integer",
+            // "rider_id"=> "required|integer"
+            ]);
+        $trip = Trip::find($request->trip_id);
+        if( $trip !== null){
+            $trip->state = 'expired';
+            $trip->trip_end_time = Carbon::now() ;
+        
+        if($request->payment_type == 'cash'){
+            $boxVechile = new BoxVechile;
+            $driver =  Driver::find($request->driver_id);
+            $vechile = Vechile::find($driver->current_vechile);
+
+            $boxVechile->vechile_id = $vechile->id;
+            $boxVechile->foreign_type = 'driver';
+            $boxVechile->foreign_id = $driver->id;
+            $boxVechile->bond_type = 'take';
+            $boxVechile->payment_type = 'internal transfer';
+            $boxVechile->bond_state = 'deposited';
+            $boxVechile->descrpition = 'تم خصم مبلغ  ' .$request->company. ' عائد للمركبة رقم ' .$vechile->id .' على رحلة رقم ' .$request->trip_id .' تكلفة الرحلة ' .$request->total ;
+            $boxVechile->money = $request->company;
+            $boxVechile->tax = 0;
+            $boxVechile->total_money = $request->company;
+            $boxVechile->add_date = Carbon::now();
+
+            $driver->account -=  $request->company;
+            $vechile->account +=  $request->company;
+            
+            $driver->available = 1;
+
+            $trip->payment_type = 'cash';
+            $trip->cost =$request->total;
+            $trip->save();
+            
+            $boxVechile->save();
+            $driver->save();
+            $vechile->save();
+            $this->push_notification($driver->remember_token, 'تم خصيم من الرصيد', 'تم خصم مبلغ  ' .$request->company. ' من رصيدك  ', 'payment');
+            
+            $rider = Rider::find($trip->rider_id);
+            $rider->message = 'تم أنهاء الرحلة بنجاح و دفع تكلفة الرحلة كاش'.' تكلفة الرحلة ' .$request->total;
+            $this->push_notification($rider->remember_token, 'عملية الدفع نقدا بنجاح', $rider, 'payment');
+
+
+            return $this->returnSuccessMessage("Payment confirmed successfully");
+
+        }
+        else if($request->payment_type == 'internal'){
+                $rider = Rider::find($trip->rider_id);
+                $driver =  Driver::find($request->driver_id);
+                $vechile = null;
+                if($driver !== null){
+                    $vechile = Vechile::find($driver->current_vechile);
+                }
+                
+                if($rider !== null && $vechile !== null){
+                    if($rider->account >= $request->total){
+                        $boxRider = new boxRider;
+                        $boxVechile = new BoxVechile;
+                        $boxDriver = new BoxDriver;
+
+                        $boxVechile->vechile_id = $vechile->id;
+                        $boxVechile->foreign_type = 'driver';
+                        $boxVechile->foreign_id = $driver->id;
+                        $boxVechile->bond_type = 'take';
+                        $boxVechile->payment_type = 'internal transfer';
+                        $boxVechile->bond_state = 'deposited';
+                        $boxVechile->descrpition = 'تم خصم مبلغ  ' .$request->company. ' عائد للمركبة رقم ' .$vechile->id .' على رحلة رقم ' .$request->trip_id .' تكلفة الرحلة ' .$request->total ;
+                        $boxVechile->money = $request->company;
+                        $boxVechile->tax = 0;
+                        $boxVechile->total_money = $request->company;
+                        $boxVechile->add_date = Carbon::now();
+    
+                        $boxRider->rider_id = $rider->id;
+                        $boxRider->bond_type = 'spend';
+                        $boxRider->payment_type = 'internal transfer';
+                        $boxRider->money = $request->total;
+                        $boxRider->tax = 0;
+                        $boxRider->total_money = $request->total;
+                        $boxRider->descrpition =  'تم خصم مبلغ  ' .$request->total. ' عائد للسائق' .$driver->name .' على رحلة رقم ' .$request->trip_id ;
+                        $boxRider->add_date = Carbon::now();
+                        //$BoxRider->add_by = Auth::guard('admin')->user()->id;
+                
+                        $boxDriver->driver_id = $driver->id;
+                        $boxDriver->bond_type = "take";
+                        $boxDriver->payment_type = 'internal transfer';
+                        $boxDriver->money = $request->total;
+                        $boxDriver->tax = 0;
+                        $boxDriver->total_money = $request->total;
+                        $boxDriver->descrpition =   'تم أضافة مبلغ  ' .$request->total. ' عائد من الراكب ' .$rider->name .' على رحلة رقم ' .$request->trip_id ;
+                        $boxDriver->add_date = Carbon::now();
+                        //$boxDriver->add_by = Auth::guard('admin')->user()->id;
+                        
+                        $rider->account -=  $request->total;
+                        $driver->account +=  $request->total;
+                        $vechile->account +=  $request->company;
+                        
+                        $driver->available = 1;
+                        $trip->payment_type = 'internal transfer';
+                        $trip->cost =$request->total;
+                        $trip->save();
+                        
+                        $boxRider->save();
+                        $boxDriver->save();
+                        $boxVechile->save();
+                        $rider->save();
+                        $driver->save();
+                        $vechile->save();
+                        $description = 'تم خصم مبلغ  ' .$request->total. ' عائد للسائق' .$driver->name;
+                        $rider->message = $description;
+                        $this->push_notification($rider->remember_token, 'تم الخصم من الرصيد', $rider,'payment');
+                        $this->push_notification($driver->remember_token, 'تم الخصم من الرصيد', 'تم أضافة مبلغ  ' .($request->total - $request->company). ' إلى رصيدك  ', 'payment');
+                        return $this->returnSuccessMessage("Payment confirmed successfully");
+                    }
+                    else{
+                        return $this->returnError(1, 'There is not enough balance');
+                    }
+                }else{
+                    return $this->returnError(2, 'some thing is wrongs ');
+                }
+        }
+        else{
+            return $this->returnError(3, 'some thing is wrongs ');
+        }
+    }
+    else{
+        return $this->returnError('E003', 'the trip not exist');
+    }
+    }
+
+    public function specific_trip(Request $request)
+    {
+        $request->validate([
+            'trip_id' =>'required|integer',
+            ]);
+        $trip = Trip::find($request->trip_id);
+        
+        if($trip !== null){
+            // $trip->driver = Driver::select()find($trip->driver_id);
+            // $trip->rider = Rider::find($trip->rider_id);
+            return $this->returnSuccessMessage($trip);
+        }else{
+            return $this->returnError('E003', 'there is no trips');
+        }
+        
+    }
+}
