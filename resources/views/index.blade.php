@@ -11,12 +11,12 @@
 
         <!-- <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs5/jq-3.6.0/jszip-2.5.0/dt-1.11.3/af-2.3.7/b-2.1.1/b-html5-2.1.1/b-print-2.1.1/kt-2.6.4/r-2.2.9/datatables.min.css"/> -->
 
-        <link href="{{ asset('public/assets/css/bootstrap.rtl.min.css') }}" rel="stylesheet">
-        <link href="{{ asset('public/assets/css/datatables.min.css') }}" rel="stylesheet">
+        <link href="{{ asset('assets/css/bootstrap.rtl.min.css') }}" rel="stylesheet">
+        <link href="{{ asset('assets/css/datatables.min.css') }}" rel="stylesheet">
         
-        <link href="{{ asset('public/assets/css/datatables.css') }}" rel="stylesheet">
-        <link href="{{ asset('public/assets/css/style.css') }}" rel="stylesheet">
-        <link href="{{ asset('public/assets/css/sidebars.css') }}" rel="stylesheet">
+        <link href="{{ asset('assets/css/datatables.css') }}" rel="stylesheet">
+        <link href="{{ asset('assets/css/style.css') }}" rel="stylesheet">
+        <link href="{{ asset('assets/css/sidebars.css') }}" rel="stylesheet">
     </head>
     <body>
         <div class="container-fluid">
@@ -30,15 +30,15 @@
             </div>
         </div>
         
-    <script src="{{ asset('public/assets/js/bootstrap.bundle.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('public/assets/js/pdfmake.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('public/assets/js/vfs_fonts.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('public/assets/js/datatables.min.js') }}"></script>
+    <script src="{{ asset('assets/js/bootstrap.bundle.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/js/pdfmake.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/js/vfs_fonts.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/js/datatables.min.js') }}"></script>
     <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/v/bs5/jq-3.6.0/jszip-2.5.0/dt-1.11.3/af-2.3.7/b-2.1.1/b-html5-2.1.1/b-print-2.1.1/kt-2.6.4/r-2.2.9/datatables.min.js"></script> -->
     @yield('scripts')
-    <script src="{{ asset('public/assets/js/sidebars.js') }}" ></script>   
+    <script src="{{ asset('assets/js/sidebars.js') }}" ></script>   
     </body>
 </html>
