@@ -112,10 +112,10 @@ class TripController extends Controller
         
         if( $trip !== null){
             if( $trip->state == 'canceled'){
-                return $this->returnSuccessMessage("لقد تم إلغاء هذه الرحلة");
+                return $this->returnError('E003', " لقد تم إلغاء هذه الرحلة");
             }
             else if( $trip->state == 'expired'){
-                return $this->returnSuccessMessage("هذه الرحلة مكتملة");
+                return $this->returnError('E003',"هذه الرحلة مكتملة");
             }
             $trip->state = 'canceled';
             $trip->trip_end_time = Carbon::now() ;
@@ -165,7 +165,7 @@ class TripController extends Controller
 
         }
         else{
-            return $this->returnError('E003', 'the trip not exist');
+            return $this->returnError('E003', 'هذه الرحلة غير متاحه');
         }
     }
 
