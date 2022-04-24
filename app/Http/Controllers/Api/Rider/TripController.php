@@ -111,6 +111,12 @@ class TripController extends Controller
         $trip = Trip::find($request->trip_id);
         
         if( $trip !== null){
+            if( $trip->state == 'canceled'){
+                return $this->returnSuccessMessage("لقد تم إلغاء هذه الرحلة");
+            }
+            else if( $trip->state == 'expired'){
+                return $this->returnSuccessMessage("هذه الرحلة مكتملة");
+            }
             $trip->state = 'canceled';
             $trip->trip_end_time = Carbon::now() ;
             if($trip->driver_id != null){
