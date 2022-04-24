@@ -38,7 +38,7 @@
                                     <td>
                                         <form  method="GET" action="{{ url('show/pdf') }}">
                                                 @csrf
-                                            <input type="hidden" name="url" value="{{'images/drivers/documents/'.$document->attached}}">
+                                            <input type="hidden" name="url" value="{{'assets/images/drivers/documents/'.$document->attached}}">
                                             <button type="submit" class="btn btn-light" >عرض المرفق</button>
                                         </form>
                                     </td>
