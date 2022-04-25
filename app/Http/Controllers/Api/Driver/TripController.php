@@ -176,26 +176,41 @@ class TripController extends Controller
     public function driver_send_notification(Request $request)
     {
         $request->validate([
-            "rider_id" =>"required",
+            "trip_id" =>"required"
             ]);
 
-        $rider = Rider::find($request->rider_id);
-
-        $this->push_notification($rider->remember_token, 'وصول السائق', 'وصل السائق و بداية الرحلة', 'pickedup');
-
-        return $this->returnSuccessMessage("picked up successfully");
+        $trip = Trip::find($request->trip_id);
+        if($trip !== null){
+            $trip->state = 'pickedup';
+            $trip->save();
+            $rider = Rider::find($trip->rider_id);
+    
+            $this->push_notification($rider->remember_token, 'وصول السائق', 'وصل السائق و بداية الرحلة', 'pickedup');
+    
+            return $this->returnSuccessMessage("picked up successfully");
+        }
+        else{
+            return $this->returnError('E003', 'هذه  الرحلة غير متاحة');
+        }
     }
     public function rider_picked(Request $request)
     {
         $request->validate([
-            "rider_id" =>"required",
+            "trip_id" =>"required"
             ]);
 
-        $rider = Rider::find($request->rider_id);
-
-        $this->push_notification($rider->remember_token, 'بداء الرحلة ', 'لقد بداء الرحلة مرحبا ', 'riderpicked');
-
-        return $this->returnSuccessMessage("picked up successfully");
+        $trip = Trip::find($request->trip_id);
+        if($trip !== null){
+            $trip->state = 'arrived';
+            $trip->save();
+            $rider = Rider::find($trip->rider_id);
+            
+            $this->push_notification($rider->remember_token, 'بداء الرحلة ', 'لقد بداء الرحلة مرحبا ', 'riderpicked');
+            return $this->returnSuccessMessage("picked up successfully");
+        }
+        else{
+            return $this->returnError('E003', 'هذه  الرحلة غير متاحة');
+        }
     }
     public function show_intrnal_trip_to_driver(Request $request)
     {
