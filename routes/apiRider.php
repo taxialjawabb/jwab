@@ -40,6 +40,7 @@ Route::group([
         Route::post('request/cancel', [TripController::class, 'cancel']);
         Route::post('request/cancel/request/time', [TripController::class, 'cancel_reqest_time']);
         Route::post('response/driver', [TripController::class, 'start']);
+        Route::post('trip/state', [TripController::class, 'get_trip_data']);
 
         
         // send message

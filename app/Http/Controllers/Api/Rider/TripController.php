@@ -246,5 +246,32 @@ class TripController extends Controller
 
         return $this -> returnData('category' , $categories, 'vechile category');   
     }
+    public function get_trip_data(Request $request)
+    {
+        $request->validate([
+            'trip_id' =>'required|integer',
+            ]);
+        $trip = Trip::select(['id', 'state', 'driver_id'])->find($request->trip_id);
+        if($trip !== null){
+            if($trip->state == 'request'){
+                return $this -> returnData('data' , $trip,'request');                
+            }
+            else if($trip->state == 'inprogress'){
+                $driver = Driver::select(['id', 'name', 'phone'])->find($trip->driver_id);
+                $trip->driver = $driver;
+                return $this -> returnData('data' , $trip,'inprogress');                
+            }
+            else if($trip->state == 'canceled'){
+                return $this -> returnSuccessMessage('canceled');                
+                                
+            }
+            else{
+                return $this -> returnSuccessMessage('completed');                
+            }
+        }
+        else{
+            return $this->returnError('E003', 'هذه الرحلة لم تعد متاحه');
+        }
+    }
 }
             
