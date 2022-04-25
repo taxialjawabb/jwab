@@ -181,7 +181,7 @@ class TripController extends Controller
 
         $trip = Trip::find($request->trip_id);
         if($trip !== null){
-            $trip->state = 'pickedup';
+            $trip->state = 'arrived';
             $trip->save();
             $rider = Rider::find($trip->rider_id);
     
@@ -201,7 +201,7 @@ class TripController extends Controller
 
         $trip = Trip::find($request->trip_id);
         if($trip !== null){
-            $trip->state = 'arrived';
+            $trip->state = 'pickedup';
             $trip->save();
             $rider = Rider::find($trip->rider_id);
             
