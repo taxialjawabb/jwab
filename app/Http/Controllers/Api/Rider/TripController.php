@@ -261,6 +261,16 @@ class TripController extends Controller
                 $trip->driver = $driver;
                 return $this -> returnData('data' , $trip,'inprogress');                
             }
+            else if($trip->state == 'arrived'){
+                $driver = Driver::select(['id', 'name', 'phone'])->find($trip->driver_id);
+                $trip->driver = $driver;
+                return $this -> returnData('data' , $trip,'arrived');                
+            }
+            else if($trip->state == 'pickedup'){
+                $driver = Driver::select(['id', 'name', 'phone'])->find($trip->driver_id);
+                $trip->driver = $driver;
+                return $this -> returnData('data' , $trip,'pickedup');                
+            }
             else if($trip->state == 'canceled'){
                 return $this -> returnSuccessMessage('canceled');                
                                 
