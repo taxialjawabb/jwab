@@ -53,7 +53,9 @@ Route::group([
         Route::post('city/vechile/category', [App\Http\Controllers\Api\Rider\CirtyTripController::class, 'city_category']);
         Route::post('city/trip/reservation', [App\Http\Controllers\Api\Rider\CirtyTripController::class, 'city_request']);
         Route::post('city/trip/canceled', [App\Http\Controllers\Api\Rider\CirtyTripController::class, 'rider_canceled_trip']);
-
+        
+        // rate
+        Route::post('trip/rate', [App\Http\Controllers\Api\Rider\RiderRating\RiderRatingController::class, 'rider_add_rating']);
 
         // Show my Trip
         Route::post('trips/{page?}', [TripController::class, 'trips']);

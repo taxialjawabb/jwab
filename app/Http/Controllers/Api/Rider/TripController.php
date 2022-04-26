@@ -244,7 +244,7 @@ class TripController extends Controller
             'category_percent'
             ])->where('show_in_app', true)->get();
 
-        return $this -> returnData('category' , $categories, 'vechile category');   
+            return $this -> returnData('category' , $categories, 'vechile category');   
     }
     public function get_trip_data(Request $request)
     {

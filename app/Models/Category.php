@@ -13,16 +13,21 @@ class Category extends Model
     public $timestamps = false; 
 
     protected $fillable =  [
+        'id',
         'category_name',
         'basic_price',
         'km_cost',
+        'minute_cost',
         'reject_cost',
         'cancel_cost',
-        'daily_revenue_cost',
         'percentage_type',
+        'daily_revenue_cost',
         'fixed_percentage',
         'category_percent',
         'admin_id',
+        'show_in_app',
+        'rate',
+        'rate_counter',
     ];
     public function cities(){
         return $this->hasMany(City::class);
