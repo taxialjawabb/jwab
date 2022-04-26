@@ -35,6 +35,7 @@ Route::group([
             Route::post('show/trips/available', [TripController::class, 'show_intrnal_trip_to_driver']);
             Route::post('send/notification', [TripController::class, 'driver_send_notification']);
             Route::post('rider/picked', [TripController::class, 'rider_picked']);
+            // Route::post('trip/state', [App\Http\Controllers\Api\Rider\TripController::class, 'get_trip_data']);
             
             Route::post('city/request/response', [App\Http\Controllers\Api\Rider\CirtyTripController::class , 'driver_response']);
             Route::post('city/trips', [App\Http\Controllers\Api\Rider\CirtyTripController::class , 'show_city_trip_to_driver']);
