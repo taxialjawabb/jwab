@@ -116,28 +116,28 @@ class DriverRiderController extends Controller
             $boxVechile->bond_type = 'take';
             $boxVechile->payment_type = 'internal transfer';
             $boxVechile->bond_state = 'deposited';
-            $boxVechile->descrpition = 'تم خصم مبلغ  ' .$request->company. ' عائد للمركبة رقم ' .$vechile->id .' على رحلة رقم ' .$request->trip_id .' تكلفة الرحلة ' .$request->total ;
-            $boxVechile->money = $request->company;
+            $boxVechile->descrpition = 'تم خصم مبلغ  ' . round($request->company, 2). ' عائد للمركبة رقم ' .$vechile->id .' على رحلة رقم ' .$request->trip_id .' تكلفة الرحلة ' . round($request->total, 2) ;
+            $boxVechile->money = round($request->company , 2);
             $boxVechile->tax = 0;
-            $boxVechile->total_money = $request->company;
+            $boxVechile->total_money = round($request->company , 2);
             $boxVechile->add_date = Carbon::now();
 
-            $driver->account -=  $request->company;
-            $vechile->account +=  $request->company;
+            $driver->account -=  round($request->company , 2);
+            $vechile->account +=  round($request->company , 2);
             
             $driver->available = 1;
 
             $trip->payment_type = 'cash';
-            $trip->cost =$request->total;
+            $trip->cost = round($request->total , 2);
             $trip->save();
             
             $boxVechile->save();
             $driver->save();
             $vechile->save();
-            $this->push_notification($driver->remember_token, 'تم خصيم من الرصيد', 'تم خصم مبلغ  ' .$request->company. ' من رصيدك  ', 'payment');
+            $this->push_notification($driver->remember_token, 'تم خصيم من الرصيد', 'تم خصم مبلغ  ' . round($request->company , 2) . ' من رصيدك  ', 'payment');
             
             $rider = Rider::find($trip->rider_id);
-            $rider->message = 'تم أنهاء الرحلة بنجاح و دفع تكلفة الرحلة كاش'.' تكلفة الرحلة ' .$request->total;
+            $rider->message = 'تم أنهاء الرحلة بنجاح و دفع تكلفة الرحلة كاش'.' تكلفة الرحلة ' . round($request->total, 2);
             $this->push_notification($rider->remember_token, 'عملية الدفع نقدا بنجاح', $rider, 'payment');
 
 
@@ -164,39 +164,39 @@ class DriverRiderController extends Controller
                         $boxVechile->bond_type = 'take';
                         $boxVechile->payment_type = 'internal transfer';
                         $boxVechile->bond_state = 'deposited';
-                        $boxVechile->descrpition = 'تم خصم مبلغ  ' .$request->company. ' عائد للمركبة رقم ' .$vechile->id .' على رحلة رقم ' .$request->trip_id .' تكلفة الرحلة ' .$request->total ;
-                        $boxVechile->money = $request->company;
+                        $boxVechile->descrpition = 'تم خصم مبلغ  ' . round($request->company , 2). ' عائد للمركبة رقم ' .$vechile->id .' على رحلة رقم ' .$request->trip_id .' تكلفة الرحلة ' . round($request->total, 2) ;
+                        $boxVechile->money = round($request->company, 2);
                         $boxVechile->tax = 0;
-                        $boxVechile->total_money = $request->company;
+                        $boxVechile->total_money = round($request->company , 2);
                         $boxVechile->add_date = Carbon::now();
     
                         $boxRider->rider_id = $rider->id;
                         $boxRider->bond_type = 'spend';
                         $boxRider->payment_type = 'internal transfer';
-                        $boxRider->money = $request->total;
+                        $boxRider->money = round($request->total, 2);
                         $boxRider->tax = 0;
-                        $boxRider->total_money = $request->total;
-                        $boxRider->descrpition =  'تم خصم مبلغ  ' .$request->total. ' عائد للسائق' .$driver->name .' على رحلة رقم ' .$request->trip_id ;
+                        $boxRider->total_money = round($request->total , 2);
+                        $boxRider->descrpition =  'تم خصم مبلغ  ' .round($request->total , 2). ' عائد للسائق' .$driver->name .' على رحلة رقم ' .$request->trip_id ;
                         $boxRider->add_date = Carbon::now();
                         //$BoxRider->add_by = Auth::guard('admin')->user()->id;
                 
                         $boxDriver->driver_id = $driver->id;
                         $boxDriver->bond_type = "take";
                         $boxDriver->payment_type = 'internal transfer';
-                        $boxDriver->money = $request->total;
+                        $boxDriver->money = round($request->total, 2);
                         $boxDriver->tax = 0;
-                        $boxDriver->total_money = $request->total;
-                        $boxDriver->descrpition =   'تم أضافة مبلغ  ' .$request->total. ' عائد من الراكب ' .$rider->name .' على رحلة رقم ' .$request->trip_id ;
+                        $boxDriver->total_money = round($request->total, 2);
+                        $boxDriver->descrpition =   'تم أضافة مبلغ  ' . round($request->total , 2). ' عائد من الراكب ' .$rider->name .' على رحلة رقم ' .$request->trip_id ;
                         $boxDriver->add_date = Carbon::now();
                         //$boxDriver->add_by = Auth::guard('admin')->user()->id;
                         
-                        $rider->account -=  $request->total;
-                        $driver->account +=  $request->total;
-                        $vechile->account +=  $request->company;
+                        $rider->account -=  round($request->total , 2);
+                        $driver->account +=  round($request->total , 2);
+                        $vechile->account +=  round($request->company , 2);
                         
                         $driver->available = 1;
                         $trip->payment_type = 'internal transfer';
-                        $trip->cost =$request->total;
+                        $trip->cost = round($request->total , 2);
                         $trip->save();
                         
                         $boxRider->save();
@@ -205,10 +205,10 @@ class DriverRiderController extends Controller
                         $rider->save();
                         $driver->save();
                         $vechile->save();
-                        $description = 'تم خصم مبلغ  ' .$request->total. ' عائد للسائق' .$driver->name;
+                        $description = 'تم خصم مبلغ  ' . round($request->total , 2) . ' عائد للسائق' .$driver->name;
                         $rider->message = $description;
                         $this->push_notification($rider->remember_token, 'تم الخصم من الرصيد', $rider,'payment');
-                        $this->push_notification($driver->remember_token, 'تم الخصم من الرصيد', 'تم أضافة مبلغ  ' .($request->total - $request->company). ' إلى رصيدك  ', 'payment');
+                        $this->push_notification($driver->remember_token, 'تم الخصم من الرصيد', 'تم أضافة مبلغ  ' . round(($request->total - $request->company) , 2). ' إلى رصيدك  ', 'payment');
                         return $this->returnSuccessMessage("Payment confirmed successfully");
                     }
                     else{

@@ -20,6 +20,7 @@ class Driver extends Authenticatable implements JWTSubject {
         'driver_rate'  => "decimal:1",
         'vechile_rate'  => "decimal:1",
         'time_rate'  => "decimal:1",
+        'account'  => "decimal:2",
         ];
     protected $dates = [
         'id_expiration_date',
