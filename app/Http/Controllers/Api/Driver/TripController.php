@@ -182,7 +182,7 @@ class TripController extends Controller
         $trip = Trip::find($request->trip_id);
         if($trip !== null){
             if($trip->state == 'canceled'){
-                return $this->returnError('E003', 'لقد تم الغاء هذه الرحلة');
+                return $this->returnError('E004', 'لقد تم الغاء هذه الرحلة');
             }
             $trip->state = 'arrived';
             $trip->save();
@@ -205,7 +205,7 @@ class TripController extends Controller
         $trip = Trip::find($request->trip_id);
         if($trip !== null){
             if($trip->state == 'canceled'){
-                return $this->returnError('E003', 'لقد تم الغاء هذه الرحلة');
+                return $this->returnError('E004', 'لقد تم الغاء هذه الرحلة');
             }
             $trip->state = 'pickedup';
             $trip->save();
