@@ -60,7 +60,7 @@ class RiderRatingController extends Controller
                         $driver->time_rate += $request->time_rate;
                         $driver->time_counter ++ ;
                         DriverRating::create([
-                            'rate_type' => 'driver',
+                            'rate_type' => 'time',
                             'rate' => $request->time_rate,
                             'content' => $request->time_content,
                             'added_date' => Carbon::now(),
