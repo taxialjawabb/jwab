@@ -435,4 +435,9 @@ class DriverController extends Controller
         }
 
     }
+    public function availables()
+    {
+        $drivers = Driver::select(['id', 'name', 'phone'])->where('available', true)->get();
+        return view('driver.availbleDriver', compact('drivers'));
+    }
 }

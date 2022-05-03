@@ -126,6 +126,7 @@ Route::group([
         Route::get('/details/{id}', [App\Http\Controllers\Admin\Driver\DriverController::class, 'detials']);
         Route::get('/update/{id}', [App\Http\Controllers\Admin\Driver\DriverController::class, 'update_show']);
         Route::post('/update', [App\Http\Controllers\Admin\Driver\DriverController::class, 'update_driver']);
+        Route::get('/availables', [App\Http\Controllers\Admin\Driver\DriverController::class, 'availables']);
         
         Route::get('/vechile/{id}', [App\Http\Controllers\Admin\Driver\DriverController::class, 'vechiles']);
         

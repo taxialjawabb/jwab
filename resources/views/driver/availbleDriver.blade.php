@@ -2,17 +2,7 @@
 @extends('index')
 @section('title','السائقين')
 @section('content')
-<div class="container clearfix">
-    <h5 class=" mt-4 float-start">{{ $title }}</h5>
-    <div class="float-end mt-3">
-        <a href="{{url('driver/show')}}" class="btn {{$title == 'عرض بيانات السائقين' ? 'btn-primary' : 'btn-light'}} rounded-0 m-0" >جميع السائقين</a>
-        <a href="{{url('driver/show/blocked')}}" class="btn {{$title == 'عرض بيانات السائقين المستبعد' ? 'btn-primary' : 'btn-light'}} rounded-0 m-0" >السائقين المستبعده</a>
-        <a href="{{url('driver/show/active')}}" class="btn {{$title == 'عرض بيانات السائقين المستلم' ? 'btn-primary' : 'btn-light'}} btn-primary rounded-0 m-0" >السائقين المستلم</a>
-        <a href="{{url('driver/show/waiting')}}" class="btn {{$title == 'عرض بيانات السائقين المنتظر' ? 'btn-primary' : 'btn-light'}} btn-primary rounded-0 m-0" >السائقين المنتظر</a>
-        <a href="{{url('driver/availables')}}" class="btn btn-success rounded-0 m-0" >السائقين المتاحيين</a>
-        <a href="{{url('driver/add')}}" class="btn btn-success rounded-0 m-0" >أضـافـة سائق جديد</a>
-    </div>
-</div>
+
                 <div class="panel panel-default mt-4">
                     <div class="table-responsive">
                         <table class="table " id="datatable">
@@ -21,12 +11,6 @@
                                     <th>رقم</th>
                                     <th>السائق</th>
                                     <th>الجوال</th>
-                                    <th>نوع المركبة</th>
-                                    <th>سنة الصنع</th>
-                                    <th>رقم اللوحة</th>
-                                    <th>تاريخ الأضافة</th>
-                                    <th>أضيف بواسطة</th>
-                                    <th></th>                                    
                                 </tr>
                             </thead>
                             <tbody>
@@ -35,14 +19,6 @@
                                     <td>{{ $driver->id }}</td>
                                     <td>{{ $driver->name }}</td>
                                     <td>{{ $driver->phone }}</td>
-                                    <td>{{ $driver->vechile_type }}</td>
-                                    <td>{{ $driver->made_in }}</td>
-                                    <td>{{ $driver->plate_number }}</td>
-                                    <td>{{ $driver->add_date }}</td>
-                                    <td>{{ $driver->admin_name }}</td>
-                                    <td>
-                                        <a href="{{ url('driver/details/'.$driver->id) }}" class="btn btn-primary">عرض</a>
-                                    </td>
                                 </tr>
                                 @endforeach
                             </tbody>

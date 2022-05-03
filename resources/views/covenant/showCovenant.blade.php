@@ -19,38 +19,38 @@
     <a href="{{url('covenant/add')}}" class="btn btn-success rounded-0 m-0" >أضـافـة عهده جديد</a>
   </div>
 </div>
-                <div class="panel panel-default mt-4">
-                    <div class="table-responsive">
-                        <table class="table " id="datatable">
-                            <thead>
-                                <tr>
-                                    <th># </th>
-                                    <th>  اسم العهدة</th>
-                                    <th>  العدد</th>
-                                    <th>تم الاضافة بواسطة</th>
-                                    <th> تاريخ الإضافة</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach($covenants as $covenant)
-                                <tr class="covenat{{$covenant->id}}">
-                                    <td class="id">{{ $covenant->id }}</td>
-                                    <td class="name">{{ $covenant->covenant_name }}</td>
-                                    <td >{{ $covenant->counts }}</td>
-                                    <td>{{ $covenant->add_by }}</td>
-                                    <td>{{ $covenant->add_date }}</td>
-                                    <td>
-                                        <a href="{{ url('covenant/item/show/'.$covenant->covenant_name) }}" class="btn btn-primary">عرض</a>
-                                        <a href="#" class="btn covenant btn-success"   id="covenat{{$covenant->id}}" data-bs-toggle="modal" data-bs-target="#exampleModal">أضافة عنصر</a>
-                                        <!-- <a href="{{ url('vechile/update/cagegory/'.$covenant->id) }}" class="btn btn-danger">تعديل</a> -->
-                                    </td>
-                                </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+    <div class="panel panel-default mt-4">
+        <div class="table-responsive">
+            <table class="table " id="datatable">
+                <thead>
+                    <tr>
+                        <th># </th>
+                        <th>  اسم العهدة</th>
+                        <th>  العدد</th>
+                        <th>تم الاضافة بواسطة</th>
+                        <th> تاريخ الإضافة</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($covenants as $covenant)
+                    <tr class="covenat{{$covenant->id}}">
+                        <td class="id">{{ $covenant->id }}</td>
+                        <td class="name">{{ $covenant->covenant_name }}</td>
+                        <td >{{ $covenant->counts }}</td>
+                        <td>{{ $covenant->add_by }}</td>
+                        <td>{{ $covenant->add_date }}</td>
+                        <td>
+                            <a href="{{ url('covenant/item/show/'.$covenant->covenant_name) }}" class="btn btn-primary">عرض</a>
+                            <a href="#" class="btn covenant btn-success"   id="covenat{{$covenant->id}}" data-bs-toggle="modal" data-bs-target="#exampleModal">أضافة عنصر</a>
+                            <!-- <a href="{{ url('vechile/update/cagegory/'.$covenant->id) }}" class="btn btn-danger">تعديل</a> -->
+                        </td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    </div>
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -81,7 +81,7 @@
     </div>
   </div>
 </div>
-@endsection
+@endsection 
 
 @section('scripts')
 
