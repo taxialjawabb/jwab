@@ -54,7 +54,7 @@ class RiderSupportController extends Controller
                 
                 ])->where('rider_id', $rider->id)->with('results')
                 ->paginate(10);
-                return $this -> returnData('data' , $riderTask, 'support messages data');   
+                return $this -> returnSuccessMessage($riderTask);   
         }
         else{
             return $this->returnError('E001',"خطاء فى بيانات العميل المدخلة");
@@ -78,7 +78,7 @@ class RiderSupportController extends Controller
                 'added_type' => 'rider',
                 'add_by' => $riderTask->rider_id,
             ]);
-            return $this -> returnData('data' , $riderTaskResult, 'add task result successfully');   
+            return $this -> returnSuccessMessage('data' , $riderTaskResult, 'add task result successfully');   
         }
         else{
             return $this->returnError('E001',"خطاء فى بيانات العميل المدخلة");
