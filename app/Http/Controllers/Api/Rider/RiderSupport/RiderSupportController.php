@@ -47,9 +47,6 @@ class RiderSupportController extends Controller
             if($rider !== null){
                 $riderTask = RiderSupportTask::select([
                     'id',
-                    'department',
-                    'direct_by',
-                    'rider_id',
                     'subject',
                     'content',
                     'state',
