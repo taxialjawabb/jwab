@@ -82,6 +82,41 @@
                                     </td>
                                     @endif
                                 </tr>
+                                <tr>
+                                    <td>{{ $task->id }}</td>
+                                    <td>{{ $task->readed_admin }}</td>                                    
+                                    <td>{{ $task->subject }}</td>
+                                    <td>{{ $task->content }}</td>
+                                    <td>
+                                    @switch($task->state)
+                                        @case('unseen')
+                                                                غير مقروء                                           
+                                            @break
+                                        @case('seen')
+                                                                مقروء                                           
+                                            @break
+                                        @case('uncomplete')
+                                                                غير مكتمل                                           
+                                            @break
+                                        @case('complete')
+                                                                مكتمل                                           
+                                            @break
+                                        @default
+                                    @endswitch
+                                    </td>
+                                    <td>{{$task->created_at }}</td>
+                                    <td>{{ $task->created_at == $task->updated_at? '':$task->updated_at }}</td>
+                                    <td>{{ $task->finish_date }}</td>
+                                    <td>{{ $task->add_admin }}</td>
+                                    <td>
+                                        <a href="{{ url('tasks/detials/'.$task->id) }}" class="btn btn-primary">عرض</a>
+                                    </td>
+                                    @if($task->state === "complete")
+                                    <td>
+                                        <a href="{{ url('tasks/make/uncomplete/'.$task->id) }}" class="btn  btn-danger " style="inline-size: max-content;">غير مكتملة</a>
+                                    </td>
+                                    @endif
+                                </tr>
                                 @endforeach
                             </tbody>
                         </table>
@@ -133,5 +168,5 @@
            $('#datatable_length').addClass('mb-3');
         });
         </script>
-        <script src="{{ asset('js/imgmodel.js') }}" ></script>   
+        <!-- <script src="{{ asset('js/imgmodel.js') }}" ></script>    -->
 @endsection
