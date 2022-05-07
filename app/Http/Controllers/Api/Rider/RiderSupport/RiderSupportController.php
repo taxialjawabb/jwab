@@ -50,6 +50,7 @@ class RiderSupportController extends Controller
                     'subject',
                     'content',
                     'state',
+                    'created_at',
                 
                 ])->where('rider_id', $rider->id)->with('results')
                 ->paginate(10);
