@@ -26,6 +26,6 @@ class RiderSupportTask extends Model
         'updated_at',
     ];
     public function results(){
-        return $this->hasMany(RiderSupportResult::class);
+        return $this->hasMany(RiderSupportResult::class, 'task_id', 'id');
     }
 }

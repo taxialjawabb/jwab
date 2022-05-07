@@ -73,7 +73,7 @@ Route::group([
         
         //Rider support
         Route::post('/support/task/add', [App\Http\Controllers\Api\Rider\RiderSupport\RiderSupportController::class, 'add_task']);
-        Route::post('/support/tasks/show', [App\Http\Controllers\Api\Rider\RiderSupport\RiderSupportController::class, 'show_task']);
+        Route::post('/support/tasks/show/{page?}', [App\Http\Controllers\Api\Rider\RiderSupport\RiderSupportController::class, 'show_task']);
         Route::post('/support/task/send/replay', [App\Http\Controllers\Api\Rider\RiderSupport\RiderSupportController::class, 'send_replay_task']);
         
 

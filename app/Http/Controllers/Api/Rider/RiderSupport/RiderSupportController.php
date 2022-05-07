@@ -39,7 +39,28 @@ class RiderSupportController extends Controller
 
     public function show_task(Request $request)
     {
-        
+        $request->validate([
+            'rider_id' =>'required|string',
+            ]);
+
+            $rider = Rider::find($request->rider_id);
+            if($rider !== null){
+                $riderTask = RiderSupportTask::select([
+                    'id',
+                    'department',
+                    'direct_by',
+                    'rider_id',
+                    'subject',
+                    'content',
+                    'state',
+                
+                ])->where('rider_id', $rider->id)->with('results')
+                ->paginate(10);
+                return $this -> returnData('data' , $riderTask, 'support messages data');   
+        }
+        else{
+            return $this->returnError('E001',"خطاء فى بيانات العميل المدخلة");
+        }
     }
    
     public function send_replay_task(Request $request)
