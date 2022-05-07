@@ -237,7 +237,7 @@
     }
     </style>
 
-        <script src="{{ asset('js/jQuery.print.min.js') }}" ></script>   
+        <script src="{{ asset('assets/js/jQuery.print.min.js') }}" ></script>   
         <script>
             $(function() {
 
