@@ -45,15 +45,19 @@ class RiderSupportController extends Controller
 
             $rider = Rider::find($request->rider_id);
             if($rider !== null){
-                $riderTask = RiderSupportTask::select([
-                    'id',
-                    'subject',
-                    'content',
-                    'state',
-                    'created_at',
+                $riderTask = RiderSupportTask::query()
+                ->with(['results' => function ( $riderSupportResult) {
+                    $riderSupportResult->orderBy('add_date','desc');
+                }])->paginate(10);
+                // $riderTask = RiderSupportTask::select([
+                //     'id',
+                //     'subject',
+                //     'content',
+                //     'state',
+                //     'created_at',
                 
-                ])->where('rider_id', $rider->id)->with('results')
-                ->paginate(10);
+                // ])->where('rider_id', $rider->id)->with('results')
+                // ->paginate(10);
                 return $this -> returnSuccessMessage($riderTask);   
         }
         else{
