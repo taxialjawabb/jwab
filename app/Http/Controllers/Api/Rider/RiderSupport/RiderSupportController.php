@@ -45,7 +45,7 @@ class RiderSupportController extends Controller
 
             $rider = Rider::find($request->rider_id);
             if($rider !== null){
-                $riderTask = RiderSupportTask::query()
+                $riderTask = RiderSupportTask::where('rider_id',$request->rider_id)
                 ->with(['results' => function ( $riderSupportResult) {
                     $riderSupportResult->orderBy('add_date','desc');
                 }])->paginate(10);

@@ -74,6 +74,27 @@
                     </li>
                     @endif
 
+                    {{-- @if(Auth::user()->isAbleTo('user_manage'))
+                    <li class="mb-1">
+                        <button class="btn btn-toggle btn-toggle-second align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#support" aria-expanded="false">
+                        الدعم الفني
+                        </button>
+                        <div class="collapse " id="support">
+                        <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+
+                        <li class="mb-1">
+                            <a  class="btn rider align-items-center rounded collapsed" href="{{ url('user/show') }}" class="link-dark rounded">الدعم للعملاء</a>
+                        </li>
+                        
+                        <li class="mb-1">
+                            <a  class="btn rider align-items-center rounded collapsed" href="{{ url('user/roles/show') }}" class="link-dark rounded">الدعم للسائقين</a>
+                        </li>                            
+                            
+                        </ul>
+                        </div>
+                    </li>
+                    @endif  --}}
+
                     
                     @if(Auth::user()->isAbleTo('nathiraat_box'))
                     <li class="border-top my-1"></li>
