@@ -321,7 +321,7 @@ Route::group([
     ],function () { 
         Route::get('/show/{state}', [App\Http\Controllers\Admin\Tasks\UserTaskController::class, 'show_tasks']);
         Route::get('/show/complete/{state}', [App\Http\Controllers\Admin\Tasks\UserTaskController::class, 'show_complete_tasks'])->middleware(['permission:complete_task']);
-        Route::get('/add/{state}', [App\Http\Controllers\Admin\Tasks\UserTaskController::class, 'show_add']);
+        Route::get('/add/{id}/{type}', [App\Http\Controllers\Admin\Tasks\UserTaskController::class, 'show_add']);
         Route::post('/add', [App\Http\Controllers\Admin\Tasks\UserTaskController::class, 'save_tasks_result']);
     });
     
@@ -329,8 +329,10 @@ Route::group([
         'prefix' => 'tasks',
         'middleware' => ['permission:user_manage|user_own_tasks']
     ],function () { 
-        Route::get('/detials/{id}', [App\Http\Controllers\Admin\Tasks\ShowTaskController::class, 'show']);
-        Route::get('recived/{id}', [App\Http\Controllers\Admin\Tasks\UserTaskController::class, 'recieved_task']);
+        Route::get('/detials/{id}/{type}', [App\Http\Controllers\Admin\Tasks\ShowTaskController::class, 'show']);
+        Route::get('/direct/{id}/{type}', [App\Http\Controllers\Admin\Tasks\ShowTaskController::class, 'direct']);
+        Route::post('/direct', [App\Http\Controllers\Admin\Tasks\ShowTaskController::class, 'direct_save']);
+        Route::get('recived/{id}/{type}', [App\Http\Controllers\Admin\Tasks\UserTaskController::class, 'recieved_task']);
     });
     
     Route::group([

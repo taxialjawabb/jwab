@@ -10,6 +10,7 @@
     <div class="row">
         <input type="hidden" name="id" value="$id">
         <input type="hidden" name="id" value="{{$id}}">
+        <input type="hidden" name="type" value="{{$type}}">
         <div class="mt-4  col-sm-12 col-md-6 col-lg-6 col-xl-6 ">
         <label for="state" class="form-label">حالة المهمة</label>
             <select value="{{ old('state') }}" name="state" id="state" class="form-select" aria-label="Default select example" id="state" required>

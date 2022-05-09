@@ -23,4 +23,7 @@ class Task extends Model
         'readed_date',
         'finish_date',
     ];
+    public function results(){
+        return $this->hasMany(Result::class, 'task_id', 'id');
+    }
 }

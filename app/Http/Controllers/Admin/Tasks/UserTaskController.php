@@ -10,23 +10,42 @@ use App\Models\Tasks\Result;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use App\Models\RiderSupport\RiderSupportTask;
+use App\Models\RiderSupport\RiderSupportResult;
 
 class UserTaskController extends Controller
 {
     public function show_tasks($state)
     {
         if($state == 'unseen' || $state == 'seen' || $state == 'uncomplete'  ){
-            $department = Auth::guard('admin')->user()->department;
+    
             $user_id = Auth::guard('admin')->user()->id;
             
 
             // return dd($department);
-            $tasks = DB::select("select tasks.id, tasks.department, ad1.name as add_admin, subject, content,
-                            tasks.state, tasks.created_at, readed_date, ad2.name as readed_admin, tasks.updated_at , finish_date
-                            from tasks left join admins ad1 on tasks.add_by = ad1.id left join admins ad2 on tasks.readed_by= ad2.id where (tasks.state = ? and tasks.department = ? and tasks.readed_by = ?) ;" , [$state, $department, $user_id]);
+            $tasks = DB::select(" 
+            select 'admin' as type, tasks.id, tasks.department, 
+            ad1.name as add_admin, subject, content, tasks.state, tasks.created_at,
+            readed_date, ad2.name as readed_admin, tasks.updated_at, finish_date
+            from tasks left join admins ad1 on tasks.add_by = ad1.id 
+            left join admins ad2 on tasks.readed_by= ad2.id where tasks.state = ? and tasks.readed_by = ?
+            union all
+            select 'rider', rider_task.id, rider_task.department, 
+            rider.name as add_admin, subject, content, rider_task.state, rider_task.created_at,
+            readed_date, ad1.name as readed_admin, rider_task.updated_at, finish_date
+            from rider_task left join admins ad1 on rider_task.admin_id = ad1.id 
+            left join rider rider on rider_task.rider_id= rider.id where rider_task.state = ? and rider_task.admin_id = ?
+            " ,
+            [$state, $user_id, $state, $user_id]);
             if($state === 'unseen'){
-                $tasks = Task::where('readed_by', $user_id)->where('state' , "unseen")->get();
-                foreach ($tasks as $task) {
+                $admintasks = Task::where('readed_by', $user_id)->where('state' , "unseen")->get();
+                foreach ($admintasks as $task) {
+                    $task->state = 'seen';
+                    $task->readed_date = Carbon::now();
+                    $task->save();
+                }
+                $riderTasks = RiderSupportTask::where('admin_id', $user_id)->where('state' , "unseen")->get();
+                foreach ($riderTasks as $task) {
                     $task->state = 'seen';
                     $task->readed_date = Carbon::now();
                     $task->save();
@@ -44,9 +63,19 @@ class UserTaskController extends Controller
             $department = Auth::guard('admin')->user()->department;
             $user_id = Auth::guard('admin')->user()->id;
             // return dd($department);
-            $tasks = DB::select("select tasks.id, tasks.department, ad1.name as add_admin, subject, content,
-                            tasks.state, tasks.created_at, readed_date, ad2.name as readed_admin, tasks.updated_at , finish_date
-                            from tasks left join admins ad1 on tasks.add_by = ad1.id left join admins ad2 on tasks.readed_by= ad2.id where (tasks.state = ? and tasks.department = ? and tasks.readed_by = ?) ;" , [$state, $department, $user_id]);
+            $tasks = DB::select("
+            select 'admin' as type, tasks.id, tasks.department, 
+            ad1.name as add_admin, subject, content, tasks.state, tasks.created_at,
+            readed_date, ad2.name as readed_admin, tasks.updated_at, finish_date
+            from tasks left join admins ad1 on tasks.add_by = ad1.id 
+            left join admins ad2 on tasks.readed_by= ad2.id where tasks.state = ? and tasks.readed_by = ?
+            union all
+            select 'rider', rider_task.id, rider_task.department, 
+            rider.name as add_admin, subject, content, rider_task.state, rider_task.created_at,
+            readed_date, ad1.name as readed_admin, rider_task.updated_at, finish_date
+            from rider_task left join admins ad1 on rider_task.admin_id = ad1.id 
+            left join rider rider on rider_task.rider_id= rider.id where rider_task.state = ? and rider_task.admin_id = ?
+            " , [$state, $user_id,$state, $user_id,]);
             
         return view('tasks.user_tasks.showTasks', compact('tasks', 'state'));
     }
@@ -55,9 +84,9 @@ class UserTaskController extends Controller
         }        
     }
     
-    public function show_add($id)
+    public function show_add($id, $type)
     {
-        return view('tasks.user_tasks.completeTask', compact('id'));
+        return view('tasks.user_tasks.completeTask', compact('id','type'));
     }
 
     public function save_tasks_result(Request $request)
@@ -66,48 +95,84 @@ class UserTaskController extends Controller
             'id' => 'required|integer',
             'state' =>      'required|string',
             'result' =>'required|string',
+            'type' =>'required|string',
         ]);
-        $task = Task::find($request->id);
-        if($task !== null){
-            if($task->state != 'complete'){
-                $task->state = $request->state;
-                if($task->readed_by == null){
-                    $task->readed_date = Carbon::now();
-                    $task->readed_by = Auth::guard('admin')->user()->id;
+        
+        if($request->type === 'admin'){
+            $task = Task::find($request->id);
+            if($task !== null){
+                if($task->state != 'complete'){
+                    $task->state = $request->state;
+                    if($task->readed_by == null){
+                        $task->readed_date = Carbon::now();
+                        $task->readed_by = Auth::guard('admin')->user()->id;
+                    }
+                    if($request->state == 'complete')    {
+                        $task->finish_date = Carbon::now();
+                    }
+                    $result = new Result;
+                    $result->content = $request->result;
+                    $result->task_id = $request->id;
+                    $result->add_date = Carbon::now();
+                    $result->add_by =  Auth::guard('admin')->user()->id;
+                    
+                    $result->save();
+                    $task->save();
                 }
-                if($request->state == 'complete')    {
-                    $task->finish_date = Carbon::now();
-                }
-                $result = new Result;
-                $result->content = $request->result;
-                $result->task_id = $request->id;
-                $result->add_date = Carbon::now();
-                $result->add_by =  Auth::guard('admin')->user()->id;
-                
-                $result->save();
-                $task->save();
+                return redirect('tasks/detials/'. $request->id.'/'.$request->type);
             }
-            return redirect('tasks/detials/'. $request->id);
         }
-        else{
-            return back();
+        else if($request->type === 'rider'){
+            $task = RiderSupportTask::find($request->id);
+            if($task !== null){
+                if($task->state != 'complete'){
+                    $task->state = $request->state;
+                    if($task->admin_id == null){
+                        $task->readed_date = Carbon::now();
+                        $task->admin_id = Auth::guard('admin')->user()->id;
+                    }
+                    if($request->state == 'complete')    {
+                        $task->finish_date = Carbon::now();
+                    }
+                    $riderTaskResult = RiderSupportResult::create([
+                        'add_date'=> Carbon::now(),
+                        'content' => $request->result,
+                        'task_id' => $request->id,
+                        'added_type' => 'admin',
+                        'add_by' => Auth::guard('admin')->user()->id,
+                    ]);
+                    $task->save();
+                }
+                return redirect('tasks/detials/'. $request->id.'/'.$request->type);
+            }
         }
+    return back();
+        
 
     }
-    public function recieved_task($id)
+    public function recieved_task($id, $type)
     {    
         $readed_by = Auth::guard('admin')->user()->id;
-        $department = Auth::guard('admin')->user()->department;
-        $task =Task::find($id);
-            $department = Auth::guard('admin')->user()->department;
-        if($task !== null ){
-            if($task->department == $department){
+        
+        if($type === 'admin'){
+            $task =Task::find($id);
+            if($task !== null ){
                 $task->state = 'seen';
                 $task->readed_by = $readed_by;
                 $task->readed_date = Carbon::now();
                 $task->save();
             }
         }
+        else if($type === 'rider'){
+            $task =RiderSupportTask::find($id);
+            if($task !== null ){
+                $task->state = 'seen';
+                $task->admin_id = $readed_by;
+                $task->readed_date = Carbon::now();
+                $task->save();
+            }
+        }
+
         return back();
     }
 }

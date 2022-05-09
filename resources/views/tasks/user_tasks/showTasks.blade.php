@@ -57,7 +57,7 @@
                             </thead>
                             <tbody>
                                 @foreach($tasks as $task)
-                                <tr>
+                                <tr class=" {{ $task->type ==='rider'? 'table-dark' :'' }}">
                                     <td>{{ $task->id }}</td>
                                     <td>{{ $task->subject }}</td>
                                     <td>{{ $task->content }}</td>
@@ -82,14 +82,17 @@
                                     <td>{{ $task->created_at }}</td>
                                     <td>{{ $task->created_at == $task->updated_at? '':$task->updated_at }}</td>
                                     <td>{{ $task->finish_date }}</td>
-                                    <td>{{ $task->add_admin }}</td>
                                     <td>
-                                        <a href="{{ url('tasks/detials/'.$task->id) }}" class="btn btn-primary">عرض</a>
+                                        {{ $task->add_admin  }}
+                                        {{ $task->type ==='rider'? '(عميل) ' :'' }}
+                                    </td>
+                                    <td>
+                                        <a href="{{ url('tasks/detials/'.$task->id.'/'.$task->type) }}" class="btn btn-primary m-1">عرض</a>
                                         @if($state !== 'complete')
-                                        <a href="{{ url('tasks/user/add/'.$task->id) }}" class="btn btn-danger">تحديث</a>
+                                        <a href="{{ url('tasks/user/add/'.$task->id.'/'.$task->type) }}" class="btn btn-danger m-1">تحديث</a>
                                         @endif
                                         @if($state === 'unseen')
-                                        <a href="{{ url('tasks/recived/'.$task->id) }}" class="btn btn-danger">استلام</a>
+                                        <a href="{{ url('tasks/recived/'.$task->id.'/'.$task->type) }}" class="btn btn-danger m-1">استلام</a>
                                         @endif
                                     </td>
                                 </tr>

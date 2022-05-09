@@ -54,9 +54,19 @@ class ManageTaskController extends Controller
     public function show_tasks($state)
     {
         if($state == 'unseen' || $state == 'seen' || $state == 'uncomplete'  ){
-            $tasks = DB::select("select tasks.id, tasks.department, ad1.name as add_admin, subject, content,
-            tasks.state, tasks.created_at, readed_date, ad2.name as readed_admin, tasks.updated_at, finish_date
-                            from tasks left join admins ad1 on tasks.add_by = ad1.id left join admins ad2 on tasks.readed_by= ad2.id where tasks.state = ? ;" , [$state]);
+            $tasks = DB::select("
+            select 'admin' as type, tasks.id, tasks.department, 
+            ad1.name as add_admin, subject, content, tasks.state, tasks.created_at,
+            readed_date, ad2.name as readed_admin, tasks.updated_at, finish_date
+            from tasks left join admins ad1 on tasks.add_by = ad1.id 
+            left join admins ad2 on tasks.readed_by= ad2.id where tasks.state = ? 
+            union all
+            select 'rider', rider_task.id, rider_task.department, 
+            rider.name as add_admin, subject, content, rider_task.state, rider_task.created_at,
+            readed_date, ad1.name as readed_admin, rider_task.updated_at, finish_date
+            from rider_task left join admins ad1 on rider_task.admin_id = ad1.id 
+            left join rider rider on rider_task.rider_id= rider.id where rider_task.state = ? ; 
+            " , [$state, $state]);
         return view('tasks.manage_tasks.showTasks', compact('tasks', 'state'));
     }
     else{
@@ -68,9 +78,19 @@ class ManageTaskController extends Controller
     public function show_complete_tasks($state)
     {
         if($state == 'complete' ){
-            $tasks = DB::select("select tasks.id, tasks.department, ad1.name as add_admin, subject, content,
-            tasks.state, tasks.created_at, readed_date, ad2.name as readed_admin, tasks.updated_at, finish_date
-                            from tasks left join admins ad1 on tasks.add_by = ad1.id left join admins ad2 on tasks.readed_by= ad2.id where tasks.state = ? ;" , [$state]);
+            $tasks = DB::select("
+                select 'admin' as type, tasks.id, tasks.department, 
+                ad1.name as add_admin, subject, content, tasks.state, tasks.created_at,
+                readed_date, ad2.name as readed_admin, tasks.updated_at, finish_date
+                from tasks left join admins ad1 on tasks.add_by = ad1.id 
+                left join admins ad2 on tasks.readed_by= ad2.id where tasks.state = ? 
+                union all
+                select 'rider', rider_task.id, rider_task.department, 
+                rider.name as add_admin, subject, content, rider_task.state, rider_task.created_at,
+                readed_date, ad1.name as readed_admin, rider_task.updated_at, finish_date
+                from rider_task left join admins ad1 on rider_task.admin_id = ad1.id 
+                left join rider rider on rider_task.rider_id= rider.id where rider_task.state = ? ; 
+            " , [$state, $state]);
                             
         return view('tasks.manage_tasks.showTasks', compact('tasks', 'state'));
     }

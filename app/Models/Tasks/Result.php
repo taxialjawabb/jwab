@@ -18,5 +18,7 @@ class Result extends Model
         'task_id',
         'add_by',
     ];
-
+    public function task(){
+        return $this->belongsTo(Task::class,  'foreign_key', 'task_id');
+    }
 }
