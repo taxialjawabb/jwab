@@ -14,3 +14,6 @@ Route::group([
         Route::post('rider/cost', [DriverRiderController::class, 'calculate_trip_cost']);
     });
 });
+Route::get('/', function () {
+    return 'test api';
+});
