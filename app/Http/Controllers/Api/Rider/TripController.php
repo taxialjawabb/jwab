@@ -29,8 +29,8 @@ class TripController extends Controller
     {
         $request->validate([
             // 'trip_type' =>'required|string|in:internal,city',
-            'rider_id' =>'required|integer',
-            'category_id' =>'required|integer',
+            'rider_id' =>'required',
+            'category_id' =>'required',
             'start_loc_latitude' =>'required|numeric',
             'start_loc_longtitude' =>'required|numeric',
             'start_loc_name' =>'required|string',
@@ -104,7 +104,7 @@ class TripController extends Controller
     public function cancel(Request $request)
     {
         $request->validate([
-            'trip_id' =>'required|integer',
+            'trip_id' =>'required',
             'cancel_cost' =>'required|numeric',
             
             ]);
@@ -172,7 +172,7 @@ class TripController extends Controller
     public function cancel_reqest_time(Request $request)
     {
         $request->validate([
-            'rider_id' =>'required|integer',
+            'rider_id' =>'required',
             'reqest_time' =>'required|string',
             
             ]);
@@ -200,7 +200,7 @@ class TripController extends Controller
     public function trips(Request $request)
     {
         $request->validate([
-            'rider_id' =>'required|integer',
+            'rider_id' =>'required',
             ]);
         $trip = DB::table('trips')->select([
             "trips.id",
@@ -249,7 +249,7 @@ class TripController extends Controller
     public function get_trip_data(Request $request)
     {
         $request->validate([
-            'trip_id' =>'required|integer',
+            'trip_id' =>'required',
             ]);
         $trip = Trip::select(['id', 'state', 'driver_id'])->find($request->trip_id);
         if($trip !== null){

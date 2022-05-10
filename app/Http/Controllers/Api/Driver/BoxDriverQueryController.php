@@ -53,7 +53,7 @@ class BoxDriverQueryController extends Controller
     public function trips(Request $request)
     {
         $request->validate([
-            'driver_id' =>'required|integer',
+            'driver_id' =>'required',
             ]);
         $trip = DB::table('trips')->select([
                 "trips.id",

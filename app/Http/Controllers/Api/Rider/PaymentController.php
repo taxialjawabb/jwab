@@ -15,7 +15,7 @@ class PaymentController extends Controller
     public function payment(Request $request)
     {
         $request->validate([
-            'trip_id' =>'required|integer'
+            'trip_id' =>'required'
         ]);
         $trip = Trip::find($request->trip_id);
         if($trip->state === 'expiry'){

@@ -20,9 +20,9 @@ class TripController extends Controller
     public function request(Request $request)
     {
         $request->validate([
-            'trip_id'    => 'required|integer',
-            'driver_id'    => 'required|integer',
-            // 'driver_id'    => 'required|integer',
+            'trip_id'    => 'required',
+            'driver_id'    => 'required',
+            // 'driver_id'    => 'required',
             // 'response' => 'required|string|in:accept,reject',
             // 'reject_driver' => 'array',
             // 'total_cost' => 'required|numeric',
@@ -63,7 +63,7 @@ class TripController extends Controller
     public function trips(Request $request)
     {
         $request->validate([
-            'driver_id' =>'required|integer',
+            'driver_id' =>'required',
             ]);
         $trip = Trip::where('driver_id',$request->driver_id)->paginate(15);
         if($trip){
@@ -114,7 +114,7 @@ class TripController extends Controller
     public function trip_end(Request $request)
     {
         $request->validate([
-            'trip_id' =>'required|integer',
+            'trip_id' =>'required',
             ]);
         $trip = Trip::find($request->trip_id);
         if( $trip !== null){
@@ -221,7 +221,7 @@ class TripController extends Controller
     public function show_intrnal_trip_to_driver(Request $request)
     {
         $request->validate([
-            'current_vechile'    => 'required|integer'
+            'current_vechile'    => 'required'
         ]);
 
         $data = DB::select("select 

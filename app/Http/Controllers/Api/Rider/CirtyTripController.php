@@ -22,10 +22,10 @@ class CirtyTripController extends Controller
     public function city_request(Request $request)
     {
         $request->validate([
-            'rider_id' =>'required|integer',
-            'category_id' =>'required|integer',
+            'rider_id' =>'required',
+            'category_id' =>'required',
             'going_cost' =>'required|string|in:going_cost,going_back_cost',
-            'city_id' =>'required|integer',
+            'city_id' =>'required',
             'start_loc_latitude' =>'required|numeric',
             'start_loc_longtitude' =>'required|numeric',
             'start_loc_name' =>'required|string',
@@ -114,8 +114,8 @@ class CirtyTripController extends Controller
     public function driver_response(Request $request)
     {
         $request->validate([
-            'trip_id'    => 'required|integer',
-            'driver_id'    => 'required|integer'
+            'trip_id'    => 'required',
+            'driver_id'    => 'required'
         ]);
         $trip = Trip::find($request->trip_id);
         $driver = Driver::find($request->driver_id);
@@ -189,7 +189,7 @@ class CirtyTripController extends Controller
     public function rider_canceled_trip(Request $request)
     {
         $request->validate([
-            'trip_id'    => 'required|integer'
+            'trip_id'    => 'required'
         ]);
        
         $trip = Trip::find($request->trip_id);
@@ -317,7 +317,7 @@ class CirtyTripController extends Controller
     public function show_city_trip_to_driver(Request $request)
     {
         $request->validate([
-            'current_vechile'    => 'required|integer'
+            'current_vechile'    => 'required'
         ]);
 
         $data = DB::select("select 

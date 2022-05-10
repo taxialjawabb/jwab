@@ -19,7 +19,7 @@ class RiderRatingController extends Controller
     public function rider_add_rating(Request $request)
     {
         $request->validate([
-            'trip_id' =>'required|integer',
+            'trip_id' =>'required',
             'driver_rate' =>'required|numeric',
             'vechile_rate' =>'required|numeric',
             'cost_rate' =>'required|numeric',

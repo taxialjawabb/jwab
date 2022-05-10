@@ -22,7 +22,7 @@ class DriverRiderController extends Controller
     public function calculate_trip_cost(Request $request)
     {
         $request->validate([
-            'category_id' =>'required|integer',
+            'category_id' =>'required',
             'trip_type' =>'required|string|in:internal,city',
             ]);
 
@@ -96,9 +96,9 @@ class DriverRiderController extends Controller
             "payment_type" =>"required|string|in:cash,internal",
             "total" =>"required|numeric",
             "company" =>"required|numeric",
-            "driver_id"=> "required|integer",
-            "trip_id"=> "required|integer",
-            // "rider_id"=> "required|integer"
+            "driver_id"=> "required",
+            "trip_id"=> "required",
+            // "rider_id"=> "required"
             ]);
         $trip = Trip::find($request->trip_id);
         if( $trip !== null){
@@ -230,7 +230,7 @@ class DriverRiderController extends Controller
     public function specific_trip(Request $request)
     {
         $request->validate([
-            'trip_id' =>'required|integer',
+            'trip_id' =>'required',
             ]);
         $trip = Trip::find($request->trip_id);
         

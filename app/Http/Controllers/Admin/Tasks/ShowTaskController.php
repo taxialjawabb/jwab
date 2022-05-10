@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Tasks\Task;
 use App\Models\Tasks\Result;
+use App\Models\Admin;
 use App\Models\RiderSupport\RiderSupportTask;
 use App\Models\RiderSupport\RiderSupportResult;
 use Illuminate\Support\Facades\DB;
@@ -45,17 +46,19 @@ class ShowTaskController extends Controller
         if($type === 'admin'){
             $task = Task::find($id);
             if($task !== null){
+                $user = Admin::select(['id','name','department'])->find($task->readed_by);
                 $results = Result::select(['add_date' , 'content'])->where('task_id' , $id)->orderBy('add_date','desc')->get();
                 $task->type = "admin";
-                return view('tasks.directTask', compact('task', 'results'));
+                return view('tasks.directTask', compact('task', 'results', 'user'));
             }          
         }
         if($type === 'rider'){
             $task = RiderSupportTask::find($id);
             if($task !== null){
+                $user = Admin::select(['id','name','department'])->find($task->admin_id);
                 $results = RiderSupportResult::select(['add_date' , 'content'])->where('task_id' , $id)->orderBy('add_date','desc')->get();
                 $task->type = "rider";
-                return view('tasks.directTask', compact('task', 'results'));
+                return view('tasks.directTask', compact('task', 'results', 'user'));
             }          
         }
         return back();

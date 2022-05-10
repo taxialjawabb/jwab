@@ -14,7 +14,7 @@ class RiderMessageController extends Controller
     public function RiderMessage(Request $request)
     {
         $request->validate([
-            'rider_id'      => ['required', 'integer'],
+            'rider_id'      => ['required'],
             'send_time'      => ['required', 'date'],
             'subject'      => ['required', 'string' ],
             'content'      => ['required', 'string' ],

@@ -18,12 +18,12 @@ class MaintenanceController extends Controller
     {
         $request->validate([
             'maintenance_type' => 'required|string',
-            'counter_number' => 'required|integer',
+            'counter_number' => 'required',
             'counter_photo' => 'required|mimes:jpeg,png,jpg,gif,svg',
             'bill_photo' => 'required|mimes:jpeg,png,jpg,gif,svg',            
             // 'maintenance_note' => 'required|string',
-            'vechile_id' => 'required|integer',
-            'driver_id' => 'required|integer',
+            'vechile_id' => 'required',
+            'driver_id' => 'required',
         ]);
         $data = Maintenance::where('driver_id', $request->driver_id)->where('vechile_id', $request->vechile_id)
         ->orderBy('added_date', 'desc')->get();
@@ -116,7 +116,7 @@ class MaintenanceController extends Controller
     public function show_maintenance(Request $request)
     {
         $request->validate([
-            'driver_id' => 'required|integer',
+            'driver_id' => 'required',
         ]);
         $driver = Driver::find($request->driver_id);
         if($driver !== null){

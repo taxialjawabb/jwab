@@ -28,14 +28,25 @@
                 <label for="department" class="form-label">القسم الموجه له المهمة</label>
                     <select value="{{ old('department') }}" name="department" id="department" class="form-select" aria-label="Default select example" id="department" required>
                         <option selected disabled>حدد القسم</option>
-                        <option value="management">القسم الإدارى</option>
-                        <option value="technical">القسم التقني</option>
+                        @if($user !== null)
+                          <option value="management" {{($user->department === 'management' ? 'selected': '')?? ''}}>القسم الإدارى</option>
+                          <option value="technical" {{($user->department === 'technical'? 'selected': '')??''}}>القسم التقني</option>
+                        @else                    
+                          <option value="management">القسم الإدارى</option>
+                          <option value="technical">القسم التقني</option>
+                        @endif
                     </select>
             </div>
             
             <div class="mt-4  col-sm-12 col-md-6 col-lg-6 col-xl-6 ">
                 <label for="user" class="form-label">موجهة الي</label>
-                    <select value="{{ old('user_id') }}" name="user_id" id="user" class="form-select" aria-label="Default select example" id="user" required></select>
+                    @if($user !== null)
+                    <select  name="user_id" id="user" class="form-select" aria-label="Default select example" id="user"  required>
+                      <option value="{{ $user->name }}" selected aria-disabled="true" aria-readonly="true">{{ $user->name }}</option>
+                    </select>
+                    @else
+                      <select value="{{ old('user_id') }}" name="user_id" id="user" class="form-select" aria-label="Default select example" id="user" required></select>
+                    @endif
             </div>
         </div>
         <button type="submit" class="btn btn-primary mt-3 mb-1">حفظ </button>

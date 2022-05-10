@@ -13,7 +13,7 @@ class CovenantController extends Controller
     public function show_item(Request $request)
     {
         $request->validate([
-            'id'=>'required|integer'
+            'id'=>'required'
         ]);
         $items =   CovenantItem::select([
             'covenant_name',
