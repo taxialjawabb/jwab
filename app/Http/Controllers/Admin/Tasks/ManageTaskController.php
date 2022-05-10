@@ -9,6 +9,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Models\Admin;
+use App\Models\RiderSupport\RiderSupportTask;
 
 class ManageTaskController extends Controller
 {
@@ -100,14 +101,23 @@ class ManageTaskController extends Controller
         
     }
 
-    public function make_uncomplate($id)
+    public function make_uncomplate($id , $type)
     {
-
-        $task =Task::find($id);
-        // return $task;
-        if($task !== null ){
-            $task->state = 'uncomplete';
-            $task->save();
+        if($type === 'admin'){
+            $task =Task::find($id);
+            if($task !== null ){
+                $task->state = 'uncomplete';
+                $task->save();
+                return redirect('tasks/show/uncomplete');
+            }
+        }
+        else if($type === 'rider'){
+            $task =RiderSupportTask::find($id);
+            if($task !== null ){
+                $task->state = 'uncomplete';
+                $task->save();
+                return redirect('tasks/show/uncomplete');
+            }
         }
         return back();
     }

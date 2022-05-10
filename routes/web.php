@@ -309,7 +309,7 @@ Route::group([
         Route::post('/add', [App\Http\Controllers\Admin\Tasks\ManageTaskController::class, 'add_task']);
         Route::get('/show/{state}', [App\Http\Controllers\Admin\Tasks\ManageTaskController::class, 'show_tasks']);
         Route::get('/show/complete/{state}', [App\Http\Controllers\Admin\Tasks\ManageTaskController::class, 'show_complete_tasks'])->middleware(['permission:complete_task']);
-        Route::get('/make/uncomplete/{id}', [App\Http\Controllers\Admin\Tasks\ManageTaskController::class, 'make_uncomplate'])->middleware(['permission:complete_task']);
+        Route::get('/make/uncomplete/{id}/{type}', [App\Http\Controllers\Admin\Tasks\ManageTaskController::class, 'make_uncomplate'])->middleware(['permission:complete_task']);
         
         Route::get('/user/department', [App\Http\Controllers\Admin\Tasks\ManageTaskController::class, 'user_department']);
         

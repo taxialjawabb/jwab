@@ -87,7 +87,7 @@
                                     </td>
                                     @if($task->state === "complete")
                                     <td>
-                                        <a href="{{ url('tasks/make/uncomplete/'.$task->id) }}" class="btn  btn-danger " style="inline-size: max-content;">غير مكتملة</a>
+                                        <a href="{{ url('tasks/make/uncomplete/'.$task->id.'/' .$task->type) }}" class="btn  btn-danger " style="inline-size: max-content;">غير مكتملة</a>
                                     </td>
                                     @endif
                                 </tr>
