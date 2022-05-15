@@ -17,132 +17,80 @@ class TrutworthyBillsController extends Controller
 {
     public function show_bills($type)
     {
-        switch ($type) {
-            case 'vechile':
-                $totalBond = DB::select(" select bond_type, sum(money) as money from box_vechile where bond_state = 'confirmed' group by bond_type;");
-                $bills = DB::select("select box_vechile.id, driver.name, driver.phone, box_vechile.bond_type, box_vechile.payment_type, total_money , admins.name as confirmed_by, box_vechile.confirm_date
-                            from box_vechile ,driver, admins where (box_vechile.confirm_by = admins.id and box_vechile.bond_state = 'confirmed' ) and box_vechile.foreign_id = driver.id and box_vechile.foreign_type ='driver' 
-                            UNION ALL
-                            select box_vechile.id, rider.name, rider.phone, box_vechile.bond_type, box_vechile.payment_type, total_money , admins.name as confirmed_by, box_vechile.confirm_date
-                            from box_vechile ,rider, admins where (box_vechile.confirm_by = admins.id and box_vechile.bond_state = 'confirmed') and  box_vechile.foreign_id = rider.id and box_vechile.foreign_type ='rider' 
-                            UNION ALL
-                            select box_vechile.id, box_vechile.vechile_id, '', box_vechile.bond_type, box_vechile.payment_type, total_money , admins.name as confirmed_by, box_vechile.confirm_date
-                            from box_vechile, admins where (box_vechile.confirm_by = admins.id and  box_vechile.bond_state = 'confirmed') and  box_vechile.foreign_type ='vechile' ;");
-                        $take = 0;
-                        $spend = 0;
-                        if(count($totalBond)==2){
-                            $take = $totalBond[1]->money;
-                            $spend = $totalBond[0]->money;
-                        }
-                        else if(count($totalBond) == 1){
-                            if($totalBond[0]->bond_type == 'take'){
-                                $take = $totalBond[0]->money;
-                            }
-                            else if($totalBond[0]->bond_type == 'spend'){
-                                $spend = $totalBond[0]->money;
-                            }
-                        }
-                return view('bills.billsWaitingTrustworthy', compact('bills', 'type', "take" , "spend"));
-                break;            
-            case 'driver':
-                $totalBond = DB::select(" select bond_type, sum(money) as money from box_driver where bond_state = 'confirmed' group by bond_type;");
-                $bills = DB::select("select box_driver.id, driver.name, driver.phone, box_driver.bond_type, box_driver.payment_type, total_money , admins.name as confirmed_by, box_driver.confirm_date
-                            from box_driver , driver, admins  where (box_driver.confirm_by = admins.id and bond_state = 'confirmed') and box_driver.driver_id = driver.id ;");
-                        $take = 0;
-                        $spend = 0;
-                        if(count($totalBond)==2){
-                            $take = $totalBond[1]->money;
-                            $spend = $totalBond[0]->money;
-                        }
-                        else if(count($totalBond) == 1){
-                            if($totalBond[0]->bond_type == 'take'){
-                                $take = $totalBond[0]->money;
-                            }
-                            else if($totalBond[0]->bond_type == 'spend'){
-                                $spend = $totalBond[0]->money;
-                            }
-                        }
-                return view('bills.billsWaitingTrustworthy', compact('bills', 'type', "take" , "spend"));
-                break;
-            case 'rider':
-                $totalBond = DB::select(" select bond_type, sum(money) as money from box_rider where bond_state = 'confirmed' group by bond_type;");
-                $bills = DB::select("select box_rider.id, rider.name, rider.phone, box_rider.bond_type, box_rider.payment_type, total_money , admins.name as confirmed_by, box_rider.confirm_date
-                            from box_rider , rider, admins  where (box_rider.confirm_by = admins.id and bond_state = 'confirmed') and box_rider.rider_id = rider.id ;");
-                            $take = 0;
-                            $spend = 0;
-                            if(count($totalBond)==2){
-                                $take = $totalBond[1]->money;
-                                $spend = $totalBond[0]->money;
-                            }
-                            else if(count($totalBond) == 1){
-                                if($totalBond[0]->bond_type == 'take'){
-                                    $take = $totalBond[0]->money;
-                                }
-                                else if($totalBond[0]->bond_type == 'spend'){
-                                    $spend = $totalBond[0]->money;
-                                }
-                            }
-                return view('bills.billsWaitingTrustworthy', compact('bills', 'type', "take" , "spend"));
-                break;
-            
-                case 'user':
-                    $totalBond = DB::select(" select bond_type, sum(money) as money from box_user where bond_state = 'confirmed' group by bond_type;");
-                    $bills = DB::select("select box_user.id, user.name, user.phone, box_user.bond_type, box_user.payment_type, total_money , ad.name as confirmed_by, box_user.confirm_date
-                                from box_user , admins as user, admins as ad  where (box_user.confirm_by = ad.id and bond_state = 'confirmed') and box_user.user_id = user.id ;");
-                            $take = 0;
-                            $spend = 0;
-                            if(count($totalBond)==2){
-                                $take = $totalBond[1]->money;
-                                $spend = $totalBond[0]->money;
-                            }
-                            else if(count($totalBond) == 1){
-                                if($totalBond[0]->bond_type == 'take'){
-                                    $take = $totalBond[0]->money;
-                                }
-                                else if($totalBond[0]->bond_type == 'spend'){
-                                    $spend = $totalBond[0]->money;
-                                }
-                            }
-                    return view('bills.billsWaitingTrustworthy', compact('bills', 'type', "take" , "spend"));
-                    break;
+        $bills = DB::select("
+                            select 
+                            t.id, t.name, t.confirmed_date, sum(t.take_bonds) as take_bonds , sum(take_money) as take_money, sum(t.spend_bonds) as spend_bonds , sum(t.spend_money) as spend_money
+                            from 
+                            (
+                            select ad.id, ad.name,  date(confirm_date) as confirmed_date, 
+                            count(if(bond_type = 'take' , t1.id, NULL ))   as take_bonds, 
+                            sum(CASE WHEN bond_type = 'take' THEN money ELSE 0 END) as take_money ,
+                            count(if(bond_type = 'spend' , t1.id, NULL ))  as spend_bonds, 
+                            sum(CASE WHEN bond_type = 'spend' THEN money ELSE 0 END) as spend_money 
+                            from box_driver t1 
+                            left join admins ad on  t1.confirm_by  = ad.id and t1.id  where t1.bond_state = 'confirmed'   group by confirmed_date , ad.id
+                            union all
+                            select ad.id, ad.name,  date(confirm_date) as confirmed_date, 
+                            count(if(bond_type = 'take' , t1.id, NULL ))   as take_bonds, 
+                            sum(CASE WHEN bond_type = 'take' THEN money ELSE 0 END) as take_money ,
+                            count(if(bond_type = 'spend' , t1.id, NULL ))  as spend_bonds, 
+                            sum(CASE WHEN bond_type = 'spend' THEN money ELSE 0 END) as spend_money 
+                            from box_vechile t1 
+                            left join admins ad on  t1.confirm_by  = ad.id and t1.id  where t1.bond_state = 'confirmed'   group by confirmed_date , ad.id
+                            union all
+                            select ad.id, ad.name,  date(confirm_date) as confirmed_date, 
+                            count(if(bond_type = 'take' , t1.id, NULL ))   as take_bonds, 
+                            sum(CASE WHEN bond_type = 'take' THEN money ELSE 0 END) as take_money ,
+                            count(if(bond_type = 'spend' , t1.id, NULL ))  as spend_bonds, 
+                            sum(CASE WHEN bond_type = 'spend' THEN money ELSE 0 END) as spend_money 
+                            from box_rider t1 
+                            left join admins ad on  t1.confirm_by  = ad.id and t1.id  where t1.bond_state = 'confirmed'   group by confirmed_date , ad.id
+                            union all
+                            select  ad.id, ad.name,  date(confirm_date) as confirmed_date, 
+                            count(if(bond_type = 'take' , t1.id, NULL ))   as take_bonds, 
+                            sum(CASE WHEN bond_type = 'take' THEN money ELSE 0 END) as take_money ,
+                            count(if(bond_type = 'spend' , t1.id, NULL ))  as spend_bonds, 
+                            sum(CASE WHEN bond_type = 'spend' THEN money ELSE 0 END) as spend_money 
+                            from box_nathriaat t1 
+                            left join admins ad on  t1.confirm_by  = ad.id and t1.id  where t1.bond_state = 'confirmed'   group by confirmed_date , ad.id
+                            union all
+                            select ad.id, ad.name,  date(confirm_date) as confirmed_date, 
+                            count(if(bond_type = 'take' , t1.id, NULL ))   as take_bonds, 
+                            sum(CASE WHEN bond_type = 'take' THEN money ELSE 0 END) as take_money ,
+                            count(if(bond_type = 'spend' , t1.id, NULL ))  as spend_bonds, 
+                            sum(CASE WHEN bond_type = 'spend' THEN money ELSE 0 END) as spend_money 
+                            from box_user t1 
+                            left join admins ad on  t1.confirm_by  = ad.id and t1.id  where t1.bond_state = 'confirmed'   group by confirmed_date , ad.id
+                            ) t group by confirmed_date , id order by confirmed_date;
+                ");
 
-            case 'nathiraat':
-                $totalBond = DB::select(" select bond_type, sum(money) as money from box_nathriaat where bond_state = 'confirmed' group by bond_type;");
-                $bills = DB::select("select box_nathriaat.id,  bond_type, payment_type, total_money ,  box_nathriaat.descrpition, admins.name as confirmed_by, confirm_date
-                        from box_nathriaat , admins where box_nathriaat.add_by = admins.id and bond_state = 'confirmed';");
-                        $take = 0;
-                        $spend = 0;
-                        if(count($totalBond)==2){
-                            $take = $totalBond[1]->money;
-                            $spend = $totalBond[0]->money;
-                        }
-                        else if(count($totalBond) == 1){
-                            if($totalBond[0]->bond_type == 'take'){
-                                $take = $totalBond[0]->money;
-                            }
-                            else if($totalBond[0]->bond_type == 'spend'){
-                                $spend = $totalBond[0]->money;
-                            }
-                        }
-                return view('bills.nathiraat.billsWaitingTrustworthy', compact('bills', 'type', "take" , "spend"));
-                break;
-            default:
-                return redirect('vechile/show');
-                break;
-        }
+
+                $take =0;
+                $spend = 0;
+                foreach($bills as $row){
+                    $take += $row->take_money;
+                    $spend += $row->spend_money;
+                }
         
+        return view('bills.billsWaitingTrustworthy', compact('bills', "take" , "spend"));
     }
 
     public function trustworthy_bills(Request $request)
     {
-        if($request->id === null){
-            return back();
-        }
-        switch ($request->type) {
-            case 'vechile':
-                for ($i=0; $i < count($request->id); $i++) { 
-                    $boxVechile= BoxVechile::find($request->id[$i]);
-                    $boxVechile->bond_state = 'trustworthy';
+        $request->validate([            
+            'date' =>  'required|date',
+            'bonds' =>        'required|string',
+        ]);
+        $boxVechiles = BoxVechile::where('bond_state', 'confirmed')->whereDate('confirm_date', $request->date)->where('confirm_by', $request->id)->get();
+        $boxDrivers = BoxDriver::where('bond_state', 'confirmed')->whereDate('confirm_date', $request->date)->where('confirm_by', $request->id)->get();
+        $boxRiders = BoxRider::where('bond_state', 'confirmed')->whereDate('confirm_date', $request->date)->where('confirm_by', $request->id)->get();
+        $boxUsers = BoxUser::where('bond_state', 'confirmed')->whereDate('confirm_date', $request->date)->where('confirm_by', $request->id)->get();
+        $boxNathriaats = BoxNathriaat::where('bond_state', 'confirmed')->whereDate('confirm_date', $request->date)->where('confirm_by', $request->id)->get();
+        $counter =count($boxVechiles )+ count($boxDrivers )+ count($boxRiders )+ count($boxUsers )+ count($boxNathriaats );
+        // return $boxNathriaats;
+        if($request->bonds == $counter){
+            foreach ($boxVechiles as $boxVechile) {
+                $boxVechile->bond_state = 'trustworthy';
                     $boxVechile->trustworthy_by =  Auth::guard('admin')->user()->id;
                     $boxVechile->trustworthy_date = Carbon::now();
                     if($boxVechile->payment_type == 'bank transfer'  || $boxVechile->payment_type == 'selling points' || $boxVechile->payment_type == 'electronic payment'){
@@ -163,97 +111,77 @@ class TrutworthyBillsController extends Controller
                         $this->generalBox(0, $boxVechile->total_money , Carbon::now());
                     }
                     $boxVechile->save();
-                }
-                return back();
-                break;
-            
-            case 'driver':
-                for ($i=0; $i < count($request->id); $i++) { 
-                    $boxDriver= BoxDriver::find($request->id[$i]);
-                    $boxDriver->bond_state = 'trustworthy';
-                    $boxDriver->trustworthy_by =  Auth::guard('admin')->user()->id;
-                    $boxDriver->trustworthy_date = Carbon::now();
-                    if($boxDriver->payment_type == 'bank transfer'  || $boxDriver->payment_type == 'selling points' || $boxDriver->payment_type == 'electronic payment'){
-                        $boxDriver->bond_state = 'deposited';
-                        $boxDriver->deposited_by =  Auth::guard('admin')->user()->id;
-                        $boxDriver->deposit_date = Carbon::now();
-                        if($boxDriver->bond_type == "spend"){
-                            $this->generalBox(0, $boxDriver->total_money , Carbon::now());
-                        }
-                        else if($boxDriver->bond_type == "take"){
-                            $this->generalBox( $boxDriver->total_money,0 , Carbon::now());
-                        }
-                    }
-                    if($boxDriver->payment_type == 'cash' && $boxDriver->bond_type == "spend"){
-                        $boxDriver->bond_state = 'deposited';
-                        $boxDriver->deposited_by =  Auth::guard('admin')->user()->id;
-                        $boxDriver->deposit_date = Carbon::now();
+            }
+            foreach ($boxDrivers as $boxDriver) {
+                $boxDriver->bond_state = 'trustworthy';
+                $boxDriver->trustworthy_by =  Auth::guard('admin')->user()->id;
+                $boxDriver->trustworthy_date = Carbon::now();
+                if($boxDriver->payment_type == 'bank transfer'  || $boxDriver->payment_type == 'selling points' || $boxDriver->payment_type == 'electronic payment'){
+                    $boxDriver->bond_state = 'deposited';
+                    $boxDriver->deposited_by =  Auth::guard('admin')->user()->id;
+                    $boxDriver->deposit_date = Carbon::now();
+                    if($boxDriver->bond_type == "spend"){
                         $this->generalBox(0, $boxDriver->total_money , Carbon::now());
                     }
-                    $boxDriver->save();
-                }
-                return back();
-                break;
-            
-            case 'rider':
-                for ($i=0; $i < count($request->id); $i++) { 
-                    $boxRider= BoxRider::find($request->id[$i]);
-                    $boxRider->bond_state = 'trustworthy';
-                    $boxRider->trustworthy_by =  Auth::guard('admin')->user()->id;
-                    $boxRider->trustworthy_date = Carbon::now();
-                    if($boxRider->payment_type == 'bank transfer'  || $boxRider->payment_type == 'selling points' || $boxRider->payment_type == 'electronic payment'){
-                        $boxRider->bond_state = 'deposited';
-                        $boxRider->deposited_by =  Auth::guard('admin')->user()->id;
-                        $boxRider->deposit_date = Carbon::now();
-                        if($boxRider->bond_type == "spend"){
-                            $this->generalBox(0, $boxRider->total_money , Carbon::now());
-                        }
-                        else if($boxRider->bond_type == "take"){
-                            $this->generalBox( $boxRider->total_money,0 , Carbon::now());
-                        }
+                    else if($boxDriver->bond_type == "take"){
+                        $this->generalBox( $boxDriver->total_money,0 , Carbon::now());
                     }
-                    if($boxRider->payment_type == 'cash' && $boxRider->bond_type == "spend"){
-                        $boxRider->bond_state = 'deposited';
-                        $boxRider->deposited_by =  Auth::guard('admin')->user()->id;
-                        $boxRider->deposit_date = Carbon::now();
+                }
+                if($boxDriver->payment_type == 'cash' && $boxDriver->bond_type == "spend"){
+                    $boxDriver->bond_state = 'deposited';
+                    $boxDriver->deposited_by =  Auth::guard('admin')->user()->id;
+                    $boxDriver->deposit_date = Carbon::now();
+                    $this->generalBox(0, $boxDriver->total_money , Carbon::now());
+                }
+                $boxDriver->save();
+            }
+            foreach ($boxRiders as $boxRider) {
+                $boxRider->bond_state = 'trustworthy';
+                $boxRider->trustworthy_by =  Auth::guard('admin')->user()->id;
+                $boxRider->trustworthy_date = Carbon::now();
+                if($boxRider->payment_type == 'bank transfer'  || $boxRider->payment_type == 'selling points' || $boxRider->payment_type == 'electronic payment'){
+                    $boxRider->bond_state = 'deposited';
+                    $boxRider->deposited_by =  Auth::guard('admin')->user()->id;
+                    $boxRider->deposit_date = Carbon::now();
+                    if($boxRider->bond_type == "spend"){
                         $this->generalBox(0, $boxRider->total_money , Carbon::now());
                     }
-                    $boxRider->save();
-                }
-                return back();
-                break;
-            
-                case 'user':
-                    for ($i=0; $i < count($request->id); $i++) { 
-                        $boxUser= BoxUser::find($request->id[$i]);
-                        $boxUser->bond_state = 'trustworthy';
-                        $boxUser->trustworthy_by =  Auth::guard('admin')->user()->id;
-                        $boxUser->trustworthy_date = Carbon::now();
-                        if($boxUser->payment_type == 'bank transfer'  || $boxUser->payment_type == 'selling points' || $boxUser->payment_type == 'electronic payment'){
-                            $boxUser->bond_state = 'deposited';
-                            $boxUser->deposited_by =  Auth::guard('admin')->user()->id;
-                            $boxUser->deposit_date = Carbon::now();
-                            if($boxUser->bond_type == "spend"){
-                                $this->generalBox(0, $boxUser->total_money , Carbon::now());
-                            }
-                            else if($boxUser->bond_type == "take"){
-                                $this->generalBox( $boxUser->total_money,0 , Carbon::now());
-                            }
-                        }
-                        if($boxUser->payment_type == 'cash' && $boxUser->bond_type == "spend"){
-                            $boxUser->bond_state = 'deposited';
-                            $boxUser->deposited_by =  Auth::guard('admin')->user()->id;
-                            $boxUser->deposit_date = Carbon::now();
-                            $this->generalBox(0, $boxUser->total_money , Carbon::now());
-                        }
-                        $boxUser->save();
+                    else if($boxRider->bond_type == "take"){
+                        $this->generalBox( $boxRider->total_money,0 , Carbon::now());
                     }
-                    return back();
-                    break;
-
-            case 'nathiraat':
-                for ($i=0; $i < count($request->id); $i++) { 
-                    $boxNathiraat= BoxNathriaat::find($request->id[$i]);
+                }
+                if($boxRider->payment_type == 'cash' && $boxRider->bond_type == "spend"){
+                    $boxRider->bond_state = 'deposited';
+                    $boxRider->deposited_by =  Auth::guard('admin')->user()->id;
+                    $boxRider->deposit_date = Carbon::now();
+                    $this->generalBox(0, $boxRider->total_money , Carbon::now());
+                }
+                $boxRider->save();
+            }
+            foreach ($boxUsers as $boxUser) {
+                $boxUser->bond_state = 'trustworthy';
+                $boxUser->trustworthy_by =  Auth::guard('admin')->user()->id;
+                $boxUser->trustworthy_date = Carbon::now();
+                if($boxUser->payment_type == 'bank transfer'  || $boxUser->payment_type == 'selling points' || $boxUser->payment_type == 'electronic payment'){
+                    $boxUser->bond_state = 'deposited';
+                    $boxUser->deposited_by =  Auth::guard('admin')->user()->id;
+                    $boxUser->deposit_date = Carbon::now();
+                    if($boxUser->bond_type == "spend"){
+                        $this->generalBox(0, $boxUser->total_money , Carbon::now());
+                    }
+                    else if($boxUser->bond_type == "take"){
+                        $this->generalBox( $boxUser->total_money,0 , Carbon::now());
+                    }
+                }
+                if($boxUser->payment_type == 'cash' && $boxUser->bond_type == "spend"){
+                    $boxUser->bond_state = 'deposited';
+                    $boxUser->deposited_by =  Auth::guard('admin')->user()->id;
+                    $boxUser->deposit_date = Carbon::now();
+                    $this->generalBox(0, $boxUser->total_money , Carbon::now());
+                }
+                $boxUser->save();
+            }
+            foreach ($boxNathriaats as $boxNathiraat) {
                     $boxNathiraat->bond_state = 'trustworthy';
                     $boxNathiraat->trustworthy_by =  Auth::guard('admin')->user()->id;
                     $boxNathiraat->trustworthy_date = Carbon::now();
@@ -275,15 +203,61 @@ class TrutworthyBillsController extends Controller
                         $this->generalBox(0, $boxNathiraat->total_money , Carbon::now());
                     }
                     $boxNathiraat->save();
-                }
-                return back();
-                break;
-            
-            default:
-                return redirect('vechile/show');
-                break;
+            }
+            return 1;
+        }else{
+            return 2;
         }
+    }
 
+    public function show(Request $request)
+    {
+        $request->validate([            
+            'date' =>  'required|date',
+            'bonds' =>        'required|string',
+        ]);
+  
+        $boxAdded = '';
+        if($request->id !== null){
+            $boxAdded = ' and boxd.confirm_by = '. $request->id;
+        }else{
+            $boxAdded = ' and boxd.confirm_by is null';
+        }
+        $sql =  "  
+        select 'مستخدم' as type,  boxd.id, bondOwner.name ,boxd.bond_type,boxd.payment_type,boxd.money,boxd.tax,boxd.total_money,
+        boxd.descrpition,boxd.confirm_date, confirmedBy.name as confirmedBy
+        from box_user as boxd left join admins as confirmedBy on boxd.confirm_by = confirmedBy.id
+        left join admins as bondOwner on boxd.user_id = bondOwner.id 
+        where bond_state ='confirmed' and date(boxd.confirm_date) = ? ".$boxAdded." union all
+        select 'سائق' as type, boxd.id, bondOwner.name ,boxd.bond_type,boxd.payment_type,boxd.money,boxd.tax,boxd.total_money,
+        boxd.descrpition,boxd.confirm_date, confirmedBy.name as confirmedBy
+        from box_driver as boxd left join admins as confirmedBy on boxd.confirm_by = confirmedBy.id
+        left join driver as bondOwner on boxd.driver_id = bondOwner.id 
+        where bond_state ='confirmed' and date(boxd.confirm_date) = ? ".$boxAdded." union all
+        select 'عميل' as type, boxd.id, bondOwner.name ,boxd.bond_type,boxd.payment_type,boxd.money,boxd.tax,boxd.total_money,
+        boxd.descrpition,boxd.confirm_date, confirmedBy.name as confirmedBy
+        from box_rider as boxd left join admins as confirmedBy on boxd.confirm_by = confirmedBy.id
+        left join rider as bondOwner on boxd.rider_id = bondOwner.id 
+        where bond_state ='confirmed' and date(boxd.confirm_date) = ? ".$boxAdded." union all
+        select 'نثريات' as type, boxd.id, bondOwner.name ,boxd.bond_type,boxd.payment_type,boxd.money,boxd.tax,boxd.total_money,
+        boxd.descrpition,boxd.confirm_date, confirmedBy.name as confirmedBy
+        from box_nathriaat as boxd left join admins as confirmedBy on boxd.confirm_by = confirmedBy.id
+        left join stakeholders as bondOwner on boxd.stakeholders_id = bondOwner.id 
+        where bond_state ='confirmed' and date(boxd.confirm_date) = ? ".$boxAdded." union all
+        select 'مركبة' as type, boxd.id, bondOwner.plate_number as name ,boxd.bond_type,boxd.payment_type,boxd.money,boxd.tax,boxd.total_money,
+        boxd.descrpition,boxd.confirm_date, confirmedBy.name as confirmedBy
+        from box_vechile as boxd left join admins as confirmedBy on boxd.confirm_by = confirmedBy.id
+        left join vechile as bondOwner on boxd.vechile_id = bondOwner.id 
+        where bond_state ='confirmed' and date(boxd.confirm_date) = ? ".$boxAdded." 
+            ";
+        $bonds = DB::select($sql, [
+            $request->date,
+            $request->date,
+            $request->date,
+            $request->date,
+            $request->date,
+        ]);
+        return $bonds;
     }
 }
 

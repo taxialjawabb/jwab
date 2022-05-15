@@ -273,6 +273,7 @@ Route::group([
     ],function () { 
         Route::get('/{type}', [App\Http\Controllers\Admin\Bills\ConfirmBillsController::class, 'show_bills']);
         Route::post('/', [App\Http\Controllers\Admin\Bills\ConfirmBillsController::class, 'confirm_bills']);
+        Route::post('/show', [App\Http\Controllers\Admin\Bills\ConfirmBillsController::class, 'show']);
     });
 
     // Trusthworthy bill
@@ -282,6 +283,7 @@ Route::group([
     ],function () { 
         Route::get('/{type}', [App\Http\Controllers\Admin\Bills\TrutworthyBillsController::class, 'show_bills']);
         Route::post('/', [App\Http\Controllers\Admin\Bills\TrutworthyBillsController::class, 'trustworthy_bills']);
+        Route::post('/show', [App\Http\Controllers\Admin\Bills\TrutworthyBillsController::class, 'show']);
     });
 
     // Deposit money
@@ -291,6 +293,7 @@ Route::group([
     ],function () { 
         Route::get('/{type}', [App\Http\Controllers\Admin\Bills\DepositBillsController::class, 'show_bills']);
         Route::post('/', [App\Http\Controllers\Admin\Bills\DepositBillsController::class, 'deposit_bills']);
+        Route::post('/show', [App\Http\Controllers\Admin\Bills\DepositBillsController::class, 'show']);
     });
 
     // General box 
@@ -299,6 +302,7 @@ Route::group([
         'middleware' => ['permission:general_box']
     ],function () { 
         Route::get('/', [App\Http\Controllers\Admin\Bills\GeneralBoxController::class, 'show_general_box']);
+        Route::post('/show', [App\Http\Controllers\Admin\Bills\GeneralBoxController::class, 'show']);
     });
 
     Route::group([

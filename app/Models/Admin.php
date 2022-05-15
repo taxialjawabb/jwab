@@ -60,4 +60,50 @@ class Admin extends Authenticatable implements JWTSubject {
     {
         return [];
     }
+
+    public function confirmBoxAdmin(){
+        return $this->hasMany(\App\Models\User\BoxUser::class,  'confirm_by', 'id');
+    }
+    public function confirmBoxDriver(){
+        return $this->hasMany(\App\Models\Driver\BoxDriver::class, 'confirm_by', 'id');
+    }
+    public function confirmBoxVechile(){
+        return $this->hasMany(\App\Models\Vechile\BoxVechile::class, 'confirm_by', 'id');
+    }
+    public function confirmBoxRider(){
+        return $this->hasMany(\App\Models\Rider\BoxRider::class, 'confirm_by', 'id');
+    }
+    public function confirmBoxNathiraat(){
+        return $this->hasMany(\App\Models\Nathiraat\BoxNathriaat::class, 'confirm_by', 'id');
+    }
+    public function truthworthBoxAdmin(){
+        return $this->hasMany(\App\Models\User\BoxUser::class,  'trustworthy_by', 'id');
+    }
+    public function truthworthBoxDriver(){
+        return $this->hasMany(\App\Models\Driver\BoxDriver::class, 'trustworthy_by', 'id');
+    }
+    public function truthworthBoxVechile(){
+        return $this->hasMany(\App\Models\Vechile\BoxVechile::class, 'trustworthy_by', 'id');
+    }
+    public function truthworthBoxRider(){
+        return $this->hasMany(\App\Models\Rider\BoxRider::class, 'trustworthy_by', 'id');
+    }
+    public function truthworthBoxNathiraat(){
+        return $this->hasMany(\App\Models\Nathiraat\BoxNathriaat::class, 'trustworthy_by', 'id');
+    }
+    public function depositBoxAdmin(){
+        return $this->hasMany(\App\Models\User\BoxUser::class,  'deposited_by', 'id');
+    }
+    public function depositBoxDriver(){
+        return $this->hasMany(\App\Models\Driver\BoxDriver::class, 'deposited_by', 'id');
+    }
+    public function depositBoxVechile(){
+        return $this->hasMany(\App\Models\Vechile\BoxVechile::class, 'deposited_by', 'id');
+    }
+    public function depositBoxRider(){
+        return $this->hasMany(\App\Models\Rider\BoxRider::class, 'deposited_by', 'id');
+    }
+    public function depositBoxNathiraat(){
+        return $this->hasMany(\App\Models\Nathiraat\BoxNathriaat::class, 'deposited_by', 'id');
+    }
 }

@@ -5,11 +5,7 @@
 <div class="container clearfix">
     <h5 class=" mt-4 float-start">فـواتـيـر بإنتظار الأعتماد</h5>
     <div class="float-end mt-3">        
-        <a href="{{url('bills/waiting/trustworthy/vechile')}}"   class="btn {{$type === 'vechile' ? 'btn-primary' : 'btn-light'}} rounded-0 m-0" >مركبات</a>
-        <a href="{{url('bills/waiting/trustworthy/driver')}}"    class="btn {{$type === 'driver' ? 'btn-primary' : 'btn-light'}} rounded-0 m-0" >سائقين</a>
-        <a href="{{url('bills/waiting/trustworthy/rider')}}"     class="btn {{$type === 'rider' ? 'btn-primary' : 'btn-light'}} rounded-0 m-0" >عملاء</a>
-        <a href="{{url('bills/waiting/trustworthy/user')}}"    class="btn {{$type === 'user' ? 'btn-primary' : 'btn-light'}} rounded-0 m-0" >مستخدمين</a>
-        <a href="{{url('bills/waiting/trustworthy/nathiraat')}}" class="btn {{$type === 'nathiraat' ? 'btn-primary' : 'btn-light'}} rounded-0 m-0" >نثريـات</a>
+        
     </div>
 </div>
 <div class="clearfix "></div>
@@ -44,70 +40,38 @@
 </div>
             <form method="POST" action="{{ url('bills/waiting/trustworthy') }}">
                 @csrf
-                <input type="hidden" name="type" value="{{ $type }}">
                 <div class="panel panel-default mt-4">
                         <div class="table-responsive">
                             <table class="table " id="datatable">
                                 <thead>
                                     <tr>
-                                        <th>رقم السند</th>
-                                        <th>اسم المستفيد</th>
-                                        <th>الجوال</th>
-                                        <th>نوع السند</th>
-                                        <th>طريقة الدفع</th>
-                                        <th>المبلغ</th>
-                                        <th>اسم المحصل</th>
-                                        <th>تاريخ تاريخ التحصيل</th>
+                                        <th>#</th>
+                                        <th>تأكيد بواسطة</th>
+                                        <th>تاريخ الاضافة</th>
+                                        <th>اجمالى القبض</th>
+                                        <th>اجمالى الصرف</th>
+                                        <th>اجمالى المتبقى</th>
+                                        <th>عدد الفواتير</th>
                                         <th>
-                                            <button id="confirm-all" class="btn btn-light m-0 p-0">تحديد الجميع</button>
-                                            <button type="submint" class="btn btn-primary">أعتماد الفواتير المحددة</button>
+                                            اعتماد
+                                            {{-- <button id="confirm-all" class="btn btn-light m-0 p-0">تحديد الجميع</button>
+                                            <button type="submint" class="btn btn-primary">تأكيد الفواتير المحددة</button> --}}
                                         </th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach($bills as $bill)
-                                    <tr>
-                                        <td>{{ $bill->id }}</td>
-                                        <td>{{ $bill->name }}</td>
-                                        <td>{{ $bill->phone }}</td>
+                                    @foreach($bills as $index=>$bill)
+                                    <tr class="bill{{ ++$index }}">
+                                        <td class="id" id="{{ $bill->id }}">{{ $index }}</td>
+                                        <td class="name">{{ $bill->name }}</td>
+                                        <td class="date">{{ $bill->confirmed_date }}</td>
+                                        <td>{{ $bill->take_money}}</td>
+                                        <td>{{ $bill->spend_money}}</td>
+                                        <td>{{ $bill->take_money - $bill->spend_money}}</td>
+                                        <td class="bonds">{{ $bill->take_bonds + $bill->spend_bonds}}</td>
                                         <td>
-                                        @switch($bill->bond_type)
-                                            @case('spend')
-                                                صــرف
-                                                @break
-                                            @case('take')
-                                                قـبــض
-                                                @break
-                                            @default
-                                                Default case...
-                                        @endswitch
-                                        </td>
-                                        <td>
-                                        @switch($bill->payment_type)
-                                            @case('cash')
-                                                كــاش
-                                                @break
-                                            @case('bank transfer')
-                                                تحويل بنكى
-                                                @break
-                                            @case('internal transfer')
-                                                تحويل داخلى
-                                                @break
-                                            @case('selling points')
-                                                نقاط بيع
-                                                @break
-                                            @case('electronic payment')
-                                                دفع إلكترونى
-                                                @break
-                                            @default
-                                                
-                                        @endswitch
-                                        </td>
-                                        <td>{{ $bill->total_money}}</td>
-                                        <td>{{ $bill->confirmed_by}}</td>
-                                        <td>{{ $bill->confirm_date}}</td>
-                                        <td>
-                                            <input type="checkbox" name="id[]" value="{{$bill->id}}" >
+                                            <input type="button" id="bill{{ $index }}" class="btn btn-primary m-1 checkbox"  value="اعتماد">
+                                            <input type="button" id="bill{{ $index }}" class="btn btn-primary m-1 showBonds"  value="عـرض">
                                         </td>
                                     </tr>
                                     @endforeach
@@ -117,9 +81,134 @@
                 </div>
             </form>
 
+
+<!-- Modal -->
+ 
+<div class="modal fade bd-example-modal-lg" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div id="modal-body" class="modal-body table-responsive">
+            <table class="table table-striped ">
+                <thead>
+                  <tr>
+                    <th scope="col">رقم السند</th>
+                    <th scope="col">الجهة</th>
+                    <th scope="col">الاسم</th>
+                    <th scope="col">نوع السند</th>
+                    <th scope="col">طريقة الدفع</th>
+                    <th scope="col">المبلغ</th>
+                    <th scope="col">الوصف</th>
+                    <th scope="col">وقت التأكيد</th>
+                    <th scope="col">تأكيد بواسطة</th>
+                  </tr>
+                </thead>
+                <tbody>
+                 
+                </tbody>
+              </table>
+              
+        </div>
+      </div>
+    </div>
+  </div>
 @endsection
 
 @section('scripts')
+<script>
+    $(function() {
+
+    var listItem = $(".checkbox");
+    for(var i =0 ; i < listItem.length; i++){
+        listItem[i].addEventListener('click', function(e){
+                e.preventDefault();
+                $(this).attr('disabled','true');
+                var id =  $('.'+e.target.id + ' .id').attr('id');
+                var date = $('.'+e.target.id + ' .date').html();
+                var bonds = $('.'+e.target.id + ' .bonds').html();
+                $.ajax({
+                    type: 'post',
+                    url: '{!!URL::to("bills/waiting/trustworthy")!!}',
+                    data: {
+                            "_token": "{{ csrf_token() }}",
+                            'id':id,
+                            'date':date,
+                            'bonds':bonds
+                        },
+                    success: function(data){
+                        if(data == 1){
+                            $('.'+e.target.id ).hide();
+                        }else{
+                            alert(' الرجاء المحاولة مرة ');
+                        }
+                    },
+                    error:function(e){
+                        console.log('error');
+                        console.log(e);
+                    }
+                    });
+        }); 
+    }
+
+    var listItem = $(".showBonds");
+    for(var i =0 ; i < listItem.length; i++){
+        listItem[i].addEventListener('click', function(e){
+                e.preventDefault();
+                var id =  $('.'+e.target.id + ' .id').attr('id');
+                var date = $('.'+e.target.id + ' .date').html();
+                var bonds = $('.'+e.target.id + ' .bonds').html();
+                $.ajax({
+                    type: 'post',
+                    url: '{!!URL::to("bills/waiting/trustworthy/show")!!}',
+                    data: {
+                            "_token": "{{ csrf_token() }}",
+                            'id':id,
+                            'date':date,
+                            'bonds':bonds
+                        },
+                    success: function(data){
+                        var htmlContent = '';
+                        var type ='';
+                        var payment_type ='';
+                        var confirmedBy ='';
+                        for (let index = 0; index < data.length; index++) {
+                            type = ( data[index].bond_type == 'take')?'قبض': 'صرف';
+                            switch(data[index].payment_type){
+                                case 'cash':payment_type = ' كــاش'; break ;
+                                case 'bank transfer':payment_type = ' تحويل بنكى'; break ;
+                                case 'internal transfer':payment_type = ' تحويل داخلى'; break ;
+                                case 'selling points':payment_type = ' نقاط بيع'; break ;
+                                case 'electronic payment':payment_type = ' دفع إلكترونى'; break ;
+                                default:  break;
+                            }
+                            
+                            confirmedBy = ( data[index].confirmedBy !== null)?data[index].confirmedBy: '';
+                            htmlContent += `<tr>
+                                                <th scope="row">`+data[index].id+`</th>
+                                                <td>`+data[index].type+`</td>
+                                                <td>`+data[index].name+`</td>
+                                                <td>`+type+`</td>
+                                                <td>`+payment_type+`</td>
+                                                <td>`+data[index].total_money+`</td>
+                                                <td>`+data[index].descrpition+`</td>
+                                                <td>`+data[index].confirm_date+`</td>
+                                                <td>`+confirmedBy+`</td>                                                
+                                            </tr>`;
+                        }
+
+                        $('#exampleModal table tbody').html(htmlContent);
+                        $('#exampleModal').modal('show');
+
+                    },
+                    error:function(e){
+                        console.log('error');
+                        console.log(e);
+                    }
+                    });
+        }); 
+    }
+
+    });
+</script>
     <script>
         $(document).ready( function () {
             $('#datatable').DataTable({

@@ -39,55 +39,33 @@
                             <table class="table " id="datatable">
                                 <thead>
                                     <tr>
-                                        <th>اسم المودع</th>
-                                        <th>تاريخ الأيداع </th>
-                                        <th>رقم الحساب البنكي</th>
-                                        <th>نـوع السند</th>
-                                        <th>المبلغ</th>
+                                        <th>#</th>
+                                        <th>مودعه بواسطة</th>
+                                        <th>تاريخ الإيداع</th>
+                                        <th>اجمالى القبض</th>
+                                        <th>اجمالى الصرف</th>
+                                        <th>اجمالى المتبقى</th>
                                         <th>عدد الفواتير</th>
-                                        <th>طريقة الدفع</th>
+                                        <th>
+                                            عرض
+                                            {{-- <button id="confirm-all" class="btn btn-light m-0 p-0">تحديد الجميع</button>
+                                            <button type="submint" class="btn btn-primary">تأكيد الفواتير المحددة</button> --}}
+                                        </th>
+                                        
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach($deposits as $depoisted)
-                                    <tr>
-                                        <td>{{ $depoisted->name}}</td>
-                                        <td>{{ $depoisted->deposit_date}}</td>
-                                        <td>{{ $depoisted->bank_account_number}}</td>
+                                    @foreach($bills as $index=>$bill)
+                                    <tr class="bill{{ ++$index }}">
+                                        <td class="id" id="{{ $bill->id }}">{{ $index }}</td>
+                                        <td class="name">{{ $bill->name }}</td>
+                                        <td class="date">{{ $bill->deposited_date }}</td>
+                                        <td>{{ $bill->take_money}}</td>
+                                        <td>{{ $bill->spend_money}}</td>
+                                        <td>{{ $bill->take_money - $bill->spend_money}}</td>
+                                        <td class="bonds">{{ $bill->take_bonds + $bill->spend_bonds}}</td>
                                         <td>
-                                        @switch($depoisted->bond_type)
-                                            @case('spend')
-                                                صــرف
-                                                @break
-                                            @case('take')
-                                                قـبــض
-                                                @break
-                                            @default
-                                            
-                                        @endswitch
-                                        </td>
-                                        <td>{{ $depoisted->money}}</td>
-                                        <td>{{ $depoisted->count_bill}}</td>
-                                        <td>
-                                        @switch($depoisted->payment_type)
-                                            @case('cash')
-                                                كــاش
-                                                @break
-                                            @case('bank transfer')
-                                                تحويل بنكى
-                                                @break
-                                            @case('internal transfer')
-                                                تحويل داخلى
-                                                @break
-                                            @case('selling points')
-                                                نقاط بيع
-                                                @break
-                                            @case('electronic payment')
-                                                دفع إلكترونى
-                                                @break
-                                            @default
-                                                
-                                        @endswitch
+                                            <input type="button" id="bill{{ $index }}" class="btn btn-primary m-1 showBonds"  value="عـرض">
                                         </td>
                                     </tr>
                                     @endforeach
@@ -95,10 +73,104 @@
                             </table>
                         </div>
                 </div>
-
+<!-- Modal -->
+ 
+<div class="modal fade bd-example-modal-lg" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div id="modal-body" class="modal-body table-responsive">
+            <table class="table table-striped ">
+                <thead>
+                  <tr>
+                    <th scope="col">رقم السند</th>
+                    <th scope="col">الجهة</th>
+                    <th scope="col">الاسم</th>
+                    <th scope="col">نوع السند</th>
+                    <th scope="col">طريقة الدفع</th>
+                    <th scope="col">المبلغ</th>
+                    <th scope="col">الوصف</th>
+                    <th scope="col">وقت الإضافة</th>
+                    <th scope="col">إضيف بواسطة</th>
+                  </tr>
+                </thead>
+                <tbody>
+                 
+                </tbody>
+              </table>
+              
+        </div>
+      </div>
+    </div>
+  </div>
 @endsection
 
 @section('scripts')
+<script>
+    $(function() {
+    var listItem = $(".showBonds");
+    for(var i =0 ; i < listItem.length; i++){
+        listItem[i].addEventListener('click', function(e){
+                e.preventDefault();
+                var id =  $('.'+e.target.id + ' .id').attr('id');
+                var date = $('.'+e.target.id + ' .date').html();
+                var bonds = $('.'+e.target.id + ' .bonds').html();
+                $.ajax({
+                    type: 'post',
+                    url: '{!!URL::to("general/box/show")!!}',
+                    data: {
+                            "_token": "{{ csrf_token() }}",
+                            'id':id,
+                            'date':date,
+                            'bonds':bonds
+                        },
+                    success: function(data){
+                        // console.log(data);
+                        // return 0;
+                        var htmlContent = '';
+                        var type ='';
+                        var payment_type ='';
+                        var depositedBy ='';
+                        var depositedDate ='';
+                        for (let index = 0; index < data.length; index++) {
+                            type = ( data[index].bond_type == 'take')?'قبض': 'صرف';
+                            switch(data[index].payment_type){
+                                case 'cash':payment_type = ' كــاش'; break ;
+                                case 'bank transfer':payment_type = ' تحويل بنكى'; break ;
+                                case 'internal transfer':payment_type = ' تحويل داخلى'; break ;
+                                case 'selling points':payment_type = ' نقاط بيع'; break ;
+                                case 'electronic payment':payment_type = ' دفع إلكترونى'; break ;
+                                default:  break;
+                            }
+                            
+                            depositedBy = ( data[index].depositedBy !== null)?data[index].depositedBy: '';
+                            depositedDate = ( data[index].deposit_date !== null)?data[index].deposit_date: '';
+                            htmlContent += `<tr>
+                                                <th scope="row">`+data[index].id+`</th>
+                                                <td>`+data[index].type+`</td>
+                                                <td>`+data[index].name+`</td>
+                                                <td>`+type+`</td>
+                                                <td>`+payment_type+`</td>
+                                                <td>`+data[index].total_money+`</td>
+                                                <td>`+data[index].descrpition+`</td>
+                                                <td>`+depositedDate+`</td>
+                                                <td>`+depositedBy+`</td>                                                
+                                            </tr>`;
+                        }
+
+                        $('#exampleModal table tbody').html(htmlContent);
+                        $('#exampleModal').modal('show');
+
+                    },
+                    error:function(e){
+                        console.log('error');
+                        console.log(e);
+                    }
+                    });
+        }); 
+    }
+
+    });
+</script>
     <script>
         $(document).ready( function () {
             $('#datatable').DataTable({

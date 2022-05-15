@@ -33,4 +33,16 @@ class BoxDriver extends Model
     public function driver(){
         return $this->belongsTo(Driver::class,  'foreign_key', 'driver_id');
     }
+    public function added_by(){
+        return $this->belongsTo(Admin::class,  'foreign_key', 'add_by');
+    }
+    public function confirmedBy(){
+        return $this->belongsTo(Admin::class,  'foreign_key', 'confirm_by');
+    }
+    public function trusthBy(){
+        return $this->belongsTo(Admin::class,  'foreign_key', 'trustworthy_by');
+    }
+    public function depositBy(){
+        return $this->belongsTo(Admin::class,  'foreign_key', 'deposited_by');
+    }
 }
