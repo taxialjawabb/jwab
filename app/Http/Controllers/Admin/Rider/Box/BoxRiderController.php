@@ -79,13 +79,13 @@ class BoxRiderController extends Controller
             $BoxRider->descrpition = $request->descrpition;
             $BoxRider->add_date = Carbon::now();
             $BoxRider->add_by = Auth::guard('admin')->user()->id;
-            if($request->bond_type === 'take'){
-                $rider-> account = $rider-> account + $totalMoney;
-            }else if($request->bond_type === 'spend'){
-                $rider-> account = $rider-> account - $totalMoney;
-            }
+            // if($request->bond_type === 'take'){
+            //     $rider-> account = $rider-> account + $totalMoney;
+            // }else if($request->bond_type === 'spend'){
+            //     $rider-> account = $rider-> account - $totalMoney;
+            // }
             $BoxRider->save();
-            $rider->save();
+            // $rider->save();
 
             $request->session()->flash('status', 'تم أضافة السند بنجاح');
             return redirect("rider/box/show/".$request->bond_type ."/". $rider->id);

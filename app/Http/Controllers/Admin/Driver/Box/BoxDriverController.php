@@ -71,13 +71,13 @@ class BoxDriverController extends Controller
             $boxDriver->descrpition = $request->descrpition;
             $boxDriver->add_date = Carbon::now();
             $boxDriver->add_by = Auth::guard('admin')->user()->id;
-            if($request->bond_type === 'take'){
-                $driver-> account = $driver-> account + $totalMoney;
-            }else if($request->bond_type === 'spend'){
-                $driver-> account = $driver-> account - $totalMoney;
-            }
+            // if($request->bond_type === 'take'){
+            //     $driver-> account = $driver-> account + $totalMoney;
+            // }else if($request->bond_type === 'spend'){
+            //     $driver-> account = $driver-> account - $totalMoney;
+            // }
             $boxDriver->save();
-            $driver->save();
+            // $driver->save();
             
             $request->session()->flash('status', 'تم أضافة السند بنجاح');
             return redirect("driver/box/show/".$request->bond_type ."/". $driver->id);

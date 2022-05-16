@@ -67,7 +67,7 @@
                <div class="row">
                 <div class="mt-2  col" id="end">
                         <label for="number" class="form-label">عدد العهد المراد ادخالها</label>
-                        <input type="text" class="form-control" id="number"  required>
+                        <input type="text" name="counter" class="form-control" id="number"  required>
                     </div>
                 
 
@@ -75,7 +75,7 @@
                         <a type="button" id="add-col" href="#" class="btn mt-3 mb-3 btn-primary ">اضافة ارقام تلسلية ليها</a>
                     </div>
                </div>
-                <button type="submit" class="btn btn-primary mt-3 mb-3 ">حفظ </button>
+                <button type="submit" id="save-form" class="btn btn-primary mt-3 mb-3 ">حفظ </button>
             </form>
         </div>  
     </div>
@@ -87,7 +87,9 @@
 
 <script>
     $(function() {
+        $("#save-form").hide();
         $('#add-col').on('click', function(){
+            $("#save-form").show();
             var count = $("#end input").val();
            if(count != null ){
             $(".mycontainer").html('');

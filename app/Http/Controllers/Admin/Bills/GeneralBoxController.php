@@ -9,8 +9,13 @@ use App\Models\GeneralBox;
 
 class GeneralBoxController extends Controller
 {
-    public function show_general_box()
+    public function show_general_box(Request $request)
     {
+        $search = '';
+        if($request->has('from_date') && $request->has('to_date')){
+            $search = " where (deposited_date BETWEEN '".$request->from_date."' AND '".$request->to_date."') ";
+        }
+
         $bills =DB::select("
                             select 
                             t.id, t.name, t.deposited_date, sum(t.take_bonds) as take_bonds , sum(take_money) as take_money, sum(t.spend_bonds) as spend_bonds , sum(t.spend_money) as spend_money
@@ -55,7 +60,7 @@ class GeneralBoxController extends Controller
                             sum(CASE WHEN bond_type = 'spend' THEN money ELSE 0 END) as spend_money 
                             from box_user t1 
                             left join admins ad on  t1.deposited_by  = ad.id and t1.id  where t1.bond_state = 'deposited'   group by deposited_date , ad.id
-                            ) t group by deposited_date , id order by deposited_date;
+                            ) t ". $search ." group by deposited_date , id order by deposited_date;
                         ");
         $generalBox = GeneralBox::find(1);
 
@@ -65,6 +70,7 @@ class GeneralBoxController extends Controller
 
     public function show(Request $request)
     {
+
         $request->validate([            
             
             'bonds' =>        'required|string',

@@ -303,6 +303,7 @@ Route::group([
     ],function () { 
         Route::get('/', [App\Http\Controllers\Admin\Bills\GeneralBoxController::class, 'show_general_box']);
         Route::post('/show', [App\Http\Controllers\Admin\Bills\GeneralBoxController::class, 'show']);
+        // Route::post('/search', [App\Http\Controllers\Admin\Bills\GeneralBoxController::class, 'search']);
     });
 
     Route::group([

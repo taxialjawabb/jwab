@@ -32,6 +32,23 @@
                 {{$generalBox->account ?? 0}}
             </div>
         </div>
+        <div class="float-end">
+            <form action="{{ url('general/box') }}" method="GET">
+                <div class="row">
+                    <div class="col-5">
+                        <label for="from_date" class="form-label">من</label>
+                        <input type="date" style="text-direction:rtl" value="{{ old('from_date') }}" name="from_date" class="form-control" id="from_date"  required>
+                    </div>
+                    <div class="col-5">
+                        <label for="to_date" class="form-label">ألى</label>
+                        <input type="date" style="text-direction:rtl" value="{{ old('to_date') }}" name="to_date" class="form-control" id="to_date"  required>
+                    </div>
+                    <div class="col-2 mt-2">
+                        <button type="submit" class="btn btn-primary mt-4 ">بحث</button>
+                    </div>                
+                </div>
+            </form>
+        </div>
     </div>
 </div>
                 <div class="panel panel-default mt-4">
@@ -54,7 +71,7 @@
                                         
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody id="tbody">
                                     @foreach($bills as $index=>$bill)
                                     <tr class="bill{{ ++$index }}">
                                         <td class="id" id="{{ $bill->id }}">{{ $index }}</td>
@@ -175,13 +192,13 @@
         $(document).ready( function () {
             $('#datatable').DataTable({
                 // 'lengthMenu' : [[10,25,50,100, -1],[10,25,50,100, 'All Rider']],
-                // dom: 'Blfrtip',
-                // buttons: [
-                //             { extend : 'csv'  , className : 'btn btn-success text-light' , text : 'CSV' ,charset: "utf-8" },
-                //             { extend : 'excel', className : 'btn btn-success text-light' , text : 'Excel' ,charset: "utf-8"},
-                //             // { extend : 'pdf'  , className : 'btn btn-success text-light' , text : 'PDF' ,charset: "utf-8" },
-                //             { extend : 'print', className : 'btn btn-success text-light' , text : 'Print' ,charset: "utf-8"},
-                //         ],
+                dom: 'Blfrtip',
+                buttons: [
+                            // { extend : 'csv'  , className : 'btn btn-success text-light' , text : 'CSV' ,charset: "utf-8" },
+                            { extend : 'excel', className : 'btn btn-success text-light' , text : 'Excel' ,charset: "utf-8"},
+                            // { extend : 'pdf'  , className : 'btn btn-success text-light' , text : 'PDF' ,charset: "utf-8" },
+                            // { extend : 'print', className : 'btn btn-success text-light' , text : 'Print' ,charset: "utf-8"},
+                        ],
                 language: {
                     "sProcessing": "جاري التحميل...",
                     "sLengthMenu": "عـرض _MENU_ الفواتير",
@@ -211,22 +228,32 @@
            $('#datatable_length').addClass('mb-3');
         });
 
-        $(document).ready(function(){
-            var selectAll = false ;
-            $("#confirm-all").click(function(e){
-                e.preventDefault();
-                
-                if(selectAll == false){
-                    selectAll = true;
-                    $(this).text('إلغاء التحديد للجميع');
-                    $("#datatable input").attr('checked','checked');
-                }else{
-                    $(this).html('تحديد الجميع');
-                    selectAll = false;
-                    $("#datatable input").removeAttr('checked');
-
-                }
-            });
-        });
+      
     </script>
+<script>
+    // $(document).ready(function(){
+    //     $("#from_date , #to_date").on('change', function(){
+    //         var startDate = $("#from_date").val();
+    //         var endDate = $("#to_date").val();
+    //     if(startDate !== '' && endDate !== ''){
+    //         $.ajax({
+    //                 type: 'post',
+    //                 url: '{!!URL::to("general/box/search")!!}',
+    //                 data: {
+    //                         "_token": "{{ csrf_token() }}",
+    //                         'from' : startDate,
+    //                         'to' : endDate,
+    //                     },
+    //                 success: function(data){
+    //                     console.log(data);
+    //                 },
+    //                 error:function(e){
+    //                     console.log('error');
+    //                     console.log(e);
+    //                 }
+    //                 });
+    //     }
+    //     });
+    // });
+</script>
 @endsection

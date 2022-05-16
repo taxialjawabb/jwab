@@ -29,19 +29,26 @@ class CovenantItemManageController extends Controller
     {
         // return $request->all();
         $request->validate([
-            'covenant_name'=>'required|string'
+            'covenant_name'=>'required|string',
+            'counter'=>'required|integer'
         ]);
             $dataItems = $request->serial;
+            $repeated = 0;
             if(count($dataItems) > 0){
                 for ($i=0; $i < count($dataItems); $i++) { 
-                    $covenantItem = new CovenantItem;
-                    $covenantItem->covenant_name = $request->covenant_name;
-                    $covenantItem->add_by = Auth::guard('admin')->user()->id;
-                    $covenantItem->add_date = Carbon::now();
-                    $covenantItem->serial_number = $dataItems[$i];
-                    $covenantItem->save();
+                    $data = CovenantItem::where('covenant_name', $request->covenant_name)->where('serial_number',$dataItems[$i])->whereNotNull('serial_number')->limit(1)->get();
+                    if(count($data) ===0){
+                        $covenantItem = new CovenantItem;
+                        $covenantItem->covenant_name = $request->covenant_name;
+                        $covenantItem->add_by = Auth::guard('admin')->user()->id;
+                        $covenantItem->add_date = Carbon::now();
+                        $covenantItem->serial_number = $dataItems[$i];
+                        $covenantItem->save();
+                    }else{
+                        $repeated++;
+                    }
                 }
-            $request->session()->flash('status', 'تم أضافة العهد بنجاح');
+            $request->session()->flash('status', ' تم أضافة العهد بنجاح عدد العناصر المضافة ' .count($dataItems) - $repeated . ' تم تجاهل عدد ' .$repeated .' للتكرار');
             return redirect('covenant/show');
         }
         else{

@@ -75,13 +75,13 @@ class BoxStakeholdersController extends Controller
             $boxNathriaat->descrpition = $request->descrpition;
             $boxNathriaat->add_date = Carbon::now();
             $boxNathriaat->add_by = Auth::guard('admin')->user()->id;
-            if($request->bond_type === 'take'){
-                $stakeholder-> account = $stakeholder-> account + $totalMoney;
-            }else if($request->bond_type === 'spend'){
-                $stakeholder-> account = $stakeholder-> account - $totalMoney;
-            }
+            // if($request->bond_type === 'take'){
+            //     $stakeholder-> account = $stakeholder-> account + $totalMoney;
+            // }else if($request->bond_type === 'spend'){
+            //     $stakeholder-> account = $stakeholder-> account - $totalMoney;
+            // }
             $boxNathriaat->save();
-            $stakeholder->save();
+            // $stakeholder->save();
             
             $request->session()->flash('status', 'تم أضافة السند بنجاح');
             return redirect("nathiraat/stakeholders/box/show/".$request->bond_type ."/". $stakeholder->id);

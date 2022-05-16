@@ -64,14 +64,14 @@ from box_vechile as boxd left join admins on boxd.add_by= admins.id  where   box
             $boxVechile->descrpition = $request->descrpition;
             $boxVechile->add_date = Carbon::now();
             $boxVechile->add_by = Auth::guard('admin')->user()->id;
-            if($request->bond_type === 'take'){
-                $vechile-> account = $vechile-> account + $totalMoney;
-            }else if($request->bond_type === 'spend'){
-                $vechile-> account = $vechile-> account - $totalMoney;
-            }
+            // if($request->bond_type === 'take'){
+            //     $vechile-> account = $vechile-> account + $totalMoney;
+            // }else if($request->bond_type === 'spend'){
+            //     $vechile-> account = $vechile-> account - $totalMoney;
+            // }
 
             $boxVechile->save();
-            $vechile->save();
+            // $vechile->save();
 
             $request->session()->flash('status', 'تم أضافة السند بنجاح');
             return redirect("vechile/box/show/".$request->bond_type ."/". $vechile->id);

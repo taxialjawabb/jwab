@@ -12,6 +12,7 @@ use App\Models\Driver\BoxDriver;
 use App\Models\Rider\BoxRider;
 use App\Models\User\BoxUser;
 use App\Models\Nathiraat\BoxNathriaat;
+use App\Models\Driver;
 
 class TrutworthyBillsController extends Controller
 {
@@ -93,6 +94,13 @@ class TrutworthyBillsController extends Controller
                 $boxVechile->bond_state = 'trustworthy';
                     $boxVechile->trustworthy_by =  Auth::guard('admin')->user()->id;
                     $boxVechile->trustworthy_date = Carbon::now();
+                    $vechile = \App\Models\Vechile::find($boxVechile->vechile_id);
+                    if($boxVechile->bond_type === 'take'){
+                        $vechile-> account = $vechile-> account + $boxVechile->total_money;
+                    }else if($boxVechile->bond_type === 'spend'){
+                        $vechile-> account = $vechile-> account - $boxVechile->total_money;
+                    }
+                    $vechile->save();
                     if($boxVechile->payment_type == 'bank transfer'  || $boxVechile->payment_type == 'selling points' || $boxVechile->payment_type == 'electronic payment'){
                         $boxVechile->bond_state = 'deposited';
                         $boxVechile->deposited_by =  Auth::guard('admin')->user()->id;
@@ -103,6 +111,7 @@ class TrutworthyBillsController extends Controller
                         else if($boxVechile->bond_type == "take"){
                             $this->generalBox( $boxVechile->total_money,0 , Carbon::now());
                         }
+                        
                     }
                     if($boxVechile->payment_type == 'cash' && $boxVechile->bond_type == "spend"){
                         $boxVechile->bond_state = 'deposited';
@@ -116,6 +125,14 @@ class TrutworthyBillsController extends Controller
                 $boxDriver->bond_state = 'trustworthy';
                 $boxDriver->trustworthy_by =  Auth::guard('admin')->user()->id;
                 $boxDriver->trustworthy_date = Carbon::now();
+                $driver = Driver::find($boxDriver->driver_id);
+                if($boxDriver->bond_type == "spend"){
+                    $driver-> account = $driver-> account - $boxDriver->total_money;
+                }
+                else if($boxDriver->bond_type == "take"){
+                    $driver-> account = $driver-> account + $boxDriver->total_money;
+                }
+                $driver->save();
                 if($boxDriver->payment_type == 'bank transfer'  || $boxDriver->payment_type == 'selling points' || $boxDriver->payment_type == 'electronic payment'){
                     $boxDriver->bond_state = 'deposited';
                     $boxDriver->deposited_by =  Auth::guard('admin')->user()->id;
@@ -126,6 +143,8 @@ class TrutworthyBillsController extends Controller
                     else if($boxDriver->bond_type == "take"){
                         $this->generalBox( $boxDriver->total_money,0 , Carbon::now());
                     }
+                    $driver->save();
+
                 }
                 if($boxDriver->payment_type == 'cash' && $boxDriver->bond_type == "spend"){
                     $boxDriver->bond_state = 'deposited';
@@ -139,6 +158,13 @@ class TrutworthyBillsController extends Controller
                 $boxRider->bond_state = 'trustworthy';
                 $boxRider->trustworthy_by =  Auth::guard('admin')->user()->id;
                 $boxRider->trustworthy_date = Carbon::now();
+                $rider = \App\Models\Rider::find($boxRider->rider_id);
+                if($boxRider->bond_type === 'take'){
+                    $rider-> account = $rider-> account + $boxRider->total_money;
+                }else if($boxRider->bond_type === 'spend'){
+                    $rider-> account = $rider-> account - $boxRider->total_money;
+                }
+                $rider->save();
                 if($boxRider->payment_type == 'bank transfer'  || $boxRider->payment_type == 'selling points' || $boxRider->payment_type == 'electronic payment'){
                     $boxRider->bond_state = 'deposited';
                     $boxRider->deposited_by =  Auth::guard('admin')->user()->id;
@@ -162,6 +188,13 @@ class TrutworthyBillsController extends Controller
                 $boxUser->bond_state = 'trustworthy';
                 $boxUser->trustworthy_by =  Auth::guard('admin')->user()->id;
                 $boxUser->trustworthy_date = Carbon::now();
+                $user = \App\Models\Admin::find($boxUser->user_id);
+                if($boxUser->bond_type === 'take'){
+                    $user-> account = $user-> account + $boxUser->total_money;
+                }else if($boxUser->bond_type === 'spend'){
+                    $user-> account = $user-> account - $boxUser->total_money;
+                }
+                $user->save();
                 if($boxUser->payment_type == 'bank transfer'  || $boxUser->payment_type == 'selling points' || $boxUser->payment_type == 'electronic payment'){
                     $boxUser->bond_state = 'deposited';
                     $boxUser->deposited_by =  Auth::guard('admin')->user()->id;
@@ -185,6 +218,13 @@ class TrutworthyBillsController extends Controller
                     $boxNathiraat->bond_state = 'trustworthy';
                     $boxNathiraat->trustworthy_by =  Auth::guard('admin')->user()->id;
                     $boxNathiraat->trustworthy_date = Carbon::now();
+                    $stakeholder = \App\Models\Nathiraat\Stakeholders::find($boxNathiraat->stakeholders_id);
+                    if($boxNathiraat->bond_type === 'take'){
+                        $stakeholder-> account = $stakeholder-> account + $boxNathiraat->total_money;
+                    }else if($boxNathiraat->bond_type === 'spend'){
+                        $stakeholder-> account = $stakeholder-> account - $boxNathiraat->total_money;
+                    }
+                    $stakeholder->save();
                     if($boxNathiraat->payment_type == 'bank transfer'  || $boxNathiraat->payment_type == 'selling points' || $boxNathiraat->payment_type == 'electronic payment'){
                         $boxNathiraat->bond_state = 'deposited';
                         $boxNathiraat->deposited_by =  Auth::guard('admin')->user()->id;

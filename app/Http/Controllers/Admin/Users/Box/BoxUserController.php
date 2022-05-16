@@ -74,13 +74,13 @@ class BoxUserController extends Controller
             $boxUser->descrpition = $request->descrpition;
             $boxUser->add_date = Carbon::now();
             $boxUser->add_by = Auth::guard('admin')->user()->id;
-            if($request->bond_type === 'take'){
-                $user-> account = $user-> account + $totalMoney;
-            }else if($request->bond_type === 'spend'){
-                $user-> account = $user-> account - $totalMoney;
-            }
+            // if($request->bond_type === 'take'){
+            //     $user-> account = $user-> account + $totalMoney;
+            // }else if($request->bond_type === 'spend'){
+            //     $user-> account = $user-> account - $totalMoney;
+            // }
             $boxUser->save();
-            $user->save();
+            // $user->save();
             
             $request->session()->flash('status', 'تم أضافة السند بنجاح');
             return redirect("user/box/show/".$request->bond_type ."/". $user->id);
