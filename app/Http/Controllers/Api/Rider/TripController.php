@@ -63,7 +63,7 @@ class TripController extends Controller
                             ->leftJoin('vechile', 'driver.current_vechile', '=', 'vechile.id')
                             ->where('vechile.category_id' , $request->category_id)->get();
                 foreach ($drivers as $driver) {
-                    $this->push_notification( $rider->driver , 'تم أضافة رحلة جديدة' , $data,'new_trip' );
+                    $this->push_notification( $driver->remember_token , 'تم أضافة رحلة جديدة' , $data,'new_trip' );
                 }
 
                 return $this -> returnData('data' , $data,'تم حفظ طلبك قيد الانتظار');                
