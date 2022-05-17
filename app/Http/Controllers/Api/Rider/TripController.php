@@ -16,6 +16,7 @@ use App\Models\Category;
 use App\Traits\GeneralTrait;
 use App\Traits\TripCost;
 
+
 class TripController extends Controller
 {
     public function __construct()
@@ -59,9 +60,18 @@ class TripController extends Controller
             if($rider !== null){
                 $data =  $this->insertTrip($request);
                 
+
+                $cat = Category::find($request->category_id);
                 $drivers = Driver::select(['driver.id', 'driver.name', 'remember_token'])
-                            ->leftJoin('vechile', 'driver.current_vechile', '=', 'vechile.id')
-                            ->where('vechile.category_id' , $request->category_id)->get();
+                ->leftJoin('vechile', 'driver.current_vechile', '=', 'vechile.id')
+                ->where('vechile.category_id' , $request->category_id)->get();
+                $data->basic_price   =$cat->basic_price ;
+                $data->km_cost   =$cat->km_cost ;
+                $data->minute_cost   =$cat->minute_cost ;
+                $data->percentage_type   =$cat->percentage_type ;
+                $data->category_percent   =$cat->category_percent ;
+                $data->phone   = $rider->phone ;
+                $data->name   = $rider->name;
                 foreach ($drivers as $driver) {
                     $this->push_notification( $driver->remember_token , 'تم أضافة رحلة جديدة' , $data,'new_trip' );
                 }
