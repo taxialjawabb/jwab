@@ -41,7 +41,7 @@ class TripController extends Controller
         }
 
         //$driver = Auth::guard('driver-api') -> user() ;
-        $driver = Driver::select(['driver.id', 'driver.name' , 'driver.phone', 'vechile.plate_number', 'vechile.color'])
+        $driver = Driver::select(['driver.id', 'driver.name' , 'driver.phone', 'vechile.plate_number', 'vechile.color', 'vechile.vechile_type'])
                     ->leftJoin('vechile', 'driver.current_vechile', '=', 'vechile.id')
                     ->where('driver.id', $request->driver_id)->get() ;
         

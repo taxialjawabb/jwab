@@ -265,7 +265,7 @@ class TripController extends Controller
                 return $this -> returnData('data' , $trip,'request');                
             }
             else if($trip->state == 'inprogress'){
-                $driver = Driver::select(['driver.id', 'driver.name' , 'driver.phone', 'vechile.plate_number', 'vechile.color'])
+                $driver = Driver::select(['driver.id', 'driver.name' , 'driver.phone', 'vechile.plate_number', 'vechile.color', 'vechile.vechile_type'])
                     ->leftJoin('vechile', 'driver.current_vechile', '=', 'vechile.id')
                     ->where('driver.id', $trip->driver_id)->get() ;
                 
@@ -273,7 +273,7 @@ class TripController extends Controller
                 return $this -> returnData('data' , $trip,'inprogress');                
             }
             else if($trip->state == 'arrived'){
-                $driver = Driver::select(['driver.id', 'driver.name' , 'driver.phone', 'vechile.plate_number', 'vechile.color'])
+                $driver = Driver::select(['driver.id', 'driver.name' , 'driver.phone', 'vechile.plate_number', 'vechile.color', 'vechile.vechile_type'])
                     ->leftJoin('vechile', 'driver.current_vechile', '=', 'vechile.id')
                     ->where('driver.id', $trip->driver_id)->get() ;
                 
@@ -281,7 +281,7 @@ class TripController extends Controller
                 return $this -> returnData('data' , $trip,'arrived');                
             }
             else if($trip->state == 'pickedup'){
-                $driver = Driver::select(['driver.id', 'driver.name' , 'driver.phone', 'vechile.plate_number', 'vechile.color'])
+                $driver = Driver::select(['driver.id', 'driver.name' , 'driver.phone', 'vechile.plate_number', 'vechile.color', 'vechile.vechile_type'])
                     ->leftJoin('vechile', 'driver.current_vechile', '=', 'vechile.id')
                     ->where('driver.id', $trip->driver_id)->get() ;
                 
