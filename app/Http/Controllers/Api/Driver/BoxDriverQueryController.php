@@ -36,7 +36,8 @@ class BoxDriverQueryController extends Controller
             'box_driver.total_money',
             'box_driver.descrpition',
             'box_driver.add_date',
-            DB::raw( "IF(box_driver.bond_type = 'spend', 'take', 'spend') as bond_type")
+            'box_driver.bond_type'
+            // DB::raw( "IF(box_driver.bond_type = 'spend', 'take', 'spend') as bond_type")
             )
         ->where('box_driver.driver_id', $request->driver_id)
             ->union($first)->orderBy('add_date', 'desc')
