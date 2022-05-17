@@ -72,6 +72,7 @@ class TripController extends Controller
                 $data->category_percent   =$cat->category_percent ;
                 $data->phone   = $rider->phone ;
                 $data->name   = $rider->name;
+                $data->idTrip = $data->id;
                 foreach ($drivers as $driver) {
                     $this->push_notification( $driver->remember_token , 'تم أضافة رحلة جديدة' , $data,'new_trip' );
                 }
