@@ -33,4 +33,7 @@ class Vechile extends Model
         'admin_id',
         'category_id'
     ];
+    public function driver(){
+        return $this->hasOne(Driver::class);
+    }
 }

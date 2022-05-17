@@ -58,6 +58,14 @@ class TripController extends Controller
             
             if($rider !== null){
                 $data =  $this->insertTrip($request);
+                
+                $drivers = Driver::select(['driver.id', 'driver.name', 'remember_token'])
+                            ->leftJoin('vechile', 'driver.current_vechile', '=', 'vechile.id')
+                            ->where('vechile.category_id' , $request->category_id)->get();
+                foreach ($drivers as $driver) {
+                    $this->push_notification( $rider->driver , 'تم أضافة رحلة جديدة' , $data,'new_trip' );
+                }
+
                 return $this -> returnData('data' , $data,'تم حفظ طلبك قيد الانتظار');                
             }else{
                 return $this->returnError('E001', 'حدث خطاء الرجاء المحاولة فى وقت لاحق');
@@ -257,18 +265,27 @@ class TripController extends Controller
                 return $this -> returnData('data' , $trip,'request');                
             }
             else if($trip->state == 'inprogress'){
-                $driver = Driver::select(['id', 'name', 'phone'])->find($trip->driver_id);
-                $trip->driver = $driver;
+                $driver = Driver::select(['driver.id', 'driver.name' , 'driver.phone', 'vechile.plate_number', 'vechile.color'])
+                    ->leftJoin('vechile', 'driver.current_vechile', '=', 'vechile.id')
+                    ->where('driver.id', $trip->driver_id)->get() ;
+                
+                $trip->driver = $driver[0];
                 return $this -> returnData('data' , $trip,'inprogress');                
             }
             else if($trip->state == 'arrived'){
-                $driver = Driver::select(['id', 'name', 'phone'])->find($trip->driver_id);
-                $trip->driver = $driver;
+                $driver = Driver::select(['driver.id', 'driver.name' , 'driver.phone', 'vechile.plate_number', 'vechile.color'])
+                    ->leftJoin('vechile', 'driver.current_vechile', '=', 'vechile.id')
+                    ->where('driver.id', $trip->driver_id)->get() ;
+                
+                $trip->driver = $driver[0];
                 return $this -> returnData('data' , $trip,'arrived');                
             }
             else if($trip->state == 'pickedup'){
-                $driver = Driver::select(['id', 'name', 'phone'])->find($trip->driver_id);
-                $trip->driver = $driver;
+                $driver = Driver::select(['driver.id', 'driver.name' , 'driver.phone', 'vechile.plate_number', 'vechile.color'])
+                    ->leftJoin('vechile', 'driver.current_vechile', '=', 'vechile.id')
+                    ->where('driver.id', $trip->driver_id)->get() ;
+                
+                $trip->driver = $driver[0];
                 return $this -> returnData('data' , $trip,'pickedup');                
             }
             else if($trip->state == 'canceled'){

@@ -35,7 +35,7 @@ class Driver extends Authenticatable implements JWTSubject {
     ];
     protected $hidden = [
         'password',
-        'remember_token',
+        // 'remember_token',
     ];
     protected $fillable = [
         'id',
@@ -104,5 +104,7 @@ class Driver extends Authenticatable implements JWTSubject {
     public function driverBonds(){
         return $this->hasMany(BoxDriver::class);
     }
-
+    public function vechile(){
+        return $this->hasOne(Vechile::class, 'foreign_key', 'current_vechile');
+    }
 }

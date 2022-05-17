@@ -73,7 +73,7 @@
                                         <td class="remain_money">{{ $bill->take_money - $bill->spend_money}}</td>
                                         <td class="bonds">{{ $bill->take_bonds + $bill->spend_bonds}}</td>
                                         <td>
-                                            <input type="button" id="bill{{ $index }}" class="btn btn-primary m-1 checkbox"  value="تأكيد">
+                                            <input type="button" id="bill{{ $index }}" class="btn btn-primary m-1 checkbox"  value="أيداع">
                                             <input type="button" id="bill{{ $index }}" class="btn btn-primary m-1 showBonds"  value="عـرض">
                                         </td>
                                     </tr>

@@ -41,20 +41,21 @@ class TripController extends Controller
         }
 
         //$driver = Auth::guard('driver-api') -> user() ;
-        $driver = Driver::find($request->driver_id) ;
+        $driver = Driver::select(['driver.id', 'driver.name' , 'driver.phone', 'vechile.plate_number', 'vechile.color'])
+                    ->leftJoin('vechile', 'driver.current_vechile', '=', 'vechile.id')
+                    ->where('driver.id', $request->driver_id)->get() ;
         
-        if($driver === null){
+        if(count($driver) === 0 ){
             return $this->returnError('E003', 'حدث خطاء الرجاء المحاولة فى وقت  لاحق . بعد تسجيل الخروج من التطبيق اولا ');
         }
-        $trip->driver_id = $driver->id;
+        $trip->driver_id = $driver[0]->id;
         $trip->state = 'inprogress';
         $trip->save();
         //return $trip;
         $rider = Rider::select(['remember_token'])->find($trip->rider_id);
         //send notification to driver for new trip
         
-        // return $availableDriver[0];
-        $trip->driver = $driver;
+        $trip->driver = $driver[0];
         $this->push_notification($rider->remember_token, 'السائق قادم فى الطريق', $trip, 'start');
         //return $this -> returnData('rider' , $rider,'start trip');
         return $this->returnSuccessMessage("تم قبول الرحلة بنجاح");
