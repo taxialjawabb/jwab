@@ -14,30 +14,30 @@ class BoxDriverQueryController extends Controller
     public function get_bonds(Request $request)
     {
         $first = DB::table('box_vechile')
-            ->select([
+            ->select(
                 'box_vechile.id',
-                'box_vechile.bond_type',
                 'box_vechile.payment_type',
                 'box_vechile.money',
                 'box_vechile.tax',
                 'box_vechile.total_money',
                 'box_vechile.descrpition',
                 'box_vechile.add_date',
-            ])
+                DB::raw("IF(box_vechile.bond_type = 'spend', 'take', 'spend') as bond_type")
+            )
             ->where('box_vechile.foreign_type','driver')
             ->where('box_vechile.foreign_id',$request->driver_id);
 
         $data = DB::table('box_driver')
-        ->select([
+        ->select(
             'box_driver.id',
-            'box_driver.bond_type',
             'box_driver.payment_type',
             'box_driver.money',
             'box_driver.tax',
             'box_driver.total_money',
             'box_driver.descrpition',
             'box_driver.add_date',
-        ])    
+            DB::raw( "IF(box_driver.bond_type = 'spend', 'take', 'spend') as bond_type")
+            )
         ->where('box_driver.driver_id', $request->driver_id)
             ->union($first)->orderBy('add_date', 'desc')
             ->paginate(10);
