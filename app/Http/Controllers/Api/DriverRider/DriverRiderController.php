@@ -98,7 +98,7 @@ class DriverRiderController extends Controller
             "company" =>"required|numeric",
             "driver_id"=> "required",
             "trip_id"=> "required",
-            // "rider_id"=> "required"
+            // "bons"=> "required"
             ]);
         $trip = Trip::find($request->trip_id);
         if( $trip !== null){

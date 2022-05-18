@@ -309,8 +309,8 @@ class RiderAuthController extends Controller
             if($riderData !== null)
             {
                 $verison = Version::find(1);
-                $riderData -> version = $verison->rider;
-                return $this -> returnData('rider_account' , $riderData->account,'update data');                 
+                // $riderData -> version = $verison->rider;
+                return $this -> returnData('rider_account' , $riderData->account,$verison->rider);                 
             }    
             else{
                 return $this->returnError('E001', 'some thing went wrongs');
