@@ -98,34 +98,60 @@ class DriverRiderController extends Controller
             "company" =>"required|numeric",
             "driver_id"=> "required",
             "trip_id"=> "required",
-            // "bons"=> "required"
+            "bons"=> "required|numeric"
             ]);
         $trip = Trip::find($request->trip_id);
         if( $trip !== null){
+            if($trip->state == 'expired'){
+                return $this->returnError('E004', 'the trip is complete');
+            }
             $trip->state = 'expired';
             $trip->trip_end_time = Carbon::now() ;
+        
         
         if($request->payment_type == 'cash'){
             $boxVechile = new BoxVechile;
             $driver =  Driver::find($request->driver_id);
             $vechile = Vechile::find($driver->current_vechile);
+            $money = round($request->company , 2);
+            $description =  'تم خصم مبلغ  ' . round($request->company, 2). ' عائد للمركبة رقم ' .$vechile->id .' على رحلة رقم ' .$request->trip_id .' تكلفة الرحلة ' . round($request->total, 2) ;
+            if($request->bons > 0){
+                $bons = $request->bons ;
+                $boxRider = new BoxRider;
+                $rider = Rider::find($trip->rider_id);
+                $boxRider->rider_id = $rider->id;
+                $boxRider->bond_type = 'take';
+                $boxRider->payment_type = 'internal transfer';
+                $boxRider->bond_state = 'deposited';
+                $boxRider->money = $bons;
+                $boxRider->tax = 0;
+                $boxRider->total_money = $bons;
+                $boxRider->descrpition =  'تم أضافة رصيد  ' .$bons. ' عائد من السائق رصيد أضافى' .$driver->name .' على رحلة رقم ' .$request->trip_id ;
+                $boxRider->add_date = Carbon::now();
+                // return $bons;
+                $money +=  $bons;
+                $description .= " و خصم رصيد " .$bons . " فرق النقدى من العميل";
 
+                $rider->account +=  $bons; 
+                $boxRider->save();
+                $rider->save();
+            }
             $boxVechile->vechile_id = $vechile->id;
             $boxVechile->foreign_type = 'driver';
             $boxVechile->foreign_id = $driver->id;
             $boxVechile->bond_type = 'take';
             $boxVechile->payment_type = 'internal transfer';
             $boxVechile->bond_state = 'deposited';
-            $boxVechile->descrpition = 'تم خصم مبلغ  ' . round($request->company, 2). ' عائد للمركبة رقم ' .$vechile->id .' على رحلة رقم ' .$request->trip_id .' تكلفة الرحلة ' . round($request->total, 2) ;
-            $boxVechile->money = round($request->company , 2);
+            $boxVechile->descrpition = $description ;
+            $boxVechile->money = $money;
             $boxVechile->tax = 0;
-            $boxVechile->total_money = round($request->company , 2);
+            $boxVechile->total_money = $money;
             $boxVechile->add_date = Carbon::now();
 
-            $driver->account -=  round($request->company , 2);
+            $driver->account -=  $money;
             $vechile->account +=  round($request->company , 2);
             
-            $driver->available = 1;
+            // $driver->available = 1;
 
             $trip->payment_type = 'cash';
             $trip->cost = round($request->total , 2);
@@ -173,6 +199,7 @@ class DriverRiderController extends Controller
                         $boxRider->rider_id = $rider->id;
                         $boxRider->bond_type = 'spend';
                         $boxRider->payment_type = 'internal transfer';
+                        $boxRider->bond_state = 'deposited';
                         $boxRider->money = round($request->total, 2);
                         $boxRider->tax = 0;
                         $boxRider->total_money = round($request->total , 2);
@@ -183,6 +210,7 @@ class DriverRiderController extends Controller
                         $boxDriver->driver_id = $driver->id;
                         $boxDriver->bond_type = "take";
                         $boxDriver->payment_type = 'internal transfer';
+                        $boxDriver->bond_state = 'deposited';
                         $boxDriver->money = round($request->total, 2);
                         $boxDriver->tax = 0;
                         $boxDriver->total_money = round($request->total, 2);

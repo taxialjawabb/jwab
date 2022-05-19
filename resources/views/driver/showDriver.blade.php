@@ -24,6 +24,7 @@
                                     <th>نوع المركبة</th>
                                     <th>سنة الصنع</th>
                                     <th>رقم اللوحة</th>
+                                    <th>التقيم</th>
                                     <th>تاريخ الأضافة</th>
                                     <th>أضيف بواسطة</th>
                                     <th></th>                                    
@@ -38,6 +39,7 @@
                                     <td>{{ $driver->vechile_type }}</td>
                                     <td>{{ $driver->made_in }}</td>
                                     <td>{{ $driver->plate_number }}</td>
+                                    <td>{{ $driver->rate }}</td>
                                     <td>{{ $driver->add_date }}</td>
                                     <td>{{ $driver->admin_name }}</td>
                                     <td>

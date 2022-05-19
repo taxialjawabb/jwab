@@ -19,6 +19,7 @@
                                     <th>تكلفة كم</th>
                                     <th>تكلفة الرفض</th>
                                     <th>تكلفة الإلغاء</th>
+                                    <th>التقيم</th>
                                     <th>تم الاضافة بواسطة</th>
                                     <th></th>
                                 </tr>
@@ -32,6 +33,7 @@
                                     <td>{{ $cat->km_cost }}</td>
                                     <td>{{ $cat->reject_cost }}</td>
                                     <td>{{ $cat->cancel_cost }}</td>
+                                    <td>{{ $cat->rate }}</td>
                                     <td>{{ $cat->admin_name}}</td>
                                     <td>
                                         <a href="{{ url('vechile/detials/cagegory/'.$cat->id) }}" class="btn btn-primary">عرض</a>

@@ -50,6 +50,7 @@ class CirtyTripController extends Controller
                     $boxRider->rider_id = $rider->id;
                     $boxRider->bond_type = 'spend';
                     $boxRider->payment_type = 'internal transfer';
+                    $boxRider->bond_state = 'deposited';
                     $boxRider->money = $total_cost;
                     $boxRider->tax = 0;
                     $boxRider->total_money = $total_cost;
@@ -153,6 +154,7 @@ class CirtyTripController extends Controller
                     $boxDriver->driver_id = $driver->id;
                     $boxDriver->bond_type = "take";
                     $boxDriver->payment_type = 'internal transfer';
+                    $boxDriver->bond_state = 'deposited';
                     $boxDriver->money = $driver_cost;
                     $boxDriver->tax = 0;
                     $boxDriver->total_money = $driver_cost;
@@ -284,6 +286,7 @@ class CirtyTripController extends Controller
         $boxDriver->driver_id = $driver->id;
         $boxDriver->bond_type = 'spend';
         $boxDriver->payment_type = 'internal transfer';
+        $boxDriver->bond_state = 'deposited';
         $boxDriver->money = $total_cost;
         $boxDriver->tax = 0;
         $boxDriver->total_money = $total_cost;
@@ -301,6 +304,7 @@ class CirtyTripController extends Controller
         $boxVechile->driver_id = $vechile->id;
         $boxVechile->bond_type = 'spend';
         $boxVechile->payment_type = 'internal transfer';
+        $boxVechile->bond_state = 'deposited';
         $boxVechile->money = $total_cost;
         $boxVechile->tax = 0;
         $boxVechile->total_money = $total_cost;

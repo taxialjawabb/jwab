@@ -163,7 +163,7 @@ class TripController extends Controller
                                     'add_date' => Carbon::now(),
                                 ]);
                                 $trip->payment_type = 'internal transfer';
-                                $trip->cost =$request->cancel_cost;
+                                $trip->cost = $request->cancel_cost;
                                 $rider->account   -=  $request->cancel_cost;
                                 $vechile->account +=  $request->cancel_cost;
                                 

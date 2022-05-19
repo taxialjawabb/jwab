@@ -60,7 +60,8 @@ class CategoryController extends Controller
         km_cost,
         reject_cost,
         cancel_cost,
-        admins.name as admin_name
+        admins.name as admin_name,
+        ROUND(( rate / rate_counter) , 1) as rate
         from category, admins where category.admin_id= admins.id;');
         return view('vechile.category.showCategory', compact('cats'));
     }

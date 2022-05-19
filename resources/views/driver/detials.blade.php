@@ -135,6 +135,22 @@
         <label for="final_clearance_date" class="form-label">تاريخ انتهاء المخالصة النهائية</label>
         <p class="alert alert-secondary p-1">{{$driver->final_clearance_date}}</p>
       </div>
+
+      <div class="mt-0  col-sm-12 col-md-4 col-lg-4 col-xl-4 ">
+        <label for="driver_rate" class="form-label">تقيم السائق</label>
+        <p class="alert alert-secondary p-1">{{$driver->driver_rate}}</p>
+      </div>
+
+      <div class="mt-0  col-sm-12 col-md-4 col-lg-4 col-xl-4 ">
+        <label for="vechile_rate" class="form-label">تقيم المركبة</label>
+        <p class="alert alert-secondary p-1">{{$driver->vechile_rate}}</p>
+      </div>
+
+      <div class="mt-0  col-sm-12 col-md-4 col-lg-4 col-xl-4 ">
+        <label for="time_rate" class="form-label">تقيم الوقت</label>
+        <p class="alert alert-secondary p-1">{{$driver->time_rate}}</p>
+      </div>
+
     </div>
   </div>
   
