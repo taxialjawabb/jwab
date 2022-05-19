@@ -9,6 +9,7 @@
         <a href="{{url('driver/show/blocked')}}" class="btn {{$title == 'عرض بيانات السائقين المستبعد' ? 'btn-primary' : 'btn-light'}} rounded-0 m-0" >السائقين المستبعده</a>
         <a href="{{url('driver/show/active')}}" class="btn {{$title == 'عرض بيانات السائقين المستلم' ? 'btn-primary' : 'btn-light'}} btn-primary rounded-0 m-0" >السائقين المستلم</a>
         <a href="{{url('driver/show/waiting')}}" class="btn {{$title == 'عرض بيانات السائقين المنتظر' ? 'btn-primary' : 'btn-light'}} btn-primary rounded-0 m-0" >السائقين المنتظر</a>
+        <a href="{{url('driver/show/pending')}}" class="btn {{$title == 'عرض بيانات السائقين المسجل حديثا' ? 'btn-primary' : 'btn-light'}} btn-primary rounded-0 m-0" >السائقين المسجل حديثا</a>
         <a href="{{url('driver/availables')}}" class="btn btn-success rounded-0 m-0" >السائقين المتاحيين</a>
         <a href="{{url('driver/add')}}" class="btn btn-success rounded-0 m-0" >أضـافـة سائق جديد</a>
     </div>

@@ -122,6 +122,9 @@ class Controller extends BaseController
             case 'blocked': 
                 return 'مستبعد';
                 break;
+            case 'pending': 
+                return 'مسجل حديثا';
+                break;
             default:
                 return '';
         }

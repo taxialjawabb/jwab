@@ -115,10 +115,12 @@ class DriverRiderController extends Controller
             $vechile = Vechile::find($driver->current_vechile);
             $money = round($request->company , 2);
             $description =  'تم خصم مبلغ  ' . round($request->company, 2). ' عائد للمركبة رقم ' .$vechile->id .' على رحلة رقم ' .$request->trip_id .' تكلفة الرحلة ' . round($request->total, 2) ;
+            $descriptionRider = 'عملية الدفع نقدا بنجاح';
+            $rider = Rider::find($trip->rider_id);
             if($request->bons > 0){
                 $bons = $request->bons ;
                 $boxRider = new BoxRider;
-                $rider = Rider::find($trip->rider_id);
+                // $rider = Rider::find($trip->rider_id);
                 $boxRider->rider_id = $rider->id;
                 $boxRider->bond_type = 'take';
                 $boxRider->payment_type = 'internal transfer';
@@ -126,7 +128,8 @@ class DriverRiderController extends Controller
                 $boxRider->money = $bons;
                 $boxRider->tax = 0;
                 $boxRider->total_money = $bons;
-                $boxRider->descrpition =  'تم أضافة رصيد  ' .$bons. ' عائد من السائق رصيد أضافى' .$driver->name .' على رحلة رقم ' .$request->trip_id ;
+                $descriptionRider .= 'تم أضافة رصيد  ' .$bons. ' عائد من السائق رصيد أضافى' .$driver->name .' على رحلة رقم ' .$request->trip_id ;
+                $boxRider->descrpition = $descriptionRider;
                 $boxRider->add_date = Carbon::now();
                 // return $bons;
                 $money +=  $bons;
@@ -160,11 +163,11 @@ class DriverRiderController extends Controller
             $boxVechile->save();
             $driver->save();
             $vechile->save();
-            $this->push_notification($driver->remember_token, 'تم خصيم من الرصيد', 'تم خصم مبلغ  ' . round($request->company , 2) . ' من رصيدك  ', 'payment');
+            $this->push_notification($driver->remember_token, 'تم خصيم من الرصيد', 'تم خصم مبلغ  ' . $description . ' من رصيدك  ', 'payment');
             
-            $rider = Rider::find($trip->rider_id);
+            
             $rider->message = 'تم أنهاء الرحلة بنجاح و دفع تكلفة الرحلة كاش'.' تكلفة الرحلة ' . round($request->total, 2);
-            $this->push_notification($rider->remember_token, 'عملية الدفع نقدا بنجاح', $rider, 'payment');
+            $this->push_notification($rider->remember_token,$descriptionRider , $rider, 'payment');
 
 
             return $this->returnSuccessMessage("Payment confirmed successfully");

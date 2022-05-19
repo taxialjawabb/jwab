@@ -21,16 +21,16 @@ class DriverController extends Controller
     {
         $drivers ;
         $title = 'عرض بيانات السائقين';
-        if($state === 'active' || $state === 'waiting' || $state === 'blocked'){
+        if($state === 'active' || $state === 'waiting' || $state === 'blocked' || $state === 'pending'){
             $drivers = DB::select('select driver.id, driver.name, driver.phone, vechile.vechile_type, vechile.made_in, vechile.plate_number, driver.add_date, admins.name as admin_name, 
             ROUND((driver.driver_rate + vechile_rate + time_rate) / (driver_counter+vechile_counter+time_counter) , 1) as rate
             from driver left join vechile on driver.current_vechile = vechile.id left join admins on driver.admin_id = admins.id where driver.state = ?;',[$state]);
             $title = 'عرض بيانات السائقين ال'.$this->driverState($state);
         }
         else{
-            $drivers = DB::select('select driver.id, driver.name, driver.phone, vechile.vechile_type, vechile.made_in, vechile.plate_number, driver.add_date, admins.name as admin_name,
+            $drivers = DB::select("select driver.id, driver.name, driver.phone, vechile.vechile_type, vechile.made_in, vechile.plate_number, driver.add_date, admins.name as admin_name,
             ROUND((driver.driver_rate + vechile_rate + time_rate) / (driver_counter+vechile_counter+time_counter) , 1) as rate
-            from driver left join vechile on driver.current_vechile = vechile.id left join admins on driver.admin_id = admins.id;');
+            from driver left join vechile on driver.current_vechile = vechile.id left join admins on driver.admin_id = admins.id where driver.state != 'pending';");
         }
         return view('driver.showDriver', compact('drivers', 'title'));
     }
