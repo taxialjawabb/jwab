@@ -13,6 +13,7 @@ Route::group([
         //  driver
         Route::post('login'     ,  [DriverAuthController::class, 'login']);
         Route::post('current/location', [TripController::class, 'location']);
+        Route::post('add/register'     ,  [DriverAuthController::class, 'add_driver']);
         
          //send message to login 
         Route::post('send/message', [App\Http\Controllers\Api\Messages\MessagesController::class, 'send_message_driver']);

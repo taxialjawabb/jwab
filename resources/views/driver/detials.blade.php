@@ -44,9 +44,9 @@
   <div class="container">
     <div class="row">
       
-    @if($driver->persnol_photo && File::exists('images/drivers/personal_phonto/'.$driver->persnol_photo))
+    @if($driver->persnol_photo && File::exists('public/assets/images/drivers/personal_phonto/'.$driver->persnol_photo))
     <div class="text-center-1 image m-1">
-        <img src="{{ asset('images/drivers/personal_phonto/'.$driver->persnol_photo)}}" style="width: 80px; height: 100px" id="profile-img-tag" alt="صورة السائق">
+        <img src="{{ asset('assets/images/drivers/personal_phonto/'.$driver->persnol_photo)}}" style="width: 80px; height: 100px" id="profile-img-tag" alt="صورة السائق">
     </div>
     @endif
 

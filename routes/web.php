@@ -139,6 +139,7 @@ Route::group([
         Route::get('/records/notes', [App\Http\Controllers\Admin\Driver\Maintenance\MaintenanceController::class, 'show']);
         Route::get('/vechile/maintenance/{id}', [App\Http\Controllers\Admin\Driver\Maintenance\MaintenanceController::class, 'current_maintenance']);
 
+        Route::get('/pending/active/{id}', [App\Http\Controllers\Admin\Driver\DriverController::class, 'driver_active']);
 
     });
 

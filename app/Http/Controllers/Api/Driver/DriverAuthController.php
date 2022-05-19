@@ -12,6 +12,7 @@ use App\Models\Driver;
 use App\Models\Version;
 use Hash;
 use Illuminate\Support\Facades\Http;
+use Carbon\Carbon;
 
 
 class DriverAuthController extends Controller
@@ -230,5 +231,64 @@ class DriverAuthController extends Controller
         }
     }
     
+    public function add_driver(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string',
+            'password' => 'required|string',
+            'nationality' => 'required|string',
+            'ssd' => 'required|string',
+            'address' => 'required|string',
+            'id_copy_no' => 'required|string',
+            'id_expiration_date' => 'required|string',
+            'license_type' => 'required|string',
+            'license_expiration_date' => 'required|string',
+            'birth_date' => 'required|string',
+            'start_working_date' => 'required|string',
+            'contract_end_date' => 'required|string',
+            'final_clearance_date' => 'required|string',
+            'phone' => 'required|string',
+            'image' => 'required|mimes:jpeg,png,jpg,',
+        ]);
 
+        $driverData = Driver::where('ssd', $request->ssd)->orWhere('phone', $request->phone)->get();
+        if(count($driverData) > 0 ){
+            return $this->returnError('E001', 'هذه البيانات موجودة بالفعل');
+        }
+        else{
+            $driver = new Driver;
+            $driver->name = $request->name;
+            $driver->password = '0' ;
+            $driver->nationality = $request->nationality;
+            $driver->ssd = $request->ssd;
+            $driver->state = 'pending';
+            $driver->address = $request->address;
+            $driver->id_copy_no = $request->id_copy_no;
+            $driver->id_expiration_date = $request->id_expiration_date;
+            $driver->license_type = $request->license_type;
+            $driver->license_expiration_date = $request->license_expiration_date;
+            $driver->birth_date = $request->birth_date;
+            $driver->start_working_date = $request->start_working_date;
+            $driver->contract_end_date = $request->contract_end_date;
+            $driver->final_clearance_date = $request->final_clearance_date;
+            $driver->phone = $request->phone;
+            // $driver->admin_id = Auth::guard('admin')->user()->id;
+            $driver->add_date = Carbon::now();
+        
+        if($request->hasFile('image')){
+            $file = $request->file('image');
+			$name = $file->getClientOriginalName();
+			$ext  = $file->getClientOriginalExtension();
+			$size = $file->getSize();
+			$mim  = $file->getMimeType();
+			$realpath = $file->getRealPath();
+			$image = time().'.'.$ext;
+			$file->move(public_path('images/drivers/personal_phonto'),$image);
+			$driver->persnol_photo =  $image;
+	
+		}
+        $driver->save();
+        return $this->returnSuccessMessage("تم أضافة بياناتك بنجاح ");
+    }
+    }
 }
