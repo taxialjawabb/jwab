@@ -244,9 +244,9 @@ class DriverAuthController extends Controller
             'license_type' => 'required|string',
             'license_expiration_date' => 'required|string',
             'birth_date' => 'required|string',
-            'start_working_date' => 'required|string',
-            'contract_end_date' => 'required|string',
-            'final_clearance_date' => 'required|string',
+            // 'start_working_date' => 'required|string',
+            // 'contract_end_date' => 'required|string',
+            // 'final_clearance_date' => 'required|string',
             'phone' => 'required|string',
             'image' => 'required|mimes:jpeg,png,jpg,',
         ]);
@@ -268,9 +268,9 @@ class DriverAuthController extends Controller
             $driver->license_type = $request->license_type;
             $driver->license_expiration_date = $request->license_expiration_date;
             $driver->birth_date = $request->birth_date;
-            $driver->start_working_date = $request->start_working_date;
-            $driver->contract_end_date = $request->contract_end_date;
-            $driver->final_clearance_date = $request->final_clearance_date;
+            // $driver->start_working_date = $request->start_working_date;
+            // $driver->contract_end_date = $request->contract_end_date;
+            // $driver->final_clearance_date = $request->final_clearance_date;
             $driver->phone = $request->phone;
             // $driver->admin_id = Auth::guard('admin')->user()->id;
             $driver->add_date = Carbon::now();
