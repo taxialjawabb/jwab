@@ -290,5 +290,7 @@ class DriverAuthController extends Controller
         $driver->save();
         return $this->returnSuccessMessage("تم أضافة بياناتك بنجاح ");
     }
+    return $this->returnError('E001', 'حدث خطاء ما');
+
     }
 }
