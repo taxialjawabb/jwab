@@ -14,6 +14,7 @@ use App\Models\Rider\BoxRider;
 use App\Models\Vechile\BoxVechile;
 use Carbon\Carbon;
 use App\Models\Trip;
+use App\Models\SecondaryCategory;
 
 class DriverRiderController extends Controller
 {
@@ -107,12 +108,24 @@ class DriverRiderController extends Controller
             }
             $trip->state = 'expired';
             $trip->trip_end_time = Carbon::now() ;
-        
-        
-        if($request->payment_type == 'cash'){
-            $boxVechile = new BoxVechile;
             $driver =  Driver::find($request->driver_id);
             $vechile = Vechile::find($driver->current_vechile);
+            if($driver !== null || $vechile !== null){
+                $secondary = SecondaryCategory::find($vechile->secondary_id);
+                if( $secondary !== null){
+                    if($secondary->percentage_type == 'fixed'){
+                        $request->company =  $secondary->category_percent;
+                    }
+                    else if($secondary->percentage_type == 'percent'){
+                        $request->company = $request->total * ($secondary->category_percent /100);
+                    }
+                }
+            }            
+            if($request->payment_type == 'cash'){
+                $boxVechile = new BoxVechile;
+                // $driver =  Driver::find($request->driver_id);
+                // $vechile = Vechile::find($driver->current_vechile);
+                
             $money = round($request->company , 2);
             $description =  'تم خصم مبلغ  ' . round($request->company, 2). ' عائد للمركبة رقم ' .$vechile->id .' على رحلة رقم ' .$request->trip_id .' تكلفة الرحلة ' . round($request->total, 2) ;
             $descriptionRider = 'عملية الدفع نقدا بنجاح';
@@ -175,11 +188,11 @@ class DriverRiderController extends Controller
         }
         else if($request->payment_type == 'internal'){
                 $rider = Rider::find($trip->rider_id);
-                $driver =  Driver::find($request->driver_id);
-                $vechile = null;
-                if($driver !== null){
-                    $vechile = Vechile::find($driver->current_vechile);
-                }
+                // $driver =  Driver::find($request->driver_id);
+                // $vechile = null;
+                // if($driver !== null){
+                //     $vechile = Vechile::find($driver->current_vechile);
+                // }
                 
                 if($rider !== null && $vechile !== null){
                     if($rider->account >= $request->total){
@@ -222,7 +235,7 @@ class DriverRiderController extends Controller
                         //$boxDriver->add_by = Auth::guard('admin')->user()->id;
                         
                         $rider->account -=  round($request->total , 2);
-                        $driver->account +=  round($request->total , 2);
+                        $driver->account +=  round($request->total , 2) - round($request->company , 2);
                         $vechile->account +=  round($request->company , 2);
                         
                         $driver->available = 1;
