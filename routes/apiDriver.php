@@ -12,6 +12,7 @@ Route::group([
 
         //  driver
         Route::post('login'     ,  [DriverAuthController::class, 'login']);
+        Route::post('chech/phone'     ,  [DriverAuthController::class, 'chech_phone']);
         Route::post('current/location', [TripController::class, 'location']);
         Route::post('add/register'     ,  [DriverAuthController::class, 'add_driver']);
         

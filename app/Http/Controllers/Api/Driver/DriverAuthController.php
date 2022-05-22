@@ -68,6 +68,24 @@ class DriverAuthController extends Controller
         
     }
 
+    public function chech_phone(Request $request)
+    {
+        $request->validate([
+            'phone'    => ['required', 'string', 'min:10', 'max:10'],
+        ]);
+        $driver = Driver::where("phone",$request->phone)->get();
+        if(count($driver) > 0){
+            return $this -> returnSuccessMessage('true');
+
+        }else{
+            $code = 4455;
+            // $code = rand(1000,9999);
+            // $message ="مرحبا سائق الجواب الرمز الخاص بك : ".$code;
+            // $ss = "https://www.hisms.ws/api.php?send_sms&username=966532760660&password=Asd@123123&numbers=".$request->phone."&sender=TaxiAljawab&message=".$message;
+            // $response = Http::get($ss);
+            return $this -> returnData('code' , $code,'false');
+        }
+    }
 
     public function driver_data(Request $request)
     {
