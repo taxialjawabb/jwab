@@ -14,6 +14,7 @@ Route::group([
     // Register and login rider
     Route::post('register'  ,          [RiderAuthController::class, 'register']);
     Route::post('login'     ,  [RiderAuthController::class, 'login']);
+    Route::post('chech/phone'     ,  [RiderAuthController::class, 'chech_phone']);
     
     //send message to login or register
     Route::post('send/message', [App\Http\Controllers\Api\Messages\MessagesController::class, 'send_message']);
