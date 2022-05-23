@@ -133,5 +133,15 @@ class PermissionSeeder extends Seeder
             'display_name' => 'مستخدم يسلم عهد', // optional
             'description' => 'يستطيع المستخدم من خلالها تسليم العهد للسائقين', // optional
             ]);
+            $editUser = Permission::create([
+            'name' => 'import_export',
+            'display_name' => 'صادر و وارد', // optional
+            'description' => 'يستطيع المستخدم من خلالها عرض الصادر والوارد و اضافة جديده للصادر والوارد', // optional
+            ]);
+            $editUser = Permission::create([
+            'name' => 'stakeholders',
+            'display_name' => 'الجهات', // optional
+            'description' => 'يستطيع المستخدم من خلالها عرض الجهات وأضافة جهة جديدة ', // optional
+            ]);
     }
 }

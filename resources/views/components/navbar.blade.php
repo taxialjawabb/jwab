@@ -13,10 +13,10 @@
 
                     @if(Auth::user()->isAbleTo('driver_data'))
                     <li class="mb-1">
-                        <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#vechile-all" style="color: rgba(0, 0, 0, .65) ; background-color: transparent !important;" aria-expanded="true">
+                        <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#driver-all" style="color: rgba(0, 0, 0, .65) ; background-color: transparent !important;" aria-expanded="true">
                         السائقين
                         </button>
-                        <div class="collapse show" id="vechile-all">
+                        <div class="collapse show" id="driver-all">
                         <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                             <li class="mb-1">
                                 <a  class="btn rider align-items-center rounded collapsed" href="{{url('driver/show')}}" class="link-dark rounded"> السائقين</a>
@@ -94,34 +94,8 @@
                         </div>
                     </li>
                     @endif  --}}
-
                     
-                    @if(Auth::user()->isAbleTo('nathiraat_box'))
-                    <li class="border-top my-1"></li>
-                    
-                    <li class="mb-1">
-                        <button class="btn btn-toggle btn-toggle-second align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#nathriaat-all" aria-expanded="false">
-                        النثريــات
-                        </button>
-                        <div class="collapse " id="nathriaat-all">
-                        <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-
-                        <li class="mb-1">
-                            <a  class="btn rider align-items-center rounded collapsed" href="{{ url('nathiraat/box/show/take') }}" class="link-dark rounded">
-                            عرض النثريــات 
-                            </a>
-                        </li>
-                        
-                        <li class="mb-1">
-                            <a  class="btn rider align-items-center rounded collapsed" href="{{ url('nathiraat/stakeholders/show') }}" class="link-dark rounded">الجهات</a>
-                        </li>                            
-                            
-                        </ul>
-                        </div>
-                    </li>
-                    @endif
-
-
+                    <li class="border-top my-1"></li>                    
                     @if(Auth::user()->isAbleTo('waiting_confirm') || Auth::user()->isAbleTo('waiting_trustworthy') || Auth::user()->isAbleTo('waiting_deposit') || Auth::user()->isAbleTo('general_box'))
                     <li class="mb-1">
                         <button class="btn btn-toggle  btn-toggle-second  align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#bill-all" aria-expanded="false">
@@ -171,6 +145,31 @@
                         </div>
                     </li>
                     @endif
+
+                    <li class="border-top my-1"></li>
+
+                    @if(Auth::user()->isAbleTo('nathiraat_box'))
+                    <li class="mb-1">
+                        <a  class="btn rider align-items-center rounded collapsed" href="{{ url('nathiraat/box/show/take') }}" class="link-dark rounded">
+                            عرض النثريــات 
+                        </a>
+                    </li>
+                    @endif
+
+                    @if(Auth::user()->isAbleTo('import_export'))
+                    
+                    <li class="mb-1">
+                        <a  class="btn rider align-items-center rounded collapsed" href="{{ url('nathiraat/stakeholders/show') }}" class="link-dark rounded">الجهات</a>
+                    </li>                            
+                        
+                    @endif
+
+                    @if(Auth::user()->isAbleTo('stakeholders'))
+                    <li class="mb-1">
+                        <a class="btn rider align-items-center rounded collapsed" href="{{url('import/export/show/import')}}" class="link-dark rounded margin-second"> صادر و وارد </a>
+                    </li>
+                    @endif
+
                     <li class="border-top my-1"></li>
                     
                     @if(Auth::user()->isAbleTo('user_manage'))
@@ -194,12 +193,6 @@
                         <a  class="btn rider align-items-center rounded collapsed" href="{{ url('covenant/show') }}"  class="link-dark rounded">
                             أدارة العهد                           
                         </a>
-                    </li>
-                    @endif
-
-                    @if(Auth::user()->isAbleTo('rider_data'))
-                    <li class="mb-1">
-                        <a class="btn rider align-items-center rounded collapsed" href="{{url('import/export/show/import')}}" class="link-dark rounded margin-second"> صادر و وارد </a>
                     </li>
                     @endif
 
