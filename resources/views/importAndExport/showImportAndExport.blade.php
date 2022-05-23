@@ -25,7 +25,7 @@
                         <table class="table " id="datatable">
                             <thead>
                                 <tr>
-                                    {{-- <th>نوع الملاحظة</th> --}}
+                                    <th>رقم</th>
                                     <th>العنوان</th>
                                     <th>الموضوع</th>
                                     <th>المرفق</th>
@@ -36,7 +36,7 @@
                             <tbody>
                                 @foreach($data as $d)
                                 <tr>
-                                    {{-- <td>{{ $d->type }}</td> --}}
+                                    <td>{{ $d->id }}</td>
                                     <td>{{ $d->title }}</td>
                                     <td>{{ $d->content }}</td>
                                     <td>

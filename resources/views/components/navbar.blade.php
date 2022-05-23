@@ -156,7 +156,7 @@
                     </li>
                     @endif
 
-                    @if(Auth::user()->isAbleTo('import_export'))
+                    @if(Auth::user()->isAbleTo('stakeholders'))
                     
                     <li class="mb-1">
                         <a  class="btn rider align-items-center rounded collapsed" href="{{ url('nathiraat/stakeholders/show') }}" class="link-dark rounded">الجهات</a>
@@ -164,7 +164,7 @@
                         
                     @endif
 
-                    @if(Auth::user()->isAbleTo('stakeholders'))
+                    @if(Auth::user()->isAbleTo('import_export'))
                     <li class="mb-1">
                         <a class="btn rider align-items-center rounded collapsed" href="{{url('import/export/show/import')}}" class="link-dark rounded margin-second"> صادر و وارد </a>
                     </li>
