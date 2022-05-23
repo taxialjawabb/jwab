@@ -1,9 +1,9 @@
 
 @extends('index')
-@section('title','أضافة ملاحظة')
+@section('title','أضافة صادر و وارد')
 @section('content')
 
-<h5 class="mt-4">أضافة ملاحظة للسائق</h5>
+<h5 class="mt-4">أضافة صادر و وارد</h5>
 
 <form  method="POST" action="{{ url('import/export/add' ) }}"  enctype="multipart/form-data">
     @csrf

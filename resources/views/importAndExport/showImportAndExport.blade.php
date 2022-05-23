@@ -1,6 +1,6 @@
 
 @extends('index')
-@section('title','الملاحظات')
+@section('title','صادر و وارد')
 @section('content')
 @if(Session::has('status'))
 <div class="alert alert-success m-3" role="alert">
@@ -17,7 +17,7 @@
     <div class="float-end mt-3">        
         <a href="{{ url('import/export/show/export') }}" class="btn {{$type === 'export'? 'btn-primary': ''}} rounded-0 m-0" >صادر</a>
         <a href="{{ url('import/export/show/import') }}" class="btn {{$type === 'import'? 'btn-primary': ''}} rounded-0 m-0" >وارد</a>
-        <a href="{{url('import/export/add')}}" class="btn btn-success rounded-0 m-0" >أضـافـة </a>
+        <a href="{{url('import/export/add')}}" class="btn btn-success rounded-0 m-0" >أضـافـة صادر و وارد </a>
     </div>
 </div>
                 <div class="panel panel-default mt-4">
@@ -29,7 +29,7 @@
                                     <th>العنوان</th>
                                     <th>الموضوع</th>
                                     <th>المرفق</th>
-                                    <th>اضيفة بواسطة</th>
+                                    <th>الجهة</th>
                                     <th>تاريخ الاضافة</th>                                   
                                 </tr>
                             </thead>
@@ -93,12 +93,12 @@
                 //         ],
                 language: {
                     "sProcessing": "جاري التحميل...",
-                    "sLengthMenu": "عـرض _MENU_ الملاحظات",
+                    "sLengthMenu": "عـرض _MENU_ خطابات",
                     "sZeroRecords": "لم يتم العثور على نتائج",
                     "sEmptyTable": "لا توجد بيانات متاحة في هذا الجدول",
-                    "sInfo": "عرض الملاحظات من _START_ إلى _END_ من إجمالي _TOTAL_ من ملاحظة",
-                    "sInfoEmpty": "عرض الملاحظات من 0 إلى 0 من إجمالي 0 ملاحظة",
-                    "sInfoFiltered": "(تصفية إجمالي _MAX_ من الملاحظات)",
+                    "sInfo": "عرض خطابات من _START_ إلى _END_ من إجمالي _TOTAL_ من خطاب",
+                    "sInfoEmpty": "عرض خطابات من 0 إلى 0 من إجمالي 0 خطاب",
+                    "sInfoFiltered": "(تصفية إجمالي _MAX_ من خطابات)",
                     "sInfoPostFix": "",
                     "sSearch": "بـحــث:",
                     "sUrl": "",
