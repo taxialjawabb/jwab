@@ -342,6 +342,16 @@ Route::group([
     });
     
     Route::group([
+        'prefix' => 'import/export',
+        'middleware' => ['permission:user_manage|user_own_tasks']
+    ],function () { 
+        Route::get('/show/{type}', [App\Http\Controllers\Admin\ImportsAndExport\ImportsAndExportController::class, 'show']);
+        Route::get('/add', [App\Http\Controllers\Admin\ImportsAndExport\ImportsAndExportController::class, 'add']);
+        Route::post('/add', [App\Http\Controllers\Admin\ImportsAndExport\ImportsAndExportController::class, 'add_save']);
+        
+    });
+
+    Route::group([
         'prefix' => 'covenant',
         'middleware' => ['permission:manage_covenant']
     ],function () { 

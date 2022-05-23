@@ -18,5 +18,7 @@ class Stakeholders extends Model
         'add_date',
         'add_by',
     ];
-
+    public function importsAndExports(){
+        return $this->hasMany(App\Models\ImportsAndExport::class);
+    }
 }

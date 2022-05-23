@@ -197,6 +197,12 @@
                     </li>
                     @endif
 
+                    @if(Auth::user()->isAbleTo('rider_data'))
+                    <li class="mb-1">
+                        <a class="btn rider align-items-center rounded collapsed" href="{{url('import/export/show/import')}}" class="link-dark rounded margin-second"> صادر و وارد </a>
+                    </li>
+                    @endif
+
                     <li class="mb-1">
                         <a class="btn rider align-items-center rounded collapsed" href="{{url('logout')}}" class="link-dark rounded margin-second"> تسجيل الخروج</a>
                     </li>

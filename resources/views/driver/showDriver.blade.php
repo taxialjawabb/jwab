@@ -45,7 +45,7 @@
                                     <td>{{ $driver->admin_name }}</td>
                                     <td>
                                         @if ($driver->state === 'pending')
-                                            <a href="{{ url('driver/pending/active/'.$driver->id) }}" class="m-1 btn btn-danger">تحديث</a>
+                                            <a href="{{ url('driver/pending/active/'.$driver->id) }}" class="m-1 btn btn-danger">قبول</a>
                                         @endif
                                             <a href="{{ url('driver/details/'.$driver->id) }}" class="m-1 btn btn-primary">عرض</a>
                                     </td>
