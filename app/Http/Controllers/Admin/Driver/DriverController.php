@@ -468,13 +468,13 @@ class DriverController extends Controller
     {
         $search = '';
         if($request->has('from_date') && $request->has('to_date')){
-            $search = " and (box_driver.add_date BETWEEN '".$request->from_date."' AND '".$request->to_date."') ";
+            $search = " and (date(box_driver.add_date) >=  '".$request->from_date."' AND ' (date(box_driver.add_date) <= ".$request->to_date."') ";
         }
         $data = DB::select("
          select driver.id, driver.name, driver.phone ,sum(box_driver.total_money)  as total
             from driver , box_driver where driver.id = box_driver.driver_id and  
-            box_driver.bond_type = 'take'
-            ".$search."
+            box_driver.bond_type = 'take' 
+            ".$search." 
             group by driver.id;
         ");
 
