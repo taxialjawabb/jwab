@@ -140,7 +140,9 @@ Route::group([
         Route::get('/vechile/maintenance/{id}', [App\Http\Controllers\Admin\Driver\Maintenance\MaintenanceController::class, 'current_maintenance']);
 
         Route::get('/pending/active/{id}', [App\Http\Controllers\Admin\Driver\DriverController::class, 'driver_active']);
-
+        
+        Route::get('/reports/show', [App\Http\Controllers\Admin\Driver\DriverController::class, 'show_report'])->middleware(['permission:driver_reports']);
+        Route::get('/debits', [App\Http\Controllers\Admin\Driver\DriverController::class, 'show_debits'])->middleware(['permission:driver_debits']);
     });
 
     // Documents and Notes for vechile
@@ -242,11 +244,11 @@ Route::group([
     });
 
     // Box for nathiraat
+    Route::get('nathiraat/box/show/{type}', [App\Http\Controllers\Admin\Nathiraat\BoxNathiraatController::class, 'show_box'])->middleware(['permission:nathiraat_box']);
     Route::group([
         'prefix' => 'nathiraat',
-        'middleware' => ['permission:nathiraat_box']
+        'middleware' => ['permission:stakeholders']
     ],function () { 
-        Route::get('/box/show/{type}', [App\Http\Controllers\Admin\Nathiraat\BoxNathiraatController::class, 'show_box']);
 
         Route::get('/stakeholders/box/show/{type}/{id}', [App\Http\Controllers\Admin\Nathiraat\Stakeholders\Box\BoxStakeholdersController::class, 'show_box']);
         Route::get('/stakeholders/box/add/{id}', [App\Http\Controllers\Admin\Nathiraat\Stakeholders\Box\BoxStakeholdersController::class, 'show_add']);
@@ -343,7 +345,7 @@ Route::group([
     
     Route::group([
         'prefix' => 'import/export',
-        'middleware' => ['permission:user_manage|user_own_tasks']
+        'middleware' => ['permission:import_export']
     ],function () { 
         Route::get('/show/{type}', [App\Http\Controllers\Admin\ImportsAndExport\ImportsAndExportController::class, 'show']);
         Route::get('/add', [App\Http\Controllers\Admin\ImportsAndExport\ImportsAndExportController::class, 'add']);

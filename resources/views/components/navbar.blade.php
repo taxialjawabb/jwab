@@ -27,6 +27,19 @@
                                 <a  class="btn rider align-items-center rounded collapsed" href="{{url('driver/records/notes')}}" class="link-dark rounded">ملاحظات السائقين</a>
                             </li>                            
                             @endif
+                            
+                            @if(Auth::user()->isAbleTo('driver_reports'))
+                            <li class="mb-1">
+                                <a  class="btn rider align-items-center rounded collapsed" href="{{url('driver/reports/show')}}" class="link-dark rounded">تقرير السائقين</a>
+                            </li>
+                            @endif
+
+                            @if(Auth::user()->isAbleTo('driver_debits'))
+                            <li class="mb-1">
+                                <a  class="btn rider align-items-center rounded collapsed" href="{{url('driver/debits')}}" class="link-dark rounded">السائقين المتعثرين</a>
+                            </li>
+                            @endif
+                            
                         </ul>
                         </div>
                     </li>
