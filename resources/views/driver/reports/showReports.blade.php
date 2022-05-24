@@ -1,6 +1,6 @@
 
 @extends('index')
-@section('title','الصندوق العام')
+@section('title','تقارير اجمالى قبض السائقين')
 @section('content')
 <div class="container clearfix">
     <h5 class=" mt-4 float-start">تقارير اجمالى قبض السائقين</h5>
