@@ -9,9 +9,11 @@ use Carbon\Carbon;
 use App\Models\Rider;
 use App\Models\Rider\BoxRider;
 use Illuminate\Support\Facades\Auth;
+use App\Traits\InternalTransfer;
 
 class BoxRiderController extends Controller
 {
+    use InternalTransfer;
     public function show_box($type , $id)
     {
         if($type === 'spend' || $type === 'take'){
@@ -66,6 +68,14 @@ class BoxRiderController extends Controller
             'tax' =>        'required|numeric',
             'descrpition' =>        'required|string',
         ]);
+
+        if($request->has('stakeholder')){
+            $request->validate([ 
+                'stakeholder' =>'required|string|in:driver,vechile,rider,stakeholder,user',
+                'user' => 'required|integer'
+            ]); 
+            $this->transfer($request);
+        }
         $rider = Rider::find($request->rider_id);
         if($rider !== null){
             $totalMoney =$request->money + (($request->money * $request->tax) / 100);
@@ -86,6 +96,10 @@ class BoxRiderController extends Controller
             // }
             $BoxRider->save();
             // $rider->save();
+
+            if($request->has('stakeholder')){
+                
+            }
 
             $request->session()->flash('status', 'تم أضافة السند بنجاح');
             return redirect("rider/box/show/".$request->bond_type ."/". $rider->id);

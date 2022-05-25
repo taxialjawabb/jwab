@@ -9,8 +9,11 @@ use Carbon\Carbon;
 use App\Models\Vechile;
 use App\Models\Vechile\BoxVechile;
 use Illuminate\Support\Facades\Auth;
+use App\Traits\InternalTransfer;
+
 class BoxVechileController extends Controller
 {
+    use InternalTransfer;
     public function show_box($type , $id)
     {
         if($type === 'spend' || $type === 'take'){
@@ -51,6 +54,13 @@ from box_vechile as boxd left join admins on boxd.add_by= admins.id  where   box
             'tax' =>        'required|numeric',
             'descrpition' =>        'required|string',
         ]);
+        if($request->has('stakeholder')){
+            $request->validate([ 
+                'stakeholder' =>'required|string|in:driver,vechile,rider,stakeholder,user',
+                'user' => 'required|integer'
+            ]); 
+            $this->transfer($request);
+        }
         $vechile = Vechile::find($request->vechile_id);
         if($vechile !== null){
             $totalMoney = $request->money + (($request->money * $request->tax) / 100);

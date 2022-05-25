@@ -101,17 +101,18 @@ class TrutworthyBillsController extends Controller
                         $vechile-> account = $vechile-> account - $boxVechile->total_money;
                     }
                     $vechile->save();
-                    if($boxVechile->payment_type == 'bank transfer'  || $boxVechile->payment_type == 'selling points' || $boxVechile->payment_type == 'electronic payment'){
+                    if($boxVechile->payment_type == 'bank transfer'  || $boxVechile->payment_type == 'selling points' || $boxVechile->payment_type == 'electronic payment' || $boxVechile->payment_type == 'internal transfer'){
                         $boxVechile->bond_state = 'deposited';
                         $boxVechile->deposited_by =  Auth::guard('admin')->user()->id;
                         $boxVechile->deposit_date = Carbon::now();
-                        if($boxVechile->bond_type == "spend"){
-                            $this->generalBox(0, $boxVechile->total_money , Carbon::now());
-                        }
-                        else if($boxVechile->bond_type == "take"){
-                            $this->generalBox( $boxVechile->total_money,0 , Carbon::now());
-                        }
-                        
+                        if($boxVechile->payment_type !== 'internal transfer'){
+                            if($boxVechile->bond_type == "spend"){
+                                $this->generalBox(0, $boxVechile->total_money , Carbon::now());
+                            }
+                            else if($boxVechile->bond_type == "take"){
+                                $this->generalBox( $boxVechile->total_money,0 , Carbon::now());
+                            }
+                        }                        
                     }
                     if($boxVechile->payment_type == 'cash' && $boxVechile->bond_type == "spend"){
                         $boxVechile->bond_state = 'deposited';
@@ -133,15 +134,17 @@ class TrutworthyBillsController extends Controller
                     $driver-> account = $driver-> account + $boxDriver->total_money;
                 }
                 $driver->save();
-                if($boxDriver->payment_type == 'bank transfer'  || $boxDriver->payment_type == 'selling points' || $boxDriver->payment_type == 'electronic payment'){
+                if($boxDriver->payment_type == 'bank transfer'  || $boxDriver->payment_type == 'selling points' || $boxDriver->payment_type == 'electronic payment' || $boxDriver->payment_type == 'internal transfer'){
                     $boxDriver->bond_state = 'deposited';
                     $boxDriver->deposited_by =  Auth::guard('admin')->user()->id;
                     $boxDriver->deposit_date = Carbon::now();
-                    if($boxDriver->bond_type == "spend"){
-                        $this->generalBox(0, $boxDriver->total_money , Carbon::now());
-                    }
-                    else if($boxDriver->bond_type == "take"){
-                        $this->generalBox( $boxDriver->total_money,0 , Carbon::now());
+                    if($boxDriver->payment_type !== 'internal transfer'){
+                        if($boxDriver->bond_type == "spend"){
+                            $this->generalBox(0, $boxDriver->total_money , Carbon::now());
+                        }
+                        else if($boxDriver->bond_type == "take"){
+                            $this->generalBox( $boxDriver->total_money,0 , Carbon::now());
+                        }
                     }
                     $driver->save();
 
@@ -165,16 +168,18 @@ class TrutworthyBillsController extends Controller
                     $rider-> account = $rider-> account - $boxRider->total_money;
                 }
                 $rider->save();
-                if($boxRider->payment_type == 'bank transfer'  || $boxRider->payment_type == 'selling points' || $boxRider->payment_type == 'electronic payment'){
+                if($boxRider->payment_type == 'bank transfer'  || $boxRider->payment_type == 'selling points' || $boxRider->payment_type == 'electronic payment' || $boxRider->payment_type == 'internal transfer'){
                     $boxRider->bond_state = 'deposited';
                     $boxRider->deposited_by =  Auth::guard('admin')->user()->id;
                     $boxRider->deposit_date = Carbon::now();
-                    if($boxRider->bond_type == "spend"){
-                        $this->generalBox(0, $boxRider->total_money , Carbon::now());
-                    }
-                    else if($boxRider->bond_type == "take"){
-                        $this->generalBox( $boxRider->total_money,0 , Carbon::now());
-                    }
+                    if($boxRider->payment_type !== 'internal transfer'){
+                        if($boxRider->bond_type == "spend"){
+                            $this->generalBox(0, $boxRider->total_money , Carbon::now());
+                        }
+                        else if($boxRider->bond_type == "take"){
+                            $this->generalBox( $boxRider->total_money,0 , Carbon::now());
+                        }
+                    }        
                 }
                 if($boxRider->payment_type == 'cash' && $boxRider->bond_type == "spend"){
                     $boxRider->bond_state = 'deposited';
@@ -195,15 +200,17 @@ class TrutworthyBillsController extends Controller
                     $user-> account = $user-> account - $boxUser->total_money;
                 }
                 $user->save();
-                if($boxUser->payment_type == 'bank transfer'  || $boxUser->payment_type == 'selling points' || $boxUser->payment_type == 'electronic payment'){
+                if($boxUser->payment_type == 'bank transfer'  || $boxUser->payment_type == 'selling points' || $boxUser->payment_type == 'electronic payment' || $boxUser->payment_type == 'internal transfer'){
                     $boxUser->bond_state = 'deposited';
                     $boxUser->deposited_by =  Auth::guard('admin')->user()->id;
                     $boxUser->deposit_date = Carbon::now();
-                    if($boxUser->bond_type == "spend"){
-                        $this->generalBox(0, $boxUser->total_money , Carbon::now());
-                    }
-                    else if($boxUser->bond_type == "take"){
-                        $this->generalBox( $boxUser->total_money,0 , Carbon::now());
+                    if($boxUser->payment_type !== 'internal transfer'){
+                        if($boxUser->bond_type == "spend"){
+                            $this->generalBox(0, $boxUser->total_money , Carbon::now());
+                        }
+                        else if($boxUser->bond_type == "take"){
+                            $this->generalBox( $boxUser->total_money,0 , Carbon::now());
+                        }
                     }
                 }
                 if($boxUser->payment_type == 'cash' && $boxUser->bond_type == "spend"){
@@ -225,15 +232,17 @@ class TrutworthyBillsController extends Controller
                         $stakeholder-> account = $stakeholder-> account - $boxNathiraat->total_money;
                     }
                     $stakeholder->save();
-                    if($boxNathiraat->payment_type == 'bank transfer'  || $boxNathiraat->payment_type == 'selling points' || $boxNathiraat->payment_type == 'electronic payment'){
+                    if($boxNathiraat->payment_type == 'bank transfer'  || $boxNathiraat->payment_type == 'selling points' || $boxNathiraat->payment_type == 'electronic payment' || $boxNathiraat->payment_type == 'internal transfer'){
                         $boxNathiraat->bond_state = 'deposited';
                         $boxNathiraat->deposited_by =  Auth::guard('admin')->user()->id;
                         $boxNathiraat->deposit_date = Carbon::now();
-                        if($boxNathiraat->bond_type == "spend"){
-                            $this->generalBox(0, $boxNathiraat->total_money , Carbon::now());
-                        }
-                        else if($boxNathiraat->bond_type == "take"){
-                            $this->generalBox( $boxNathiraat->total_money,0 , Carbon::now());
+                        if($boxNathiraat->payment_type !== 'internal transfer'){
+                            if($boxNathiraat->bond_type == "spend"){
+                                $this->generalBox(0, $boxNathiraat->total_money , Carbon::now());
+                            }
+                            else if($boxNathiraat->bond_type == "take"){
+                                $this->generalBox( $boxNathiraat->total_money,0 , Carbon::now());
+                            }
                         }
                     }
                     if($boxNathiraat->payment_type == 'cash' && $boxNathiraat->bond_type == "spend"){

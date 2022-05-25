@@ -9,8 +9,11 @@ use Carbon\Carbon;
 use App\Models\Admin;
 use App\Models\User\BoxUser;
 use Illuminate\Support\Facades\Auth;
+use App\Traits\InternalTransfer;
+
 class BoxUserController extends Controller
 {
+    use InternalTransfer;
     public function show_box($type , $id)
     {
         $user = Admin::find($id);
@@ -61,6 +64,13 @@ class BoxUserController extends Controller
             'tax' =>        'required|numeric',
             'descrpition' =>        'required|string',
         ]);
+        if($request->has('stakeholder')){
+            $request->validate([ 
+                'stakeholder' =>'required|string|in:driver,vechile,rider,stakeholder,user',
+                'user' => 'required|integer'
+            ]); 
+            $this->transfer($request);
+        }
         $user = Admin::find($request->user_id);
         if($user !== null){
             $totalMoney =$request->money + (($request->money * $request->tax) / 100);

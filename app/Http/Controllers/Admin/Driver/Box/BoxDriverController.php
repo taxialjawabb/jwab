@@ -9,8 +9,11 @@ use Carbon\Carbon;
 use App\Models\Driver;
 use App\Models\Driver\BoxDriver;
 use Illuminate\Support\Facades\Auth;
+use App\Traits\InternalTransfer;
+
 class BoxDriverController extends Controller
 {
+    use InternalTransfer;
     public function show_box($type , $id)
     {
         $driver = Driver::find($id);
@@ -58,6 +61,13 @@ class BoxDriverController extends Controller
             'tax' =>        'required|numeric',
             'descrpition' =>        'required|string',
         ]);
+        if($request->has('stakeholder')){
+            $request->validate([ 
+                'stakeholder' =>'required|string|in:driver,vechile,rider,stakeholder,user',
+                'user' => 'required|integer'
+            ]); 
+            $this->transfer($request);
+        }
         $driver = Driver::find($request->driver_id);
         if($driver !== null){
             $totalMoney =$request->money + (($request->money * $request->tax) / 100);

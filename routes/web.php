@@ -16,6 +16,16 @@ Route::group([
 Route::group([
     'middleware' => ['auth:admin'],
 ], function () {
+
+    Route::group([
+        'prefix' => 'stakeholders',
+        // 'middleware' => ['permission:rider_box|driver_box|vechile_box|user_manage|stakeholders']
+    ],function () { 
+        Route::get('/show', [App\Http\Controllers\Admin\InternalTransfer\InternalTransferController::class, 'get_stakeholders']);
+
+        // Route::post('/delivery/add', [App\Http\Controllers\Admin\Covenant\CovenantItemManageController::class, 'save_add']);
+    });
+    
     // all file pdf and images
     Route::get('show/pdf', [App\Http\Controllers\Controller::class , 'show_pdf']);
 
@@ -375,6 +385,7 @@ Route::group([
             Route::get('/add/{id}', [App\Http\Controllers\Admin\Covenant\CovenantItemManageController::class, 'show_add']);
             Route::post('/delivery/add', [App\Http\Controllers\Admin\Covenant\CovenantItemManageController::class, 'save_add']);
         });
+        
     });
 
     

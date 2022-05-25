@@ -9,9 +9,11 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Nathiraat\Stakeholders;
 use App\Models\Nathiraat\BoxNathriaat;
+use App\Traits\InternalTransfer;
 
 class BoxStakeholdersController extends Controller
 {
+    use InternalTransfer;
     public function show_box($type , $id)
     {
         $stakeholder = Stakeholders::find($id);
@@ -62,6 +64,13 @@ class BoxStakeholdersController extends Controller
             'tax' =>        'required|numeric',
             'descrpition' =>        'required|string',
         ]);
+        if($request->has('stakeholder')){
+            $request->validate([ 
+                'stakeholder' =>'required|string|in:driver,vechile,rider,stakeholder,user',
+                'user' => 'required|integer'
+            ]); 
+            $this->transfer($request);
+        }
         $stakeholder = Stakeholders::find($request->stakeholders_id);
         if($stakeholder !== null){
             $totalMoney =$request->money + (($request->money * $request->tax) / 100);

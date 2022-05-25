@@ -7,7 +7,7 @@
 
 <form  method="POST" action="{{ url('vechile/box/add/'. $vechile->id) }}">
     @csrf
-    <input type="hidden" name="vechile_id" value="{{ $vechile->id }}" require>
+    <input type="hidden" id="stakeholder_id" name="vechile_id" value="{{ $vechile->id }}" required>
     <div class="row">
         <div class="mt-4  col-sm-12 col-md-6 col-lg-6 col-xl-6 ">
             <label for="bond_type" class="form-label">نوع السند</label>
@@ -25,6 +25,25 @@
                 <option value="selling points">نقاط بيع</option>
                 <option value="electronic payment">دفع إلكترونى</option>
             </select>
+        </div>
+        <div class="row" id="internal-transfer" style="display: none">
+            <div class="mt-4  col-sm-12 col-md-6 col-lg-6 col-xl-6 ">
+                <label for="stakeholder" class="form-label">الجهة المستهدفة</label>
+                <select value="{{ old('stakeholder') }}" name="stakeholder" id="stakeholder" class="form-select" aria-label="Default select example" id="stakeholder">
+                    <option value="" selected disabled>حدد الجهة المستهدفة</option>
+                    <option value="driver">السائقين</option>
+                    <option value="vechile">المركبات</option>
+                    <option value="rider">العملاء</option>
+                    <option value="user">المستخدمين</option>
+                    <option value="stakeholder">الجهات</option>
+                </select>
+            </div>
+            <div class="mt-4  col-sm-12 col-md-6 col-lg-6 col-xl-6 ">
+                <label for="user" class="form-label">الشخص او الجهة المستهدفة</label>
+                <select value="{{ old('user') }}" name="user" id="user" class="form-select" aria-label="Default select example" id="user" >
+                    <option value="" selected disabled>حدد الشخص المستهدف</option>
+                </select>
+            </div>
         </div>
         
         <div class="mt-4  col-sm-12 col-md-6 col-lg-6 col-xl-6 ">
@@ -67,6 +86,45 @@
 @section('scripts')
 <script>
     $(document).ready(function(){
+        
+
+        $(document).on("change", '#payment_type', function() {
+            var payment_type = $(this).val();
+            if(payment_type === 'internal transfer'){
+                $("#internal-transfer").show();
+                $('#stakeholder').prop('required',true);
+                $('#user').prop('required',true);
+            }else{
+                $("#internal-transfer").hide();
+                $('#stakeholder').prop('required',false);
+                $('#user').prop('required',false);
+            }
+        });
+
+        $(document).on("change", '#stakeholder', function(){
+        var stakeholder = $(this).val();
+        var stakeholder_id = $("#stakeholder_id").val();
+        var op = " ";
+        $.ajax({
+            type: 'get',
+            url: '{!!URL::to("stakeholders/show")!!}',
+            data: {'from': 'vechile', 'to':stakeholder, 'id': stakeholder_id},
+            success: function(data){
+                console.log(data);
+                
+            op += '<option value="" selected disabled>حدد الشخص المستهدف</option>';
+            for(var i =0 ; i < data.length; i++){
+              op += '<option value="'+data[i].id+'">'+data[i].name+'</option>';
+            }
+            $("#user").html(op);
+          },
+          error:function(e){
+            console.log('error');
+            console.log(e);
+          }
+        });
+      });
+
         $("#tax").focus(function(){
             $(this).val('');
         });
