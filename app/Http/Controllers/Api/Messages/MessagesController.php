@@ -128,7 +128,7 @@ class MessagesController extends Controller
             // $ss = "https://www.hisms.ws/api.php?send_sms&username=966532760660&password=Asd@123123&numbers=".$request->phone."&sender=TaxiAljawab&message=".$message;
             // $response = Http::get($ss);
 
-            return $this->returnSuccessMessage($code);
+            return $this->returnData('code' , $code,$driver[0]->state);
             // if($response->status() === 200){
             // }
             // else{

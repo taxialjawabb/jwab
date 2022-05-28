@@ -68,6 +68,9 @@
           @case('blocked')
               سائق مستبعد
               @break
+          @case('pending')
+              سائق قيد المراجعة
+              @break
           @default
               Default case...
         @endswitch

@@ -31,6 +31,7 @@ Route::group([
             Route::post('modify/name', [DriverAuthController::class, 'name_update']);
             Route::post('modify/phone', [DriverAuthController::class, 'phone_update']);
             Route::post('modify/password', [DriverAuthController::class, 'password_update']);
+            Route::post('id/expiration/date', [DriverAuthController::class, 'id_expiration_date_update']);
             
             Route::post('data', [DriverAuthController::class, 'driver_data']);
             

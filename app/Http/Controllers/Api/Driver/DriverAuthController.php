@@ -223,6 +223,30 @@ class DriverAuthController extends Controller
         return $this->returnError('', "Password is't not update");     
     }
 
+    public function id_expiration_date_update(Request $request)
+    {
+        $request->validate([
+            'id_expiration_date'    => ['required', 'string'],
+        ]);
+        $token = $request->header('auth-token');
+        if($token){
+            try{
+                $driverData = Auth::guard('driver-api') -> user();
+                if($driverData){
+                    $driverData -> id_expiration_date = $request->id_expiration_date;
+                    $driverData->save();
+                    $driverData->api_token = $token;
+                    $verison = Version::find(1);
+                    $driverData -> version = $verison->driver;
+                    return $this -> returnData('driver' , $driverData,'id expiration date has ben updated successfuly');
+                }
+            }catch (\Tymon\JWTAuth\Exceptions\TokenInvalidException $e){
+                return $this->returnError('', "Name is't not update");
+            }
+        }
+        return $this->returnError('', "Name is't not update");     
+    }
+
     public function send_message_driver_reset(Request $request)
     {
         $request->validate([
