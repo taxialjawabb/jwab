@@ -45,7 +45,6 @@ class RiderAuthController extends Controller
             }else{
                 $riderData = Auth::guard('rider-api') -> user();
                 $riderData -> api_token = $token;
-                $riderData -> code = "0000";
                 $verison = Version::find(1);
                 $riderData -> version = $verison->rider;
                 return $this -> returnData('rider' , $riderData,'register successfuly');
@@ -66,11 +65,11 @@ class RiderAuthController extends Controller
             return $this -> returnSuccessMessage('true');
 
         }else{
-            $code = 4455;
-            // $code = rand(1000,9999);
-            // $message ="مرحبا سائق الجواب الرمز الخاص بك : ".$code;
-            // $ss = "https://www.hisms.ws/api.php?send_sms&username=966532760660&password=Asd@123123&numbers=".$request->phone."&sender=TaxiAljawab&message=".$message;
-            // $response = Http::get($ss);
+            // $code = 4455;
+            $code = rand(1000,9999);
+            $message ="مرحبا سائق الجواب الرمز الخاص بك : ".$code;
+            $ss = "https://www.hisms.ws/api.php?send_sms&username=966532760660&password=Qp@@5SR0FFf@9nX&numbers=".$request->phone."&sender=TaxiAljawab&message=".$message;
+            $response = Http::get($ss);
             return $this -> returnData('code' , $code,'false');
         }
     }
@@ -88,25 +87,13 @@ class RiderAuthController extends Controller
             if(!$token){
                 return $this->returnError('E001', 'some thing went wrongs');
             }else{
-                $code = 4455;
-                // $code = rand(1000,9999);
-                // $message ="مرحبا عميل الجواب الرمز الخاص بك : ".$code;
-                // $ss = "https://www.hisms.ws/api.php?send_sms&username=966532760660&password=Asd@123123&numbers=".$request->phone."&sender=TaxiAljawab&message=".$message;
-                // $response = Http::get($ss);
-
                 $riderData = Auth::guard('rider-api') -> user();
                 $riderData -> remember_token = $request->device_token;
                 $riderData->update();
                 $riderData -> api_token = $token;
-                $riderData -> code = $code;
                 $verison = Version::find(1);
                 $riderData -> version = $verison->rider;
                 return $this -> returnData('rider' , $riderData,'login successfuly');
-                // if($response->status() === 200){
-                // }
-                // else{
-                //     return $this->returnError('', 'some thing is wrongs sending verfication code');
-                // }                        
             }    
         }catch(\Exception $ex){
             return $this->returnError($ex->getCode(), $ex->getMessage());
