@@ -77,7 +77,10 @@ Route::group([
         Route::post('/support/tasks/show/{page?}', [App\Http\Controllers\Api\Rider\RiderSupport\RiderSupportController::class, 'show_task']);
         Route::post('/support/task/send/replay', [App\Http\Controllers\Api\Rider\RiderSupport\RiderSupportController::class, 'send_replay_task']);
         
-
+        // Rider transfer maoney
+        Route::post('/transfer/review', [ App\Http\Controllers\Api\Transfer\TransferController::class, 'check_transfer_rider']);
+        Route::post('/transfer/confirm', [ App\Http\Controllers\Api\Transfer\ConfirmTransferController::class, 'transfer_rider']);
+        Route::post('/transfer/show/{page?}', [ App\Http\Controllers\Api\Transfer\ShowTransferedController::class, 'get_transfered_bonds']);
     });
     
     

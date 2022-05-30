@@ -66,7 +66,12 @@ Route::group([
             Route::post('maintenance/add', [App\Http\Controllers\Api\Driver\MaintenanceController::class, 'add_maintenance']);
             Route::post('maintenance/show/{page?}', [App\Http\Controllers\Api\Driver\MaintenanceController::class, 'show_maintenance']);
             
-            // App version
+            
+            // Driver transfer maoney
+            Route::post('/transfer/review', [ App\Http\Controllers\Api\Transfer\TransferController::class, 'check_transfer_driver']);
+            Route::post('/transfer/confirm', [ App\Http\Controllers\Api\Transfer\ConfirmTransferController::class, 'transfer_driver']);
+            Route::post('/transfer/show/{page?}', [ App\Http\Controllers\Api\Transfer\ShowTransferedController::class, 'get_transfered_bonds_driver']);
+        
     });
     
     
