@@ -281,9 +281,7 @@
                     else{
                         $("#confirmed-by").show();
                     }
-                    else{
-                        $("#confirmed-by").show();
-                    }
+                    
 
 
                     if(bondName == ""){
@@ -343,5 +341,4 @@
            $('#datatable_length').addClass('mb-3');
         });
         </script>
-        <script src="{{ asset('js/imgmodel.js') }}" ></script>   
 @endsection
