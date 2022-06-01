@@ -17,7 +17,7 @@ class TransferController extends Controller
             'phone'    => 'required|string|min:10|max:10',
             'money'   => 'required|numeric'
         ]);
-        $rider = \App\Models\Rider::select(['id', 'account'])->find($request->rider_id);
+        $rider = \App\Models\Rider::select(['id','phone', 'account'])->find($request->rider_id);
         if($rider === null){
             return $this->returnError('E005',"حدث خطاء ما الرجاء المحاولة مرة اخرى");
         }
@@ -31,7 +31,7 @@ class TransferController extends Controller
 
                      $job = $request->type === 'driver'? 'السائق' : 'العميل';
                      $message ="مرحبا عميل الجواب لتفعيل عميلة تحويل الرصيد من حسابك إلى حساب  ".$job.": ".$data[0]->name." رقم الهاتف:".$data[0]->phone." الرمز الخاص بك : ".$code;
-                     $ss = "https://www.hisms.ws/api.php?send_sms&username=966532760660&password=Qp@@5SR0FFf@9nX&numbers=".$request->phone."&sender=TaxiAljawab&message=".$message;
+                     $ss = "https://www.hisms.ws/api.php?send_sms&username=966532760660&password=Qp@@5SR0FFf@9nX&numbers=".$rider->phone."&sender=TaxiAljawab&message=".$message;
                      $response = Http::get($ss);
  
                      if($response->status() === 200){
@@ -60,7 +60,7 @@ class TransferController extends Controller
 
                     $job = $request->type === 'driver'? 'السائق' : 'العميل';
                     $message ="مرحبا عميل الجواب لتفعيل عميلة تحويل الرصيد من حسابك إلى حساب  ".$job.": ".$data[0]->name." رقم الهاتف:".$data[0]->phone." الرمز الخاص بك : ".$code;
-                    $ss = "https://www.hisms.ws/api.php?send_sms&username=966532760660&password=Qp@@5SR0FFf@9nX&numbers=".$request->phone."&sender=TaxiAljawab&message=".$message;
+                    $ss = "https://www.hisms.ws/api.php?send_sms&username=966532760660&password=Qp@@5SR0FFf@9nX&numbers=".$rider->phone."&sender=TaxiAljawab&message=".$message;
                     $response = Http::get($ss);
 
                     if($response->status() === 200){
@@ -92,7 +92,7 @@ class TransferController extends Controller
             'phone'    => 'required|string|min:10|max:10',
             'money'   => 'required|numeric'
         ]);
-        $driver = \App\Models\Driver::select(['id', 'account'])->find($request->driver_id);
+        $driver = \App\Models\Driver::select(['id', 'phone', 'account'])->find($request->driver_id);
         if($driver === null){
             return $this->returnError('E005',"حدث خطاء ما الرجاء المحاولة مرة اخرى");
         }
@@ -106,7 +106,7 @@ class TransferController extends Controller
 
                     $job = $request->type === 'driver'? 'السائق' : 'العميل';
                     $message ="مرحبا عميل الجواب لتفعيل عميلة تحويل الرصيد من حسابك إلى حساب  ".$job.": ".$data[0]->name." رقم الهاتف:".$data[0]->phone." الرمز الخاص بك : ".$code;
-                    $ss = "https://www.hisms.ws/api.php?send_sms&username=966532760660&password=Qp@@5SR0FFf@9nX&numbers=".$request->phone."&sender=TaxiAljawab&message=".$message;
+                    $ss = "https://www.hisms.ws/api.php?send_sms&username=966532760660&password=Qp@@5SR0FFf@9nX&numbers=".$driver->phone."&sender=TaxiAljawab&message=".$message;
                     $response = Http::get($ss);
 
                     if($response->status() === 200){
@@ -135,7 +135,7 @@ class TransferController extends Controller
 
                     $job = $request->type === 'driver'? 'السائق' : 'العميل';
                     $message ="مرحبا عميل الجواب لتفعيل عميلة تحويل الرصيد من حسابك إلى حساب  ".$job.": ".$data[0]->name." رقم الهاتف:".$data[0]->phone." الرمز الخاص بك : ".$code;
-                    $ss = "https://www.hisms.ws/api.php?send_sms&username=966532760660&password=Qp@@5SR0FFf@9nX&numbers=".$request->phone."&sender=TaxiAljawab&message=".$message;
+                    $ss = "https://www.hisms.ws/api.php?send_sms&username=966532760660&password=Qp@@5SR0FFf@9nX&numbers=".$driver->phone."&sender=TaxiAljawab&message=".$message;
                     $response = Http::get($ss);
 
                     if($response->status() === 200){
