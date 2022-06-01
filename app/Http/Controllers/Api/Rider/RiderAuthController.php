@@ -311,13 +311,14 @@ class RiderAuthController extends Controller
     {
         try{
         
-            $token = Auth::guard('rider-api')->user();
+            $token = $request->header('auth-token');
             $riderData = Auth::guard('rider-api') -> user();
-            if($riderData !== null)
+            if($riderData !== null && $token !== null)
             {
+                $riderData->token = $token;
                 $verison = Version::find(1);
                 // $riderData -> version = $verison->rider;
-                return $this -> returnData('rider_account' , $riderData->account,$verison->rider);                 
+                return $this -> returnData('rider_account' , $riderData , $verison->rider);                 
             }    
             else{
                 return $this->returnError('E001', 'some thing went wrongs');
