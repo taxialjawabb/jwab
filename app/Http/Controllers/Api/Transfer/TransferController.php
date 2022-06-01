@@ -26,7 +26,21 @@ class TransferController extends Controller
                                         ->where("phone" , $request->phone)->get();
             if(count($data) > 0){
                 if($rider->account > $request->money){
-                    return $this -> returnData('data' , $data[0], 'driver data');   
+                     // $code = 4455;
+                     $code = rand(1000,9999);
+
+                     $job = $request->type === 'driver'? 'السائق' : 'العميل';
+                     $message ="مرحبا عميل الجواب لتفعيل عميلة تحويل الرصيد من حسابك إلى حساب  ".$job.": ".$data[0]->name." رقم الهاتف:".$data[0]->phone." الرمز الخاص بك : ".$code;
+                     $ss = "https://www.hisms.ws/api.php?send_sms&username=966532760660&password=Qp@@5SR0FFf@9nX&numbers=".$request->phone."&sender=TaxiAljawab&message=".$message;
+                     $response = Http::get($ss);
+ 
+                     if($response->status() === 200){
+                         $data[0]->code = $code;
+                         return $this -> returnData('data' , $data[0], 'driver data');   
+                     }
+                     else{
+                         return $this->returnError('', 'some thing is wrongs');
+                     } 
                 }else{
                     return $this->returnError('E001',"لا يوجد رصيد كافى ");
                 }
@@ -41,7 +55,21 @@ class TransferController extends Controller
                                         ->where("phone" , $request->phone)->get();
             if(count($data) > 0){
                 if($rider->account > $request->money){
-                    return $this -> returnData('data' , $data[0], 'driver data');   
+                    // $code = 4455;
+                    $code = rand(1000,9999);
+
+                    $job = $request->type === 'driver'? 'السائق' : 'العميل';
+                    $message ="مرحبا عميل الجواب لتفعيل عميلة تحويل الرصيد من حسابك إلى حساب  ".$job.": ".$data[0]->name." رقم الهاتف:".$data[0]->phone." الرمز الخاص بك : ".$code;
+                    $ss = "https://www.hisms.ws/api.php?send_sms&username=966532760660&password=Qp@@5SR0FFf@9nX&numbers=".$request->phone."&sender=TaxiAljawab&message=".$message;
+                    $response = Http::get($ss);
+
+                    if($response->status() === 200){
+                        $data[0]->code = $code;
+                        return $this -> returnData('data' , $data[0], 'driver data');   
+                    }
+                    else{
+                        return $this->returnError('', 'some thing is wrongs');
+                    }   
                 }else{
                     return $this->returnError('E001',"لا يوجد رصيد كافى ");
                 }
@@ -73,7 +101,21 @@ class TransferController extends Controller
                                         ->where("phone" , $request->phone)->get();
             if(count($data) > 0){
                 if($driver->account > $request->money){
-                    return $this -> returnData('data' , $data[0], 'driver data');   
+                    // $code = 4455;
+                    $code = rand(1000,9999);
+
+                    $job = $request->type === 'driver'? 'السائق' : 'العميل';
+                    $message ="مرحبا عميل الجواب لتفعيل عميلة تحويل الرصيد من حسابك إلى حساب  ".$job.": ".$data[0]->name." رقم الهاتف:".$data[0]->phone." الرمز الخاص بك : ".$code;
+                    $ss = "https://www.hisms.ws/api.php?send_sms&username=966532760660&password=Qp@@5SR0FFf@9nX&numbers=".$request->phone."&sender=TaxiAljawab&message=".$message;
+                    $response = Http::get($ss);
+
+                    if($response->status() === 200){
+                        $data[0]->code = $code;
+                        return $this -> returnData('data' , $data[0], 'driver data');   
+                    }
+                    else{
+                        return $this->returnError('', 'some thing is wrongs');
+                    }
                 }else{
                     return $this->returnError('E001',"لا يوجد رصيد كافى ");
                 }
@@ -88,7 +130,21 @@ class TransferController extends Controller
                                         ->where("phone" , $request->phone)->get();
             if(count($data) > 0){
                 if($driver->account > $request->money){
-                    return $this -> returnData('data' , $data[0], 'driver data');   
+                    // $code = 4455;
+                    $code = rand(1000,9999);
+
+                    $job = $request->type === 'driver'? 'السائق' : 'العميل';
+                    $message ="مرحبا عميل الجواب لتفعيل عميلة تحويل الرصيد من حسابك إلى حساب  ".$job.": ".$data[0]->name." رقم الهاتف:".$data[0]->phone." الرمز الخاص بك : ".$code;
+                    $ss = "https://www.hisms.ws/api.php?send_sms&username=966532760660&password=Qp@@5SR0FFf@9nX&numbers=".$request->phone."&sender=TaxiAljawab&message=".$message;
+                    $response = Http::get($ss);
+
+                    if($response->status() === 200){
+                        $data[0]->code = $code;
+                        return $this -> returnData('data' , $data[0], 'driver data');   
+                    }
+                    else{
+                        return $this->returnError('', 'some thing is wrongs');
+                    }
                 }else{
                     return $this->returnError('E001',"لا يوجد رصيد كافى ");
                 }
