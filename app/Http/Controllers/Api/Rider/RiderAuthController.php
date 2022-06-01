@@ -318,7 +318,7 @@ class RiderAuthController extends Controller
                 $riderData->api_token = $token;
                 $verison = Version::find(1);
                 // $riderData -> version = $verison->rider;
-                return $this -> returnData('rider_account' , $riderData , $verison->rider);                 
+                return $this -> returnData('rider' , $riderData , $verison->rider);                 
             }    
             else{
                 return $this->returnError('E001', 'some thing went wrongs');
