@@ -307,7 +307,7 @@ class RiderAuthController extends Controller
         }
     }
 
-    public function rider_update()
+    public function rider_update(Request $request)
     {
         try{
         
