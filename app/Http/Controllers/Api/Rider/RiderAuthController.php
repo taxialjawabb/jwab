@@ -315,7 +315,7 @@ class RiderAuthController extends Controller
             $riderData = Auth::guard('rider-api') -> user();
             if($riderData !== null && $token !== null)
             {
-                $riderData->token = $token;
+                $riderData->api_token = $token;
                 $verison = Version::find(1);
                 // $riderData -> version = $verison->rider;
                 return $this -> returnData('rider_account' , $riderData , $verison->rider);                 
