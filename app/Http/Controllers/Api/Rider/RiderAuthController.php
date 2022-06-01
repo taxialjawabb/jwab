@@ -317,7 +317,7 @@ class RiderAuthController extends Controller
             {
                 $riderData->api_token = $token;
                 $verison = Version::find(1);
-                // $riderData -> version = $verison->rider;
+                $riderData -> version = $verison->rider;
                 return $this -> returnData('rider' , $riderData , $verison->rider);                 
             }    
             else{
