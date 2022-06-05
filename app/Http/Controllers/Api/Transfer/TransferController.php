@@ -31,7 +31,7 @@ class TransferController extends Controller
                      $code = rand(1000,9999);
 
                      $job = $request->type === 'driver'? 'السائق' : 'العميل';
-                     $message ="مرحبا عميل الجواب لتفعيل عميلة تحويل الرصيد من حسابك إلى حساب  ".$job.": ".$data[0]->name." رقم الهاتف:".$data[0]->phone." الرمز الخاص بك : ".$code;
+                     $message ="مرحبا عميل الجواب لتفعيل عاملية تحويل الرصيد من حسابك إلى حساب  ".$job.": ".$data[0]->name." رقم الهاتف:".$data[0]->phone." الرمز الخاص بك : ".$code;
                      $ss = "https://www.hisms.ws/api.php?send_sms&username=966532760660&password=Qp@@5SR0FFf@9nX&numbers=".$rider->phone."&sender=TaxiAljawab&message=".$message;
                      $response = Http::get($ss);
  
@@ -60,7 +60,7 @@ class TransferController extends Controller
                     $code = rand(1000,9999);
 
                     $job = $request->type === 'driver'? 'السائق' : 'العميل';
-                    $message ="مرحبا عميل الجواب لتفعيل عميلة تحويل الرصيد من حسابك إلى حساب  ".$job.": ".$data[0]->name." رقم الهاتف:".$data[0]->phone." الرمز الخاص بك : ".$code;
+                    $message ="مرحبا عميل الجواب لتفعيل عاملية تحويل الرصيد من حسابك إلى حساب  ".$job.": ".$data[0]->name." رقم الهاتف:".$data[0]->phone." الرمز الخاص بك : ".$code;
                     $ss = "https://www.hisms.ws/api.php?send_sms&username=966532760660&password=Qp@@5SR0FFf@9nX&numbers=".$rider->phone."&sender=TaxiAljawab&message=".$message;
                     $response = Http::get($ss);
 
@@ -106,7 +106,7 @@ class TransferController extends Controller
                     $code = rand(1000,9999);
 
                     $job = $request->type === 'driver'? 'السائق' : 'العميل';
-                    $message ="مرحبا عميل الجواب لتفعيل عميلة تحويل الرصيد من حسابك إلى حساب  ".$job.": ".$data[0]->name." رقم الهاتف:".$data[0]->phone." الرمز الخاص بك : ".$code;
+                    $message ="مرحبا عميل الجواب لتفعيل عاملية تحويل الرصيد من حسابك إلى حساب  ".$job.": ".$data[0]->name." رقم الهاتف:".$data[0]->phone." الرمز الخاص بك : ".$code;
                     $ss = "https://www.hisms.ws/api.php?send_sms&username=966532760660&password=Qp@@5SR0FFf@9nX&numbers=".$driver->phone."&sender=TaxiAljawab&message=".$message;
                     $response = Http::get($ss);
 
@@ -135,7 +135,7 @@ class TransferController extends Controller
                     $code = rand(1000,9999);
 
                     $job = $request->type === 'driver'? 'السائق' : 'العميل';
-                    $message ="مرحبا عميل الجواب لتفعيل عميلة تحويل الرصيد من حسابك إلى حساب  ".$job.": ".$data[0]->name." رقم الهاتف:".$data[0]->phone." الرمز الخاص بك : ".$code;
+                    $message ="مرحبا عميل الجواب لتفعيل عاملية تحويل الرصيد من حسابك إلى حساب  ".$job.": ".$data[0]->name." رقم الهاتف:".$data[0]->phone." الرمز الخاص بك : ".$code;
                     $ss = "https://www.hisms.ws/api.php?send_sms&username=966532760660&password=Qp@@5SR0FFf@9nX&numbers=".$driver->phone."&sender=TaxiAljawab&message=".$message;
                     $response = Http::get($ss);
 

@@ -64,7 +64,7 @@ class ConfirmTransferController extends Controller
                     $data[0]->account += $request->money; 
                     $rider->save();
                     $data[0]->save();
-                    $this->push_notification($data[0]->remember_token, 'تم تحويل رصيد إلى حسابك' , $descrpition , 'payment');
+                    $this->push_notification($data[0]->remember_token, 'تم تحويل رصيد إلى حسابك' , $descrpition , 'transfer');
 
                     return $this -> returnSuccessMessage($descrpition);
 
@@ -119,7 +119,7 @@ class ConfirmTransferController extends Controller
                     $data[0]->account += $request->money; 
                     $rider->save();
                     $data[0]->save();
-                    $this->push_notification($data[0]->remember_token, 'تم تحويل رصيد إلى حسابك' , $descrpition , 'payment');
+                    $this->push_notification($data[0]->remember_token, 'تم تحويل رصيد إلى حسابك' , $descrpition , 'transfer');
 
                     return $this -> returnSuccessMessage($descrpition);
 
@@ -192,7 +192,7 @@ class ConfirmTransferController extends Controller
                     $data[0]->account += $request->money; 
                     $driver->save();
                     $data[0]->save();
-                    $this->push_notification($data[0]->remember_token, 'تم تحويل رصيد إلى حسابك' , $descrpition , 'payment');
+                    $this->push_notification($data[0]->remember_token, 'تم تحويل رصيد إلى حسابك' , $descrpition , 'transfer');
 
                     return $this -> returnSuccessMessage($descrpition);
 
@@ -247,7 +247,7 @@ class ConfirmTransferController extends Controller
                     $data[0]->account += $request->money; 
                     $driver->save();
                     $data[0]->save();
-                    $this->push_notification($data[0]->remember_token, 'تم تحويل رصيد إلى حسابك' , $descrpition , 'payment');
+                    $this->push_notification($data[0]->remember_token, 'تم تحويل رصيد إلى حسابك' , $descrpition , 'transfer');
 
                     return $this -> returnSuccessMessage($descrpition);
 
