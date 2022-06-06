@@ -67,7 +67,7 @@ class RiderAuthController extends Controller
         }else{
             // $code = 4455;
             $code = rand(1000,9999);
-            $message ="مرحبا سائق الجواب الرمز الخاص بك : ".$code;
+            $message ="مرحبا عميل الجواب الرمز الخاص بك : ".$code;
             $ss = "https://www.hisms.ws/api.php?send_sms&username=966532760660&password=Qp@@5SR0FFf@9nX&numbers=".$request->phone."&sender=TaxiAljawab&message=".$message;
             $response = Http::get($ss);
             return $this -> returnData('code' , $code,'false');
