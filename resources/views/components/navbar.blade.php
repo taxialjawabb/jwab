@@ -159,6 +159,31 @@
                     </li>
                     @endif
 
+
+                    @if(Auth::user()->isAbleTo('warning_driver') || Auth::user()->isAbleTo('warning_vechile') || Auth::user()->isAbleTo('warning_user'))
+                    <li class="mb-1">
+                        <button class="btn btn-toggle  btn-toggle-second  align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#warning" aria-expanded="false">
+                        التنبيهات
+                        </button>
+                        <div class="collapse " id="warning">
+                        <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                            
+                            @if(Auth::user()->isAbleTo('warning_driver'))
+                            <li><a href="{{ url('bills/waiting/confrim/vechile') }}" class="link-dark rounded">تنبيهات السائقين </a></li>
+                            @endif
+
+                            @if(Auth::user()->isAbleTo('warning_vechile'))
+                            <li><a href="{{ url('bills/waiting/trustworthy/vechile') }}" class="link-dark rounded">تنبيهات المركبات  </a></li>
+                            @endif
+
+                            @if(Auth::user()->isAbleTo('warning_user'))
+                            <li><a href="{{ url('bills/waiting/deposit/vechile') }}" class="link-dark rounded">تنبيهات المستخدمين </a></li>
+                            @endif          
+                        </ul>
+                        </div>
+                    </li>
+                    @endif
+
                     <li class="border-top my-1"></li>
 
                     @if(Auth::user()->isAbleTo('nathiraat_box'))

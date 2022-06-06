@@ -23,15 +23,15 @@ class MessagesController extends Controller
             return $this->returnError('E001', 'phone number is already exist');
         }
         else{
-            $code = rand(1000,9999);
-            // $code = 4455;
+            // $code = rand(1000,9999);
+            $code = 4455;
             $message ="مرحبا عميل الجواب الرمز الخاص بك : ".$code;
             
-            $ss = "https://www.hisms.ws/api.php?send_sms&username=966532760660&password=Qp@@5SR0FFf@9nX&numbers=".$request->phone."&sender=TaxiAljawab&message=".$message;
-            $response = Http::get($ss);
+            // $ss = "https://www.hisms.ws/api.php?send_sms&username=966532760660&password=Qp@@5SR0FFf@9nX&numbers=".$request->phone."&sender=TaxiAljawab&message=".$message;
+            // $response = Http::get($ss);
 
+            return $this->returnSuccessMessage($code);
             if($response->status() === 200){
-                return $this->returnSuccessMessage($code);
             }
             else{
                 return $this->returnError('', 'some thing is wrongs');
@@ -43,15 +43,15 @@ class MessagesController extends Controller
         $request->validate([
             'phone'    => 'required|string|min:10|max:14' 
         ]);
-            // $code = 4455;
-            $code = rand(1000,9999);
+            $code = 4455;
+            // $code = rand(1000,9999);
             $message ="مرحبا عميل الجواب الرمز الخاص بك : ".$code;
             
-            $ss = "https://www.hisms.ws/api.php?send_sms&username=966532760660&password=Qp@@5SR0FFf@9nX&numbers=".$request->phone."&sender=TaxiAljawab&message=".$message;
-            $response = Http::get($ss);
+            // $ss = "https://www.hisms.ws/api.php?send_sms&username=966532760660&password=Qp@@5SR0FFf@9nX&numbers=".$request->phone."&sender=TaxiAljawab&message=".$message;
+            // $response = Http::get($ss);
 
+            return $this->returnSuccessMessage($code);
             if($response->status() === 200){
-                return $this->returnSuccessMessage($code);
             }
             else{
                 return $this->returnError('', 'some thing is wrongs');
@@ -69,15 +69,15 @@ class MessagesController extends Controller
             return $this->returnError('', 'phone number is exist');
         }
         else{
-            // $code = 4455;
-            $code = rand(1000,9999);
+            $code = 4455;
+            // $code = rand(1000,9999);
             $message ="مرحبا عميل الجواب الرمز الخاص بك : ".$code .' لأعادة تغيير كلمة السرى الخاص بك. ';
             
-            $ss = "https://www.hisms.ws/api.php?send_sms&username=966532760660&password=Qp@@5SR0FFf@9nX&numbers=".$request->phone."&sender=TaxiAljawab&message=".$message;
-            $response = Http::get($ss);
+            // $ss = "https://www.hisms.ws/api.php?send_sms&username=966532760660&password=Qp@@5SR0FFf@9nX&numbers=".$request->phone."&sender=TaxiAljawab&message=".$message;
+            // $response = Http::get($ss);
 
+            return $this->returnSuccessMessage($code);
             if($response->status() === 200){
-                return $this->returnSuccessMessage($code);
             }
             else{
                 return $this->returnError('', 'some thing is wrongs');
@@ -95,15 +95,15 @@ class MessagesController extends Controller
             return $this->returnError('', 'phone number is not exist');
         }
         else{
-            // $code = 4455;
-            $code = rand(1000,9999);
+            $code = 4455;
+            // $code = rand(1000,9999);
             $message ="مرحبا سائق الجواب الرمز الخاص بك : ".$code;
             
-            $ss = "https://www.hisms.ws/api.php?send_sms&username=966532760660&password=Qp@@5SR0FFf@9nX&numbers=".$request->phone."&sender=TaxiAljawab&message=".$message;
-            $response = Http::get($ss);
+            // $ss = "https://www.hisms.ws/api.php?send_sms&username=966532760660&password=Qp@@5SR0FFf@9nX&numbers=".$request->phone."&sender=TaxiAljawab&message=".$message;
+            // $response = Http::get($ss);
 
+            return $this->returnSuccessMessage($code);
             if($response->status() === 200){
-                return $this->returnSuccessMessage($code);
             }
             else{
                 return $this->returnError('', 'some thing is wrongs');
@@ -121,15 +121,15 @@ class MessagesController extends Controller
             return $this->returnError('', 'phone number is not exist');
         }
         else{
-            // $code = 4455;
-            $code = rand(1000,9999);
+            $code = 4455;
+            // $code = rand(1000,9999);
             $message ="مرحبا سائق الجواب الرمز الخاص بك : ".$code .' لأعادة تغيير كلمة السرى الخاص بك. ';
             
-            $ss = "https://www.hisms.ws/api.php?send_sms&username=966532760660&password=Qp@@5SR0FFf@9nX&numbers=".$request->phone."&sender=TaxiAljawab&message=".$message;
-            $response = Http::get($ss);
+            // $ss = "https://www.hisms.ws/api.php?send_sms&username=966532760660&password=Qp@@5SR0FFf@9nX&numbers=".$request->phone."&sender=TaxiAljawab&message=".$message;
+            // $response = Http::get($ss);
 
+            return $this->returnData('code' , $code,$driver[0]->state);
             if($response->status() === 200){
-                return $this->returnData('code' , $code,$driver[0]->state);
             }
             else{
                 return $this->returnError('', 'some thing is wrongs');
@@ -143,15 +143,15 @@ class MessagesController extends Controller
             'phone'    => 'required|string|min:10|max:14' 
         ]);
 
-            // $code = 4455;
-            $code = rand(1000,9999);
+            $code = 4455;
+            // $code = rand(1000,9999);
             $message ="مرحبا سائق الجواب الرمز الخاص بك : ".$code;
             
-            $ss = "https://www.hisms.ws/api.php?send_sms&username=966532760660&password=Qp@@5SR0FFf@9nX&numbers=".$request->phone."&sender=TaxiAljawab&message=".$message;
-            $response = Http::get($ss);
+            // $ss = "https://www.hisms.ws/api.php?send_sms&username=966532760660&password=Qp@@5SR0FFf@9nX&numbers=".$request->phone."&sender=TaxiAljawab&message=".$message;
+            // $response = Http::get($ss);
 
+            return $this->returnSuccessMessage($code);
             if($response->status() === 200){
-                return $this->returnSuccessMessage($code);
             }
             else{
                 return $this->returnError('', 'some thing is wrongs');
