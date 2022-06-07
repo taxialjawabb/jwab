@@ -65,12 +65,13 @@ class RiderAuthController extends Controller
             return $this -> returnSuccessMessage('true');
 
         }else{
-            $code = 4455;
-            // $code = rand(1000,9999);
-            // $message ="مرحبا عميل الجواب الرمز الخاص بك : ".$code;
-            // $ss = "https://www.hisms.ws/api.php?send_sms&username=966532760660&password=Qp@@5SR0FFf@9nX&numbers=".$request->phone."&sender=TaxiAljawab&message=".$message;
-            // $response = Http::get($ss);
-            return $this -> returnData('code' , $code,'false');
+            $message ="مرحبا عميل الجواب الرمز الخاص بك : ";            
+            $code = $this->send_code($request->phone, $message);
+            if($code !== false){
+                return $this -> returnData('code' , $code, 'false');
+            }else{
+                return $this->returnError('', "verification code has not sent ");
+            }
         }
     }
 

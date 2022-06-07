@@ -169,15 +169,15 @@
                         <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                             
                             @if(Auth::user()->isAbleTo('warning_driver'))
-                            <li><a href="{{ url('bills/waiting/confrim/vechile') }}" class="link-dark rounded">تنبيهات السائقين </a></li>
+                            <li><a href="{{ url('warning/driver/id_expiration_date') }}" class="link-dark rounded">تنبيهات السائقين </a></li>
                             @endif
 
                             @if(Auth::user()->isAbleTo('warning_vechile'))
-                            <li><a href="{{ url('bills/waiting/trustworthy/vechile') }}" class="link-dark rounded">تنبيهات المركبات  </a></li>
+                            <li><a href="{{ url('warning/vechile/driving_license_expiration_date') }}" class="link-dark rounded">تنبيهات المركبات  </a></li>
                             @endif
 
                             @if(Auth::user()->isAbleTo('warning_user'))
-                            <li><a href="{{ url('bills/waiting/deposit/vechile') }}" class="link-dark rounded">تنبيهات المستخدمين </a></li>
+                            <li><a href="{{ url('warning/user/Employment_contract_expiration_date') }}" class="link-dark rounded">تنبيهات المستخدمين </a></li>
                             @endif          
                         </ul>
                         </div>

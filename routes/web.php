@@ -385,10 +385,16 @@ Route::group([
             Route::get('/add/{id}', [App\Http\Controllers\Admin\Covenant\CovenantItemManageController::class, 'show_add']);
             Route::post('/delivery/add', [App\Http\Controllers\Admin\Covenant\CovenantItemManageController::class, 'save_add']);
         });
-        
-    });
+    }); // end covenant
 
-    
+    Route::group([
+        'prefix' => 'warning',
+        'middleware' => ['permission:warning_driver|warning_vechile|warning_user']
+    ],function () { 
+        Route::get('/driver/{type}', [App\Http\Controllers\Admin\Warning\DriverWarningController::class, 'show'])->middleware(['permission:warning_driver']);
+        Route::get('/vechile/{type}', [App\Http\Controllers\Admin\Warning\VechileWarningController::class, 'show'])->middleware(['permission:warning_vechile']);
+        Route::get('/user/{type}', [App\Http\Controllers\Admin\Warning\UserWarningController::class, 'show'])->middleware(['permission:warning_user']);
+    });
     
 }); //end middleware auth:admin all
 
