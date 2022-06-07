@@ -10,8 +10,8 @@ trait GeneralTrait
 
     public function send_code($phone , $message)
     {
-        $code = 4455;
-        // $code = rand(1000,9999);
+        // $code = 4455;
+        $code = rand(1000,9999);
         $message .= $code;
         $time = \Carbon\Carbon::now()->format('H:i');
         $date = \Carbon\Carbon::now()->toDateString();
