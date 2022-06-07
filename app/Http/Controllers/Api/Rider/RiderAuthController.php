@@ -65,7 +65,7 @@ class RiderAuthController extends Controller
             return $this -> returnSuccessMessage('true');
 
         }else{
-            $message ="مرحبا عميل الجواب الرمز الخاص بك : ";            
+            $message ="مرحبا عميل الجواب الرمز الخاص بك : ";    
             $code = $this->send_code($request->phone, $message);
             if($code !== false){
                 return $this -> returnData('code' , $code, 'false');

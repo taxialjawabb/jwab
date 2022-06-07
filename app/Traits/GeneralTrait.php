@@ -13,8 +13,9 @@ trait GeneralTrait
         // $code = 4455;
         $code = rand(1000,9999);
         $message .= $code;
-        
-        $ss = "https://www.hisms.ws/api.php?send_sms&username=966532760660&password=Qp@@5SR0FFf@9nX&numbers=".$phone."&sender=TaxiAljawab&message=".$message;
+        $time = \Carbon\Carbon::now()->format('H:i');
+        $date = \Carbon\Carbon::now()->toDateString();
+        $ss = "https://www.hisms.ws/api.php?send_sms&username=966532760660&password=Qp@@5SR0FFf@9nX&numbers=".$phone."&sender=TaxiAljawab&message=".$message."&date=".$date."&time=".$time;
         $response = Http::get($ss);
         if($response->status() === 200){
             return $code;
