@@ -91,7 +91,7 @@ class TransferController extends Controller
             if(count($data) > 0){
                 if($driver->account > $request->money){
                     $job = $request->type === 'driver'? 'السائق' : 'العميل';
-                    $message ="مرحبا عميل الجواب لتفعيل عملية تحويل الرصيد من حسابك إلى حساب  ".$job.": ".$data[0]->name." رقم الهاتف:".$data[0]->phone." الرمز الخاص بك : ";
+                    $message ="مرحبا سائق الجواب لتفعيل عملية تحويل الرصيد من حسابك إلى حساب  ".$job.": ".$data[0]->name." رقم الهاتف:".$data[0]->phone." الرمز الخاص بك : ";
                     $code = $this->send_code($driver->phone, $message);
                     if($code !== false){
                         $data[0]->code = $code;
@@ -114,7 +114,7 @@ class TransferController extends Controller
             if(count($data) > 0){
                 if($driver->account > $request->money){
                     $job = $request->type === 'driver'? 'السائق' : 'العميل';
-                    $message ="مرحبا عميل الجواب لتفعيل عملية تحويل الرصيد من حسابك إلى حساب  ".$job.": ".$data[0]->name." رقم الهاتف:".$data[0]->phone." الرمز الخاص بك : ";
+                    $message ="مرحبا سائق الجواب لتفعيل عملية تحويل الرصيد من حسابك إلى حساب  ".$job.": ".$data[0]->name." رقم الهاتف:".$data[0]->phone." الرمز الخاص بك : ";
                     $code = $this->send_code($driver->phone , $message);
                     if($code !== false){
                         $data[0]->code = $code;
