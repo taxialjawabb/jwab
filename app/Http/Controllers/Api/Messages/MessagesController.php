@@ -98,10 +98,13 @@ class MessagesController extends Controller
             return $this->returnError('', 'phone number is not exist');
         }
         else{
-            $message ="مرحبا سائق الجواب لأعادة تغيير كلمة السرى الخاص بك الرمز الخاص بك:";
-            $code = $this->send_code($request->phone, $message);
+            $message ="مرحبا سائق الجواب لأعادة تغيير كلمة المرور الخاص بك الرمز الخاص بك:";
+            $code = false;
+            if($driver[0]->state === 'active'){
+                $code = $this->send_code($request->phone, $message);
+            }
             if($code !== false){
-                return $this->returnData('code' , $code,$driver[0]->state);
+                return $this->returnData('code' , $code ,$driver[0]->state);
             }else{
                 return $this->returnError('', "verification code has not sent ");
             }
