@@ -84,5 +84,11 @@ class DailyRevenueDriver extends Command
             
         }
         // return dd($data);
+
+        $drivers = Driver::select(['id', 'available'])->get();
+        foreach ($drivers as $driver) {
+            $driver->available = 0;
+            $driver->save();
+        }
     }
 }

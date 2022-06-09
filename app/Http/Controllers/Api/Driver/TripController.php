@@ -72,7 +72,6 @@ class TripController extends Controller
         }else{
             return $this->returnError('E003', 'trip not exist');
         }
-        
     }
     public function available()
     {
@@ -81,6 +80,38 @@ class TripController extends Controller
             try {
                 $driverData = Auth::guard('driver-api') -> user();
                 $driverData ->available = !$driverData->available ;
+                $driverData->save();
+        }catch(\Exception $ex){
+                return  $this -> returnError('','some thing went wrongs');
+            }
+            return $this -> returnData('available' , $driverData->available,'driver state');
+        }else{
+            return $this->returnError('', 'some thing is wrongs');
+        }
+    }
+    public function online()
+    {
+        $token = request()->header('auth-token');
+        if($token){
+            try {
+                $driverData = Auth::guard('driver-api') -> user();
+                $driverData ->available = 1 ;
+                $driverData->save();
+        }catch(\Exception $ex){
+                return  $this -> returnError('','some thing went wrongs');
+            }
+            return $this -> returnData('available' , $driverData->available,'driver state');
+        }else{
+            return $this->returnError('', 'some thing is wrongs');
+        }
+    }
+    public function offline()
+    {
+        $token = request()->header('auth-token');
+        if($token){
+            try {
+                $driverData = Auth::guard('driver-api') -> user();
+                $driverData ->available = 0 ;
                 $driverData->save();
         }catch(\Exception $ex){
                 return  $this -> returnError('','some thing went wrongs');

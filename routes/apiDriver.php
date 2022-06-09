@@ -47,6 +47,8 @@ Route::group([
             Route::post('request/response', [TripController::class, 'request']);
             Route::post('request/reject', [TripController::class, 'reject']);
             Route::post('available', [TripController::class, 'available']);
+            Route::post('online', [TripController::class, 'online']);
+            Route::post('offline', [TripController::class, 'offline']);
             Route::post('city/trip/start', [TripController::class, 'start_trip_city']);
             Route::post('city/trip/end', [TripController::class, 'end_trip_city']);
             

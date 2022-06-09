@@ -79,10 +79,17 @@ class DriverAuthController extends Controller
     public function driver_data(Request $request)
     {
         $driverData = Auth::guard('driver-api') -> user();
-        $driverData->api_token  = $request->header('auth-token');
-        $verison = Version::find(1);
-        $driverData -> version = $verison->driver;
-        return $this -> returnData('driver' , $driverData,'driver data');
+        if($driverData !== null){
+            $driverData->available = 1;
+            $driverData->api_token  = $request->header('auth-token');
+            $verison = Version::find(1);
+            $driverData -> version = $verison->driver;
+            return $this -> returnData('driver' , $driverData,'driver data');
+        }
+        else{
+            return $this->returnError('E001', "driver not exist ");
+
+        }
     }
     public function logout(Request $request)
     {
