@@ -81,6 +81,7 @@ class DriverAuthController extends Controller
         $driverData = Auth::guard('driver-api') -> user();
         if($driverData !== null){
             $driverData->available = 1;
+            $driverData->save();
             $driverData->api_token  = $request->header('auth-token');
             $verison = Version::find(1);
             $driverData -> version = $verison->driver;
