@@ -63,7 +63,7 @@ class TripController extends Controller
                 
 
                 $cat = Category::find($request->category_id);
-                $drivers = Driver::select(['driver.id', 'driver.name', 'remember_token', 'secondary_id'])
+                $drivers = Driver::select(['driver.id', 'driver.name', 'remember_token', 'vechile.secondary_id'])
                 ->leftJoin('vechile', 'driver.current_vechile', '=', 'vechile.id')
                 ->where('vechile.category_id' , $request->category_id)->get();
                 $data->basic_price   =$cat->basic_price ;
@@ -73,10 +73,13 @@ class TripController extends Controller
                 $data->name   = $rider->name;
                 $data->idTrip = $data->id;
                 foreach ($drivers as $driver) {
+                    
                     $sec = SecondaryCategory::find($driver->secondary_id);
-                    $data->percentage_type   =$sec->percentage_type ;
-                    $data->category_percent   =$sec->category_percent ;
-                    $this->push_notification( $driver->remember_token , 'تم أضافة رحلة جديدة' , $data,'new_trip' );
+                    if($sec !== null){
+                        $data->percentage_type   =$sec->percentage_type ;
+                        $data->category_percent   =$sec->category_percent ;
+                        $this->push_notification( $driver->remember_token , 'تم أضافة رحلة جديدة' , $data,'new_trip' );
+                    }
                 }
 
                 return $this -> returnData('data' , $data,'تم حفظ طلبك قيد الانتظار');                
