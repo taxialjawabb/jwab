@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Http;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use App\Models\Category;
+use App\Models\SecondaryCategory;
 use App\Traits\GeneralTrait;
 use App\Traits\TripCost;
 
@@ -62,18 +63,19 @@ class TripController extends Controller
                 
 
                 $cat = Category::find($request->category_id);
-                $drivers = Driver::select(['driver.id', 'driver.name', 'remember_token'])
+                $drivers = Driver::select(['driver.id', 'driver.name', 'remember_token', 'secondary_id'])
                 ->leftJoin('vechile', 'driver.current_vechile', '=', 'vechile.id')
                 ->where('vechile.category_id' , $request->category_id)->get();
                 $data->basic_price   =$cat->basic_price ;
                 $data->km_cost   =$cat->km_cost ;
                 $data->minute_cost   =$cat->minute_cost ;
-                $data->percentage_type   =$cat->percentage_type ;
-                $data->category_percent   =$cat->category_percent ;
                 $data->phone   = $rider->phone ;
                 $data->name   = $rider->name;
                 $data->idTrip = $data->id;
                 foreach ($drivers as $driver) {
+                    $sec = SecondaryCategory::find($driver->secondary_id);
+                    $data->percentage_type   =$sec->percentage_type ;
+                    $data->category_percent   =$sec->category_percent ;
                     $this->push_notification( $driver->remember_token , 'تم أضافة رحلة جديدة' , $data,'new_trip' );
                 }
 

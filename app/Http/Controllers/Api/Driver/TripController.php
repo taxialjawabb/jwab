@@ -241,14 +241,14 @@ class TripController extends Controller
         category.basic_price,
         category.km_cost,
         category.minute_cost,
-        category.percentage_type,
-        category.category_percent,
+        secondary_category.percentage_type as percentage_type,
+        secondary_category.category_percent as category_percent,
         rider.id as rider_id,
         rider.phone,
         rider.name
-        from trips , vechile, category , rider
-        where rider.id= trips.rider_id and  trips.vechile_id= category.id and vechile.category_id = category.id 
-        and trips.trip_type ='internal' and trips.state='request' and vechile.id = ?", [$request->current_vechile]);
+        from trips , vechile, category , rider ,secondary_category
+        where rider.id= trips.rider_id and  trips.vechile_id= category.id and vechile.category_id = category.id and  vechile.secondary_id  =secondary_category.id
+        and trips.trip_type ='internal' and trips.state='request' and vechile.id = ? ", [$request->current_vechile]);
 
         return $this -> returnData('data' , $data, ' trips');   
         
