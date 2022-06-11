@@ -128,7 +128,7 @@ class DriverRiderController extends Controller
                 
             $money = round($request->company , 2);
             $description =  'تم خصم مبلغ  ' . round($request->company, 2). ' عائد للمركبة رقم ' .$vechile->id .' على رحلة رقم ' .$request->trip_id .' تكلفة الرحلة ' . round($request->total, 2) ;
-            $descriptionRider = 'عملية الدفع نقدا بنجاح';
+            $descriptionRider = 'عملية الدفع نقدا بنجاح ';
             $rider = Rider::find($trip->rider_id);
             if($request->bons > 0){
                 $bons = $request->bons ;
