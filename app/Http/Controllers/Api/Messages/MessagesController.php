@@ -100,7 +100,7 @@ class MessagesController extends Controller
         else{
             $message ="مرحبا سائق الجواب لأعادة تغيير كلمة المرور الخاص بك الرمز الخاص بك:";
             $code = -1;
-            if($driver[0]->state === 'active'){
+            if($driver[0]->state === 'active' || $driver[0]->state === 'waiting'){
                 $code = $this->send_code($request->phone, $message);
             }
             if($code !== false){
