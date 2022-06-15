@@ -375,8 +375,12 @@ Route::group([
         Route::get('/delivery/add/{id}', [App\Http\Controllers\Admin\Driver\Covenant\CovenantDriverController::class, 'show_add']);
         Route::get('/select/item', [App\Http\Controllers\Admin\Driver\Covenant\CovenantDriverController::class, 'show_item']);
         Route::post('/delivery/add', [App\Http\Controllers\Admin\Driver\Covenant\CovenantDriverController::class, 'save_add']);
-
-
+        
+        Route::post('/delivery/user', [App\Http\Controllers\Admin\Covenant\CovenantManageController::class, 'receive_to_user']);
+        Route::get('/show/note/{id}', [App\Http\Controllers\Admin\Covenant\CovenantItemManageController::class, 'show_note']);
+        Route::get('/add/note/{id}', [App\Http\Controllers\Admin\Covenant\CovenantItemManageController::class, 'add_note']);
+        Route::post('/add/note', [App\Http\Controllers\Admin\Covenant\CovenantItemManageController::class, 'save_note']);
+        
         Route::group([
             'prefix' => 'item',
             // 'middleware' => ['permission:user_manage|user_own_tasks']

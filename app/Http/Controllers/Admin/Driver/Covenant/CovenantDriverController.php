@@ -42,6 +42,16 @@ class CovenantDriverController extends Controller
         ]);
         $covenantItem = CovenantItem::find($request->covenant_item);
         if($covenantItem !== null){
+            $prevUserReceive =  CovenantRecord::where('item_id', $request->covenant_item)
+                                        ->where('forign_type', 'user')
+                                        ->where('receive_date', null)
+                                        ->orderBy('delivery_date', 'desc')->get();
+            $adminDelivery = count($prevUserReceive) > 0 ? $prevUserReceive[0] : null;
+            if($adminDelivery !== null){
+                $adminDelivery->receive_date = Carbon::now();
+                $adminDelivery->receive_by = Auth::guard('admin')->user()->id;
+                $adminDelivery->save();
+            }
             $covenantItem->current_driver = $request->id ;
             $covenantItem-> state = 'active' ;
             $covenantItem-> delivery_date = Carbon::now();
@@ -52,7 +62,7 @@ class CovenantDriverController extends Controller
             $covenantRecord->item_id = $request->covenant_item;
             $covenantRecord->delivery_date = Carbon::now();
             $covenantRecord->delivery_by = Auth::guard('admin')->user()->id;
-            
+           
             $covenantItem->save();
             $covenantRecord->save();
             
@@ -65,8 +75,12 @@ class CovenantDriverController extends Controller
     }
     public function show_item(Request $request)
     {
-        $items =   CovenantItem::where('covenant_name', $request->id)->where('state', null)->get();
-
+        $items =   CovenantItem::where('covenant_name', $request->id)
+                                ->where(function($query){
+                                    $query->where('state', 'waiting')
+                                        ->orWhere('state', null);
+                                        })->get();
+        // $items =   DB::select("select id, serial_number from covenant_items where covenant_name = ? and (state = 'waiting' or state is null ); ", [$request->id]);
         return response()->json($items);
 
         

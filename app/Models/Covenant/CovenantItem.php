@@ -21,5 +21,8 @@ class CovenantItem extends Model
         'state',
         'delivery_date'
     ];
-
+    
+    public function item_recored(){
+        return $this->hasMany(Covenant\CovenantItem::class, 'covenant_name', 'covenant_name');
+    }
 }

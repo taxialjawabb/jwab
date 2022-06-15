@@ -15,6 +15,7 @@
                                     <th>تاريخ الاضافة</th>
                                     <th>السائق المستلم</th>
                                     <th>تاريخ التسلم</th>
+                                    <th></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -28,7 +29,7 @@
                                             مستلمة
                                             @break
                                         @case('waiting')
-المخزن
+                                            المخزن  
                                             @break
                                         @case('broken')
                                             معطلة
@@ -41,6 +42,10 @@
                                     <td>{{ $covenant->add_date}}</td>
                                     <td>{{ $covenant->driver_name }}</td>
                                     <td>{{ $covenant->delivery_date }}</td>
+                                    <td>
+                                        <a href="{{ url('covenant/show/note/'.$covenant->id) }}"
+                                        class="btn btn-primary">الملاحظات</a>
+                                    </td>
                                 </tr>
                                 @endforeach
                             </tbody>

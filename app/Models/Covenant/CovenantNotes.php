@@ -8,18 +8,18 @@ use Illuminate\Database\Eloquent\Model;
 class CovenantNotes extends Model
 {
     
-    protected $table = 'notes_covenant';
+    protected $table = 'covenant_notes';
     use HasFactory;
 
     public $timestamps = false; 
 
     protected $fillable =  [
         'record_id',
+        'note_state',
         'subject',
         'description',
         'add_date',
-        'add_by',
-        'image',
+        'add_by'
     ];
 
 }

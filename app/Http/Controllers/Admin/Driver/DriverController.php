@@ -206,6 +206,7 @@ class DriverController extends Controller
         
     }
     public function save_state(Request $request){
+        // return Auth::guard('admin')->user()->hasPermission('user_delivery_covenant');
         $driver = Driver::find($request->id);
         
         if($request->has('item')){
@@ -213,13 +214,17 @@ class DriverController extends Controller
                 session()->flash('error', 'يجب تسلم جميع العهد المسلمة');
                 return back(); 
             }
+            $prevUserReceive =  CovenantRecord::where('forign_type', 'user')
+                    ->where('receive_date', null)->orderBy('delivery_date', 'desc')->get();
+            $adminDelivery = count($prevUserReceive) > 0 ? $prevUserReceive[0] : null;
             foreach ($request->item as $itemId) {
-                $record = CovenantRecord::where('forign_type','driver')->where('forign_id', $request->id)->where('item_id', $itemId)
-                ->where('receive_date', null)->where('receive_by', null)->get();
+                $record = CovenantRecord::where('forign_type','driver')->where('forign_id', $request->id)
+                                        ->where('item_id', $itemId)->where('receive_date', null)
+                                        ->where('receive_by', null)->get();
                 $covenantItem = CovenantItem::find($itemId);
                 if($covenantItem!== null){
                     $covenantItem->current_driver = null ;
-                    $covenantItem-> state = null ;
+                    $covenantItem-> state = 'waiting' ;
                     $covenantItem-> delivery_date = null;
             
                     $covenantItem->save();
@@ -228,6 +233,15 @@ class DriverController extends Controller
                     $record[0]->receive_date = Carbon::now();
                     $record[0]->receive_by = Auth::guard('admin')->user()->id;
                     $record[0]->save();
+                }
+                if($adminDelivery !== null){
+                    $covenantRecord  = new  CovenantRecord;
+                    $covenantRecord->forign_type = 'user';
+                    $covenantRecord->forign_id = $adminDelivery->forign_id;
+                    $covenantRecord->item_id = $covenantItem->id;
+                    $covenantRecord->delivery_date = Carbon::now();
+                    $covenantRecord->delivery_by = Auth::guard('admin')->user()->id;
+                    $covenantRecord->save();
                 }
             }
         }
@@ -317,6 +331,7 @@ class DriverController extends Controller
         
     }
     public function save_take(Request $request){
+        // return $request->all();
         $request->validate([ 
             'driver_id' =>'required|integer',
             'vechile_id' => 'required|integer',
@@ -324,11 +339,22 @@ class DriverController extends Controller
         ]);  
         if($request->has('covenant_item')){
             foreach ($request->covenant_item as $item) {
+                $prevUserReceive =  CovenantRecord::where('item_id', $item)
+                ->where('forign_type', 'user')
+                ->where('receive_date', null)->get();
+                $adminDelivery = count($prevUserReceive) > 0 ? $prevUserReceive[0] : null;
+                
+                if($adminDelivery !== null){
+                    $adminDelivery->receive_date = Carbon::now();
+                    $adminDelivery->receive_by = Auth::guard('admin')->user()->id;
+                    $adminDelivery->save();
+                }
                 $covenantItem = CovenantItem::find($item);
                 if($covenantItem !== null){
                     $covenantItem->current_driver = $request->driver_id ;
                     $covenantItem-> state = 'active' ;
                     $covenantItem-> delivery_date = Carbon::now();
+
                     
                     $covenantRecord  = new CovenantRecord;
                     $covenantRecord->forign_type = 'driver';

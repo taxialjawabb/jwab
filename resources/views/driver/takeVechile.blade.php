@@ -54,6 +54,8 @@
                 url: '{!!URL::to("covenant/select/item")!!}',
                 data: {'id':covenant},
                 success: function(data){
+                    // console.log(data);
+                    // return 0;
                     op += '<option  disabled value="" selected hidden> حدد العهده المستلمة</option>';
                     for(var i =0 ; i < data.length; i++){
                         var serial = data[i].serial_number == null ? 'لا يوجد رقم تسلسلى': data[i].serial_number;

@@ -20,6 +20,7 @@
                                     <th>رقم التسلسلى </th>
                                     <th>حالة العهدة</th>
                                     <th>تاريخ التسلم</th>
+                                    <th></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -34,7 +35,7 @@
                                             مستلمة
                                             @break
                                         @case('waiting')
-المخزن
+                                            المخزن          
                                             @break
                                         @case('broken')
                                             معطلة
@@ -44,6 +45,10 @@
                                     @endswitch
                                     </td>
                                     <td>{{ $covenant->delivery_date }}</td>
+                                    <td>
+                                        <a href="{{ url('covenant/show/note/'.$covenant->id) }}"
+                                        class="btn btn-primary">الملاحظات</a>
+                                    </td>
                                 </tr>
                                 @endforeach
                             </tbody>

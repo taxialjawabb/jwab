@@ -17,5 +17,5 @@ class Covenant extends Model
         'add_by',
         'add_date'
     ];
-
+ 
 }
