@@ -103,7 +103,7 @@
                                 <select value="{{ old('user_id') }}" name="user_id" id="user_id" class="form-select"
                                     aria-label="Default select example" id="user_id">
                                     <option value="" selected disabled>حدد الشخص المستهدف</option>
-                                    @foreach (\App\Models\Admin::all() as $user )
+                                    @foreach (\App\Models\Admin::where('state','active')->where('department', 'management')->get() as $user )
                                         <option value="{{ $user->id }}" >{{ $user->name }}</option>
                                     @endforeach
                                 </select>
