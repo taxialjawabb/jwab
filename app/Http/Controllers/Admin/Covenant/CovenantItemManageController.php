@@ -145,6 +145,10 @@ class CovenantItemManageController extends Controller
             $note->save();
             return redirect('covenant/show/note/'.$request->item_id);
         }
+        else if($record === null){
+            $request->session()->flash('error', 'الرجاء التأكد انه هذه العهد فى عهدة سائق او مستخدم');
+            return back();
+        }
         else{
             return back();
         }

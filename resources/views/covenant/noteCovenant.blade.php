@@ -2,7 +2,11 @@
 @extends('index')
 @section('title','أضافة صادر و وارد')
 @section('content')
-
+@if(Session::has('error'))
+<div class="alert alert-danger m-3">
+  {{ Session::get('error')}}
+</div>
+@endif
 <h5 class="mt-4">أضافة ملاحظة لعهدة</h5>
 
 <form  method="POST" action="{{ url('covenant/add/note') }}"  enctype="multipart/form-data">
