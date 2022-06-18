@@ -2,7 +2,11 @@
 @extends('index')
 @section('title','العهد ')
 @section('content')
-
+@if(Session::has('error'))
+<div class="alert alert-danger m-3">
+  {{ Session::get('error')}}
+</div>
+@endif
 <div class="container clearfix">
     <h3 class="m-2 mt-4 float-start">عرض  العهد المستلمة للسائق</h3>
     <div class="float-end">

@@ -2,7 +2,11 @@
 @extends('index')
 @section('title','المركبات')
 @section('content')
-           
+@if(Session::has('error'))
+<div class="alert alert-danger m-3">
+  {{ Session::get('error')}}
+</div>
+@endif
             <div class="container">
                     <h3 class="m-2 mt-4 ">تسليم مركبة للسائق</h3>
                     <div class="clearfix">

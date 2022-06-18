@@ -40,6 +40,16 @@ class CovenantDriverController extends Controller
             'covenant_name'=>'required|string',
             'covenant_item'=>'required|string'
         ]);
+        $userCovenants =  CovenantRecord::where('forign_type', 'user')
+        ->where('receive_by', null)->where('receive_date', null)->orderBy('delivery_date', 'desc')->get(); 
+        if(count($userCovenants) == 0){
+            $request->session()->flash('error', 'خطاء لا يوجد مستخدم مستلم العهد  ');
+            return back(); 
+        }
+        else if($userCovenants[0]->forign_id !== Auth::guard('admin')->user()->id){
+            $request->session()->flash('error', 'يجب ان يكون مستخدم مستلم العهدة هو من يقوم بتسليم العهد ');
+            return back(); 
+        }
         $covenantItem = CovenantItem::find($request->covenant_item);
         if($covenantItem !== null){
             $prevUserReceive =  CovenantRecord::where('item_id', $request->covenant_item)

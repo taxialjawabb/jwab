@@ -207,7 +207,19 @@ class DriverController extends Controller
     }
     public function save_state(Request $request){
         // return Auth::guard('admin')->user()->hasPermission('user_delivery_covenant');
+        $userCovenants =  CovenantRecord::where('forign_type', 'user')
+        ->where('receive_by', null)->where('receive_date', null)->orderBy('delivery_date', 'desc')->get(); 
+        if(count($userCovenants) == 0){
+            $request->session()->flash('error', 'خطاء لا يوجد مستخدم مستلم العهد  ');
+            return back(); 
+        }
+        else if($userCovenants[0]->forign_id !== Auth::guard('admin')->user()->id){
+            $request->session()->flash('error', 'يجب ان يكون مستخدم مستلم العهدة هو من يقوم بتسلم العهد ');
+            return back(); 
+        }
+
         $driver = Driver::find($request->id);
+
         
         if($request->has('item')){
             if(count($request->item) != $request->length){
@@ -331,12 +343,21 @@ class DriverController extends Controller
         
     }
     public function save_take(Request $request){
-        // return $request->all();
         $request->validate([ 
             'driver_id' =>'required|integer',
             'vechile_id' => 'required|integer',
             'daily_revenue_cost' => 'required|numeric'
-        ]);  
+        ]); 
+        $userCovenants =  CovenantRecord::where('forign_type', 'user')
+        ->where('receive_by', null)->where('receive_date', null)->orderBy('delivery_date', 'desc')->get(); 
+        if(count($userCovenants) == 0){
+            $request->session()->flash('error', 'خطاء لا يوجد مستخدم مستلم العهد  ');
+            return back(); 
+        }
+        else if($userCovenants[0]->forign_id !== Auth::guard('admin')->user()->id){
+            $request->session()->flash('error', 'يجب ان يكون مستخدم مستلم العهدة هو من يقوم بتسليم العهد ');
+            return back(); 
+        }
         if($request->has('covenant_item')){
             foreach ($request->covenant_item as $item) {
                 $prevUserReceive =  CovenantRecord::where('item_id', $item)
