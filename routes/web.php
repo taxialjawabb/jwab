@@ -211,6 +211,7 @@ Route::group([
         Route::post('/notes/add/{id}', [App\Http\Controllers\Admin\Users\Notes\NotesUserController::class, 'add_note']);
        
         Route::get('/block/{id}', [App\Http\Controllers\Admin\Users\UserController::class, 'user_block']);
+        Route::get('/block/confirm/{id}', [App\Http\Controllers\Admin\Users\UserController::class, 'confirm_block']);
     }); 
 
     // Box for driver
