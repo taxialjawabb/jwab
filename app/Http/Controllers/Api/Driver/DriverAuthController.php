@@ -67,7 +67,7 @@ class DriverAuthController extends Controller
             return $this -> returnSuccessMessage('true');
             
         }else{
-            $message ="مرحبا سائق الجواب الرمز الخاص بك : ";
+            $message ="مرحبا سائق الجواب الرمز ";
             // return $this->send_code($request->phone, $message);
             $code = $this->send_code($request->phone, $message , $request->phone_id);
             if($code !== false){

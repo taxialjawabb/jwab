@@ -25,7 +25,7 @@ class MessagesController extends Controller
             return $this->returnError('E001', 'phone number is already exist');
         }
         else{
-            $message ="مرحبا عميل الجواب الرمز الخاص بك : ";
+            $message ="مرحبا عميل الجواب الرمز ";
             $code = $this->send_code($request->phone, $message , $request->phone_id);
             if($code !== false){
                 return $this->returnSuccessMessage($code);
@@ -40,7 +40,7 @@ class MessagesController extends Controller
             'phone'    => 'required|string|min:10|max:14',
             'phone_id'    => 'required|string',
         ]);
-            $message ="مرحبا عميل الجواب الرمز الخاص بك : ";
+            $message ="مرحبا عميل الجواب الرمز ";
             $code = $this->send_code($request->phone, $message , $request->phone_id);
             if($code !== false){
                 return $this->returnSuccessMessage($code);
@@ -61,7 +61,7 @@ class MessagesController extends Controller
             return $this->returnError('', 'phone number is exist');
         }
         else{
-            $message ="مرحبا عميل الجواب لأعادة تغيير كلمة السرى الخاص بك: ";
+            $message ="مرحبا عميل الجواب تغيير كلمة السرى الرمز ";
             $code = $this->send_code($request->phone, $message , $request->phone_id);
             if($code !== false){
                 return $this->returnSuccessMessage($code);
@@ -83,7 +83,7 @@ class MessagesController extends Controller
         }
         else{
 
-            $message ="مرحبا سائق الجواب الرمز الخاص بك : ";
+            $message ="مرحبا سائق الجواب الرمز ";
             $code = $this->send_code($request->phone, $message , $request->phone_id);
             if($code !== false){
                 return $this->returnSuccessMessage($code);
@@ -104,7 +104,7 @@ class MessagesController extends Controller
             return $this->returnError('', 'phone number is not exist');
         }
         else{
-            $message ="مرحبا سائق الجواب لأعادة تغيير كلمة المرور الخاص بك الرمز الخاص بك:";
+            $message ="مرحبا سائق الجواب تغيير كلمة المرور الرمز ";
             $code = -1;
             if($driver[0]->state === 'active' || $driver[0]->state === 'waiting'){
                 $code = $this->send_code($request->phone, $message , $request->phone_id);
@@ -124,7 +124,7 @@ class MessagesController extends Controller
             'phone_id'    => 'required|string',
 
         ]);
-            $message ="مرحبا سائق الجواب الرمز الخاص بك : ";
+            $message ="مرحبا سائق الجواب الرمز ";
             $code = $this->send_code($request->phone, $message , $request->phone_id);
             if($code !== false){
                 return $this->returnSuccessMessage($code);
