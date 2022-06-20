@@ -16,7 +16,9 @@ class MessagesController extends Controller
     public function send_message(Request $request)
     {
         $request->validate([
-            'phone'    => 'required|string|min:10|max:14' 
+            'phone'    => 'required|string|min:10|max:14',
+            'phone_id'    => 'required|string',
+
         ]);
         $rider = Rider::Where('phone', $request->phone)->get();
         if(count($rider) > 0){
@@ -24,7 +26,7 @@ class MessagesController extends Controller
         }
         else{
             $message ="مرحبا عميل الجواب الرمز الخاص بك : ";
-            $code = $this->send_code($request->phone, $message);
+            $code = $this->send_code($request->phone, $message , $request->phone_id);
             if($code !== false){
                 return $this->returnSuccessMessage($code);
             }else{
@@ -35,10 +37,11 @@ class MessagesController extends Controller
     public function send_message_update(Request $request)
     {
         $request->validate([
-            'phone'    => 'required|string|min:10|max:14' 
+            'phone'    => 'required|string|min:10|max:14',
+            'phone_id'    => 'required|string',
         ]);
             $message ="مرحبا عميل الجواب الرمز الخاص بك : ";
-            $code = $this->send_code($request->phone, $message);
+            $code = $this->send_code($request->phone, $message , $request->phone_id);
             if($code !== false){
                 return $this->returnSuccessMessage($code);
             }else{
@@ -50,7 +53,8 @@ class MessagesController extends Controller
     public function send_message_reset(Request $request)
     {
         $request->validate([
-            'phone'    => 'required|string|min:10|max:14' 
+            'phone'    => 'required|string|min:10|max:14',
+            'phone_id'    => 'required|string',
         ]);
         $rider = Rider::Where('phone', $request->phone)->get();
         if(count($rider) === 0){
@@ -58,7 +62,7 @@ class MessagesController extends Controller
         }
         else{
             $message ="مرحبا عميل الجواب لأعادة تغيير كلمة السرى الخاص بك: ";
-            $code = $this->send_code($request->phone, $message);
+            $code = $this->send_code($request->phone, $message , $request->phone_id);
             if($code !== false){
                 return $this->returnSuccessMessage($code);
             }else{
@@ -70,7 +74,8 @@ class MessagesController extends Controller
     public function send_message_driver(Request $request)
     {
         $request->validate([
-            'phone'    => 'required|string|min:10|max:14' 
+            'phone'    => 'required|string|min:10|max:14',
+            'phone_id'    => 'required|string',
         ]);
         $driver = Driver::Where('phone', $request->phone)->get();
         if(count($driver) === 0){
@@ -79,7 +84,7 @@ class MessagesController extends Controller
         else{
 
             $message ="مرحبا سائق الجواب الرمز الخاص بك : ";
-            $code = $this->send_code($request->phone, $message);
+            $code = $this->send_code($request->phone, $message , $request->phone_id);
             if($code !== false){
                 return $this->returnSuccessMessage($code);
             }else{
@@ -90,7 +95,8 @@ class MessagesController extends Controller
     public function send_message_driver_reset(Request $request)
     {
         $request->validate([
-            'phone'    => 'required|string|min:10|max:14' 
+            'phone'    => 'required|string|min:10|max:14',
+            'phone_id'    => 'required|string',
         ]);
         $driver = Driver::Where('phone', $request->phone)->get();
 
@@ -101,7 +107,7 @@ class MessagesController extends Controller
             $message ="مرحبا سائق الجواب لأعادة تغيير كلمة المرور الخاص بك الرمز الخاص بك:";
             $code = -1;
             if($driver[0]->state === 'active' || $driver[0]->state === 'waiting'){
-                $code = $this->send_code($request->phone, $message);
+                $code = $this->send_code($request->phone, $message , $request->phone_id);
             }
             if($code !== false){
                 return $this->returnData('code' , $code ,$driver[0]->state);
@@ -114,10 +120,12 @@ class MessagesController extends Controller
     public function send_message_driver_update(Request $request)
     {
         $request->validate([
-            'phone'    => 'required|string|min:10|max:14' 
+            'phone'    => 'required|string|min:10|max:14',
+            'phone_id'    => 'required|string',
+
         ]);
             $message ="مرحبا سائق الجواب الرمز الخاص بك : ";
-            $code = $this->send_code($request->phone, $message);
+            $code = $this->send_code($request->phone, $message , $request->phone_id);
             if($code !== false){
                 return $this->returnSuccessMessage($code);
             }else{

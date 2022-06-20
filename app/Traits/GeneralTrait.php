@@ -10,21 +10,38 @@ trait GeneralTrait
 
     public function send_code($phone , $message)
     {
-        $code = 7878;
-        // $code = rand(1000,9999);
+        // $code = 7878;
+        $code = rand(1000,9999);
         $message .= $code;
-        return $code;
+        // return $code;
 
+        $now =  \Carbon\Carbon::now();
+        $phoneis = '966'.substr($phone, 1);
+        $response = Http::withHeaders([
+            'Content-Type' => 'application/json',
+            'Authorization' => '66f73eb01c6da0ed70da3b0eea090862'
+        ])->post('https://api.taqnyat.sa/v1/messages', [
+            "recipients" =>  [
+                $phoneis
+            ],
+            "body" => $message,
+            "sender" => "Taqnyat.sa",
+            "scheduledDatetime" =>  $now,
+            "deleteId" => 100
+        ]);
+        $resp = json_decode($response);
+
+        if($response->status() === 200 && $resp->statusCode === 201){
+            return $code;
+        }
+        else{
+            return false;
+        }
+        
         // $time = \Carbon\Carbon::now()->format('H:i');
         // $date = \Carbon\Carbon::now()->toDateString();
         // $ss = "https://www.hisms.ws/api.php?send_sms&username=966532760660&password=Qp@@5SR0FFf@9nX&numbers=".$phone."&sender=TaxiAljawab&message=".$message."&date=".$date."&time=".$time;
         // $response = Http::get($ss);
-        // if($response->status() === 200){
-        //     return $code;
-        // }
-        // else{
-        //     return false;
-        // }
     }
     public function getCurrentLang()
     {

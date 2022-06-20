@@ -60,14 +60,16 @@ class DriverAuthController extends Controller
     {
         $request->validate([
             'phone'    => ['required', 'string', 'min:10', 'max:10'],
+            'phone_id'    => ['required', 'string'],
         ]);
         $driver = Driver::where("phone",$request->phone)->get();
         if(count($driver) > 0){
             return $this -> returnSuccessMessage('true');
-
+            
         }else{
             $message ="مرحبا سائق الجواب الرمز الخاص بك : ";
-            $code = $this->send_code($request->phone, $message);
+            // return $this->send_code($request->phone, $message);
+            $code = $this->send_code($request->phone, $message , $request->phone_id);
             if($code !== false){
                 return $this -> returnData('code' , $code,'false');
             }else{

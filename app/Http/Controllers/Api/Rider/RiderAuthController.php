@@ -59,6 +59,7 @@ class RiderAuthController extends Controller
     {
         $request->validate([
             'phone'    => ['required', 'string', 'min:10', 'max:10'],
+            'phone_id'    => ['required', 'string'],
         ]);
         $rider = Rider::where("phone",$request->phone)->get();
         if(count($rider) > 0){
@@ -66,7 +67,7 @@ class RiderAuthController extends Controller
 
         }else{
             $message ="مرحبا عميل الجواب الرمز الخاص بك : ";    
-            $code = $this->send_code($request->phone, $message);
+            $code = $this->send_code($request->phone, $message , $request->phone_id);
             if($code !== false){
                 return $this -> returnData('code' , $code, 'false');
             }else{
