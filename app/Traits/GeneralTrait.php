@@ -8,11 +8,14 @@ use Illuminate\Support\Facades\Http;
 trait GeneralTrait
 {
 
-    public function send_code($phone , $message)
+    public function send_code($phone , $message, $phone_id)
     {
         // $code = 7878;
         $code = rand(1000,9999);
         $message .= $code;
+        if($phone_id !== 'ios'){
+            $message .='<#>'. $phone_id;
+        }
         // return $code;
 
         $now =  \Carbon\Carbon::now();
@@ -31,7 +34,7 @@ trait GeneralTrait
         ]);
         $resp = json_decode($response);
 
-        if($response->status() === 200 && $resp->statusCode === 201){
+        if($resp->statusCode === 201){
             return $code;
         }
         else{
