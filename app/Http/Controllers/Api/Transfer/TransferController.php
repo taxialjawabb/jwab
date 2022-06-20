@@ -117,7 +117,7 @@ class TransferController extends Controller
                 if($driver->account > $request->money){
                     // $job = $request->type === 'driver'? 'السائق' : 'العميل';
                     $message ="مرحبا سائق الجواب عملية تحويل رصيد الرمز ";
-                    $code = $this->send_code($driver->phone , $message , $request->phone_id , $subMessage);
+                    $code = $this->send_code($driver->phone , $message , $request->phone_id );
                     if($code !== false){
                         $data[0]->code = $code;
                         return $this -> returnData('data' , $data[0], 'rider data'); 
