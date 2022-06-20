@@ -16,7 +16,8 @@ class TransferController extends Controller
             'rider_id'   => 'required|string',
             'type'    => 'required|string|in:driver,rider',
             'phone'    => 'required|string|min:10|max:10',
-            'money'   => 'required|numeric'
+            'money'   => 'required|numeric',
+            'phone_id'    => 'required|string'
         ]);
         $rider = \App\Models\Rider::select(['id','phone', 'account'])->find($request->rider_id);
         if($rider === null){
@@ -29,7 +30,7 @@ class TransferController extends Controller
                 if($rider->account > $request->money){
                     $job = $request->type === 'driver'? 'السائق' : 'العميل';
                     $message ="مرحبا عميل الجواب لتفعيل عملية تحويل الرصيد من حسابك إلى حساب  ".$job.": ".$data[0]->name." رقم الهاتف:".$data[0]->phone." الرمز الخاص بك : ";
-                    $code = $this->send_code($rider->phone, $message);
+                    $code = $this->send_code($rider->phone, $message , $request->phone_id);
                     if($code !== false){
                         $data[0]->code = $code;
                         return $this -> returnData('data' , $data[0], 'driver data'); 
@@ -52,7 +53,7 @@ class TransferController extends Controller
                 if($rider->account > $request->money){
                     $job = $request->type === 'driver'? 'السائق' : 'العميل';
                     $message ="مرحبا عميل الجواب لتفعيل عملية تحويل الرصيد من حسابك إلى حساب  ".$job.": ".$data[0]->name." رقم الهاتف:".$data[0]->phone." الرمز الخاص بك : ";
-                    $code = $this->send_code($rider->phone, $message);
+                    $code = $this->send_code($rider->phone, $message , $request->phone_id);
                     if($code !== false){
                         $data[0]->code = $code;
                         return $this -> returnData('data' , $data[0], 'rider data'); 
@@ -79,7 +80,8 @@ class TransferController extends Controller
             'driver_id'   => 'required|string',
             'type'    => 'required|string|in:driver,rider',
             'phone'    => 'required|string|min:10|max:10',
-            'money'   => 'required|numeric'
+            'money'   => 'required|numeric',
+            'phone_id'    => 'required|string'
         ]);
         $driver = \App\Models\Driver::select(['id', 'phone', 'account'])->find($request->driver_id);
         if($driver === null){
@@ -92,7 +94,7 @@ class TransferController extends Controller
                 if($driver->account > $request->money){
                     $job = $request->type === 'driver'? 'السائق' : 'العميل';
                     $message ="مرحبا سائق الجواب لتفعيل عملية تحويل الرصيد من حسابك إلى حساب  ".$job.": ".$data[0]->name." رقم الهاتف:".$data[0]->phone." الرمز الخاص بك : ";
-                    $code = $this->send_code($driver->phone, $message);
+                    $code = $this->send_code($driver->phone, $message , $request->phone_id);
                     if($code !== false){
                         $data[0]->code = $code;
                         return $this -> returnData('data' , $data[0], 'driver data'); 
@@ -115,7 +117,7 @@ class TransferController extends Controller
                 if($driver->account > $request->money){
                     $job = $request->type === 'driver'? 'السائق' : 'العميل';
                     $message ="مرحبا سائق الجواب لتفعيل عملية تحويل الرصيد من حسابك إلى حساب  ".$job.": ".$data[0]->name." رقم الهاتف:".$data[0]->phone." الرمز الخاص بك : ";
-                    $code = $this->send_code($driver->phone , $message);
+                    $code = $this->send_code($driver->phone , $message , $request->phone_id);
                     if($code !== false){
                         $data[0]->code = $code;
                         return $this -> returnData('data' , $data[0], 'rider data'); 
