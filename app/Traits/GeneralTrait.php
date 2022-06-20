@@ -11,10 +11,17 @@ trait GeneralTrait
     public function send_code($phone , $message, $phone_id)
     {
         // $code = 7878;
+
         $code = rand(1000,9999);
-        $message .= $code;
         if($phone_id !== 'ios'){
+            $message .= $code;
             $message .='<#>'. $phone_id;
+        }else{
+            $mes ='<#>';
+            $message .='code '. $code;
+            $mes .= $message;
+            $message = $mes;
+
         }
         // return $code;
 
