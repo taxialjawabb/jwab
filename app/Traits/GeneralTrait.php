@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Http;
 trait GeneralTrait
 {
 
-    public function send_code($phone , $message, $phone_id)
+    public function send_code($phone , $message, $phone_id, $subMessage = '')
     {
         // $code = 7878;
         $code = rand(1000,9999);
@@ -16,6 +16,8 @@ trait GeneralTrait
         if($phone_id !== 'ios'){
             $message .='<#>'. $phone_id;
         }
+
+        $message .=$subMessage;
         // return $code;
 
         $now =  \Carbon\Carbon::now();

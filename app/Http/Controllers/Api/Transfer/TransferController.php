@@ -29,8 +29,10 @@ class TransferController extends Controller
             if(count($data) > 0){
                 if($rider->account > $request->money){
                     $job = $request->type === 'driver'? 'السائق' : 'العميل';
-                    $message ="مرحبا عميل الجواب لتفعيل عملية تحويل الرصيد من حسابك إلى حساب  ".$job.": ".$data[0]->name." رقم الهاتف:".$data[0]->phone." الرمز الخاص بك : ";
-                    $code = $this->send_code($rider->phone, $message , $request->phone_id);
+                    $message ="مرحبا عميل الجواب لتفعيل عملية تحويل الرصيد من حسابك إلى حساب  "
+                    .$job." الرمز الخاص بك : ";
+                    $subMessage =  "بيانات ".$job.": ".$data[0]->name." رقم الهاتف:".$data[0]->phone;
+                    $code = $this->send_code($rider->phone, $message , $request->phone_id , $subMessage);
                     if($code !== false){
                         $data[0]->code = $code;
                         return $this -> returnData('data' , $data[0], 'driver data'); 
@@ -52,8 +54,10 @@ class TransferController extends Controller
             if(count($data) > 0){
                 if($rider->account > $request->money){
                     $job = $request->type === 'driver'? 'السائق' : 'العميل';
-                    $message ="مرحبا عميل الجواب لتفعيل عملية تحويل الرصيد من حسابك إلى حساب  ".$job.": ".$data[0]->name." رقم الهاتف:".$data[0]->phone." الرمز الخاص بك : ";
-                    $code = $this->send_code($rider->phone, $message , $request->phone_id);
+                    $message ="مرحبا عميل الجواب لتفعيل عملية تحويل الرصيد من حسابك إلى حساب  "
+                    .$job." الرمز الخاص بك : ";
+                    $subMessage =  "بيانات ".$job.": ".$data[0]->name." رقم الهاتف:".$data[0]->phone;
+                    $code = $this->send_code($rider->phone, $message , $request->phone_id , $subMessage);
                     if($code !== false){
                         $data[0]->code = $code;
                         return $this -> returnData('data' , $data[0], 'rider data'); 
@@ -93,8 +97,10 @@ class TransferController extends Controller
             if(count($data) > 0){
                 if($driver->account > $request->money){
                     $job = $request->type === 'driver'? 'السائق' : 'العميل';
-                    $message ="مرحبا سائق الجواب لتفعيل عملية تحويل الرصيد من حسابك إلى حساب  ".$job.": ".$data[0]->name." رقم الهاتف:".$data[0]->phone." الرمز الخاص بك : ";
-                    $code = $this->send_code($driver->phone, $message , $request->phone_id);
+                    $message ="مرحبا سائق الجواب لتفعيل عملية تحويل الرصيد من حسابك إلى حساب  "
+                    .$job." الرمز الخاص بك : ";
+                    $subMessage =  "بيانات ".$job.": ".$data[0]->name." رقم الهاتف:".$data[0]->phone;
+                    $code = $this->send_code($driver->phone, $message , $request->phone_id , $subMessage);
                     if($code !== false){
                         $data[0]->code = $code;
                         return $this -> returnData('data' , $data[0], 'driver data'); 
@@ -116,8 +122,10 @@ class TransferController extends Controller
             if(count($data) > 0){
                 if($driver->account > $request->money){
                     $job = $request->type === 'driver'? 'السائق' : 'العميل';
-                    $message ="مرحبا سائق الجواب لتفعيل عملية تحويل الرصيد من حسابك إلى حساب  ".$job.": ".$data[0]->name." رقم الهاتف:".$data[0]->phone." الرمز الخاص بك : ";
-                    $code = $this->send_code($driver->phone , $message , $request->phone_id);
+                    $message ="مرحبا سائق الجواب لتفعيل عملية تحويل الرصيد من حسابك إلى حساب  "
+                    .$job." الرمز الخاص بك : ";
+                    $subMessage =  "بيانات ".$job.": ".$data[0]->name." رقم الهاتف:".$data[0]->phone;
+                    $code = $this->send_code($driver->phone , $message , $request->phone_id , $subMessage);
                     if($code !== false){
                         $data[0]->code = $code;
                         return $this -> returnData('data' , $data[0], 'rider data'); 
