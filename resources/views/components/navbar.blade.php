@@ -183,6 +183,22 @@
                         </div>
                     </li>
                     @endif
+                    @if(Auth::user()->isAbleTo('maintenance_center') )
+                    <li class="mb-1">
+                        <button class="btn btn-toggle  btn-toggle-second  align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#maintenance" aria-expanded="false">
+                        مركز الصيانة
+                        </button>
+                        <div class="collapse " id="maintenance">
+                        <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                            
+                            @if(Auth::user()->isAbleTo('maintenance_center'))
+                                <li><a href="{{ url('maintenance/center/manage') }}" class="link-dark rounded">أدارة المركز</a></li>
+                            @endif
+        
+                        </ul>
+                        </div>
+                    </li>
+                    @endif
 
                     <li class="border-top my-1"></li>
 

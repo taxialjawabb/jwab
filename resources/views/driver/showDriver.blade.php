@@ -44,6 +44,8 @@
                                     <td>{{ $driver->add_date }}</td>
                                     <td>{{ $driver->admin_name }}</td>
                                     <td>
+                                        <a href="{{ url('maintenance/center/bill/'.$driver->id) }}" class="btn btn-primary rounded-0 m-0">صيانة</a>
+
                                         @if ($driver->state === 'pending')
                                             <a href="{{ url('driver/pending/active/'.$driver->id) }}" class="m-1 btn btn-danger">قبول</a>
                                         @endif

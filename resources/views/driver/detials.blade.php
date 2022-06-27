@@ -32,7 +32,7 @@
     <a href="{{ url('driver/state/'.$driver->id) }}" class="btn btn-primary rounded-0 m-0" >تحويل حالة السائق</a>
     <a href="{{ url('driver/vechile/'.$driver->id) }}" class="btn btn-primary rounded-0 m-0">عرض المركبات المستلمة</a>
     
-    <a href="{{ url('driver/vechile/maintenance/'.$driver->id) }}" class="btn btn-primary rounded-0 m-0">الصيانة</a>
+    <a href="{{ url('driver/vechile/maintenance/'.$driver->id) }}" class="btn btn-primary rounded-0 m-0">صيانة</a>
     {{--@if($driver->state ==='active')--}}
     <a href="{{ url('covenant/delivery/'.$driver->id) }}" class="btn btn-primary rounded-0 m-0">عرض العهد المستلمة</a>
     {{--@endif--}}

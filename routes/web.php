@@ -400,6 +400,23 @@ Route::group([
         Route::get('/vechile/{type}', [App\Http\Controllers\Admin\Warning\VechileWarningController::class, 'show'])->middleware(['permission:warning_vechile']);
         Route::get('/user/{type}', [App\Http\Controllers\Admin\Warning\UserWarningController::class, 'show'])->middleware(['permission:warning_user']);
     });
+    Route::group([
+        'prefix' => 'maintenance',
+        'middleware' => ['permission:maintenance_center']
+    ],function () { 
+        Route::get('/center/manage', [App\Http\Controllers\Admin\Maintenance\MaintenanceController::class, 'show_products']);
+        Route::get('/center/add', [App\Http\Controllers\Admin\Maintenance\MaintenanceController::class, 'show_add']);
+        Route::post('/center/add', [App\Http\Controllers\Admin\Maintenance\MaintenanceController::class, 'save_add']);
+        Route::post('/center/quantity', [App\Http\Controllers\Admin\Maintenance\MaintenanceController::class, 'save_quantity']);
+        Route::get('/center/update/{id}', [App\Http\Controllers\Admin\Maintenance\MaintenanceController::class, 'show_update']);
+        Route::post('/center/update', [App\Http\Controllers\Admin\Maintenance\MaintenanceController::class, 'save_update']);
+        Route::get('/center/show/{id}', [App\Http\Controllers\Admin\Maintenance\MaintenanceController::class, 'show_details']);
+        Route::get('/center/bill/{id}', [App\Http\Controllers\Admin\Maintenance\MaintenaceCenterController::class, 'show_bills']);
+        Route::get('/center/add/bill/{id}', [App\Http\Controllers\Admin\Maintenance\MaintenaceCenterController::class, 'show_add']);
+        // Route::get('/center/item', [App\Http\Controllers\Admin\Maintenance\MaintenaceCenterController::class, 'show_item']);
+        Route::post('/center/item', [App\Http\Controllers\Admin\Maintenance\MaintenaceCenterController::class, 'confirm_item']);
+        Route::post('/center/item/save', [App\Http\Controllers\Admin\Maintenance\MaintenaceCenterController::class, 'save_item'])->name('items');
+    });
     
 }); //end middleware auth:admin all
 

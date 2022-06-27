@@ -33,7 +33,7 @@ class MaintenanceController extends Controller
         'maintenance_note'
             ])->where( 'vechile_id', $driver->current_vechile)->where('driver_id', $driver->id)->get();
 
-        return view('driver.driverRecord.driverMaintenance', ['data' => $data]);
+        return view('driver.driverRecord.driverMaintenance', ['data' => $data, 'id' => $id]);
         }
         else{
             return back();

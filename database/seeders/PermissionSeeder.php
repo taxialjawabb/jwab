@@ -153,21 +153,25 @@ class PermissionSeeder extends Seeder
                 // 'display_name' => 'السائقين المتعثرين', // optional
                 // 'description' => 'يستطيع المستخدم من خلالها عرض السائقين المتعثرين والمتخالفين عن دفع مبلغ معين ', // optional
                 // ]);
-
-                    $editUser = Permission::create([
-                    'name' => 'warning_driver',
-                    'display_name' => 'تنبيهات السائقين ', // optional
-                    'description' => 'يستطيع المستخدم من خلالها عرض تنبيهات للسائقين عن تاريخ انتهاء الهوية و انتهاء الرخصةو انتهاء عقد العمل و المخالصة النهائية', // optional
-                    ]);
-                    $editUser = Permission::create([
-                    'name' => 'warning_vechile',
-                    'display_name' => 'تنبيهات المركبات', // optional
-                    'description' => 'يستطيع المستخدم من خلالها عرض تنبيهات المركبات عن انتهاء رخصة السير و انتهاء الفحص الدورى و انتهاء التأمين و انتهاء بطاقة التشغيل ', // optional
-                    ]);
-                    $editUser = Permission::create([
-                    'name' => 'warning_user',
-                    'display_name' => 'تنبيهات المستخدمين ', // optional
-                    'description' => 'يستطيع المستخدم من خلالها عرض تنبيهات المستخدمين عن انتهاء عقد العمل و تاريخ المخالصة النهائية', // optional
+                // $editUser = Permission::create([
+                // 'name' => 'warning_driver',
+                // 'display_name' => 'تنبيهات السائقين ', // optional
+                // 'description' => 'يستطيع المستخدم من خلالها عرض تنبيهات للسائقين عن تاريخ انتهاء الهوية و انتهاء الرخصةو انتهاء عقد العمل و المخالصة النهائية', // optional
+                // ]);
+                // $editUser = Permission::create([
+                // 'name' => 'warning_vechile',
+                // 'display_name' => 'تنبيهات المركبات', // optional
+                // 'description' => 'يستطيع المستخدم من خلالها عرض تنبيهات المركبات عن انتهاء رخصة السير و انتهاء الفحص الدورى و انتهاء التأمين و انتهاء بطاقة التشغيل ', // optional
+                // ]);
+                // $editUser = Permission::create([
+                // 'name' => 'warning_user',
+                // 'display_name' => 'تنبيهات المستخدمين ', // optional
+                // 'description' => 'يستطيع المستخدم من خلالها عرض تنبيهات المستخدمين عن انتهاء عقد العمل و تاريخ المخالصة النهائية', // optional
+                // ]);
+                $editUser = Permission::create([
+                    'name' => 'maintenance_center',
+                    'display_name' => 'مركز الصيانة' , // optional
+                    'description' => 'يستطيع المستخدم من خلالها متابعة بيانات مركز الصيانة واضافة منتاجة و صيانة للسائقين', // optional
                     ]);
                         
     }
