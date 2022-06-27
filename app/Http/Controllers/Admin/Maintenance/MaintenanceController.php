@@ -113,10 +113,6 @@ class MaintenanceController extends Controller
 
         Product::where('id', $request->id)->update([
                 'name' => $request->name ,
-                'total' => 0,
-                'stored' => 0,
-                'used' => 0,
-                'returned' => 0,
                 'free_count' => $request->free_count ,
                 'periodic_days' => $request->periodic_days ,
                 'price' => $request->price ,

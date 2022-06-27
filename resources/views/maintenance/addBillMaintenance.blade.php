@@ -211,7 +211,7 @@
                                     <td>
                                         ${finalBalls[i].quantity}
                                         <input type="hidden" name="quantity[]" value="${finalBalls[i].quantity}">
-                                        <input type="hidden" name="bons[]" value="${data.data.bons}">
+                                        <input type="hidden" name="bons[]" value="${finalBalls[i].bons}">
                                     </td>
                                     <td>
                                         ${finalBalls[i].bons}
