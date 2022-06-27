@@ -110,10 +110,26 @@
                                 <label for="quantity" class="form-label">الكمية المراد إدخالها</label>
                                 <input type="text" value="{{ old('quantity') }}" name="quantity" class="form-control" id="quantity"  required>
                             </div>
+                            <div class="mt-4  col-12 ">
+                                <label for="price" class="form-label">المبلغ المدفوع لشراء هذه الكمية(إختيارى)</label>
+                                <input type="text" value="0" name="price" class="form-control" id="price"  >
+                            </div>
+
+                            <div class="mt-4  col-sm-12 col-md-6 col-lg-6 col-xl-6 ">
+                                <label for="payment_type" class="form-label">طريقة دفع الكمية(إختيارى)</label>
+                                <select value="{{ old('payment_type') }}" name="payment_type" id="payment_type" class="form-select" aria-label="Default select example" id="payment_type" >
+                                    <option value="" selected disabled>حدد طريقة دفع الكيمة</option>
+                                    <option value="cash">كــاش</option>
+                                    <option value="bank transfer">تحويل بنكى</option>
+                                    <option value="internal transfer">تحويل داخلى</option>
+                                    <option value="selling points">نقاط بيع</option>
+                                    <option value="electronic payment">دفع إلكترونى</option>
+                                </select>
+                            </div>
 
                             <div class="mt-4  col-12 ">
                                 <label for="type" class="form-label">حالة هذه الكمية</label>
-                                <select value="{{ old('type') }}" name="type" id="type" class="form-select" aria-label="Default select example" id="type">
+                                <select value="{{ old('type') }}" name="type" id="type" class="form-select" aria-label="Default select example" id="type" required>
                                     <option value="" selected disabled>حدد المدة المجانية للتغير</option>
                                     <option value="stored">جديد(مخزن) </option>
                                     <option value="returned">مرتجع</option>

@@ -70,7 +70,8 @@ class MaintenanceController extends Controller
             'id' => 'required|integer',
             'quantity_name' => 'required|string',
             'quantity' => 'required|integer',
-            'type' =>      'required|string'
+            'type' =>      'required|string',
+            'price' =>      'numeric'
         ]);
         $product =  Product::where('id', $request->id)->where('name', $request->quantity_name)->get();
         if(count($product) > 0){
@@ -93,6 +94,24 @@ class MaintenanceController extends Controller
                 $product[0]->used += $request->quantity;
             }
             $product[0]->save();
+            if($request->has('price') && $request->price > 0){
+                $stakeholder = \App\Models\Nathiraat\Stakeholders::find(8);
+                $boxNathriaat = new \App\Models\Nathiraat\BoxNathriaat;
+                $boxNathriaat->stakeholders_id = 8;
+                $boxNathriaat->bond_type = 'spend';
+                $boxNathriaat->payment_type = $request->payment_type;
+                $boxNathriaat->money = $request->price;
+                $boxNathriaat->tax = 0;
+                $boxNathriaat->total_money = $request->price;
+                $boxNathriaat->bond_state = 'waiting';
+                $boxNathriaat->descrpition = 'شراء كمية من: '. $request->quantity_name .' مقدار الكمية هوه : '. $request->quantity;
+                $boxNathriaat->add_date = Carbon::now();
+                $boxNathriaat->add_by = Auth::guard('admin')->user()->id;
+                
+                $boxNathriaat->save();
+                $stakeholder-> account -= $request->price;
+                $stakeholder->save();
+            }
             $request->session()->flash('status', 'تم أضافة الكمية إالى الصنف بنجاح');
             return redirect('maintenance/center/manage');
         }else{

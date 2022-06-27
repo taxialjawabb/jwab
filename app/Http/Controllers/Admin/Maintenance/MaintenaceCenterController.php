@@ -220,6 +220,27 @@ class MaintenaceCenterController extends Controller
                 $driver-> account -= $request->total_price;
                 $driver->save();
                 $boxDriver->save();
+
+                $description .= " على السائق: " .$driver->name . ' صيانة للمركبة: '. $vechile->plate_number;
+                $stakeholder = \App\Models\Nathiraat\Stakeholders::find(8);
+                $boxNathriaat = new \App\Models\Nathiraat\BoxNathriaat;
+                $boxNathriaat->stakeholders_id = 8;
+                $boxNathriaat->bond_type = 'take';
+                $boxNathriaat->payment_type = 'internal transfer';
+                $boxNathriaat->money = $request->total_price;
+                $boxNathriaat->tax = 0;
+                $boxNathriaat->total_money = $request->total_price;
+                $boxNathriaat->bond_state = 'deposited';
+                $boxNathriaat->descrpition = $description;
+                $boxNathriaat->add_date = Carbon::now();
+                $boxNathriaat->add_by = Auth::guard('admin')->user()->id;
+                $boxNathriaat->deposited_by =  Auth::guard('admin')->user()->id;
+                $boxNathriaat->deposit_date = Carbon::now();
+                $boxNathriaat->save();
+                $stakeholder-> account += $request->total_price;
+                $stakeholder->save();
+
+                
             }
             
             $request->session()->flash('status', 'تم أضافة الصيانة بنجاح ');
