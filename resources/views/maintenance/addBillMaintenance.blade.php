@@ -173,7 +173,8 @@
                         }else{
                             $('#alert').html('<div class="alert alert-danger m-3">'+data.message+'</div>');
                         }
-                        console.log(finalBalls);
+                        $("#myform")[0].reset();
+                        $("#myform")[1].reset();
                     },
                     error:function(e){
                         console.log('error');

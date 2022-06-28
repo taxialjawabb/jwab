@@ -1,5 +1,5 @@
 @extends('index')
-@section('title', 'العهد')
+@section('title', 'الصنف')
 @section('content')
     @if (Session::has('status'))
         <div class="alert alert-success m-3" role="alert">
@@ -25,7 +25,7 @@
         <div class="float-end mt-4">
             <a href="{{ url('maintenance/center/add') }}" class="btn btn-success rounded-0 m-0">أضـافـة صنف جديد</a>
             {{-- <a href="#" id="receive-covenent" class="btn btn-primary rounded-0 m-0">
-                تسليم العهد لمستخدم
+                تسليم الصنف لمستخدم
             </a> --}}
         </div>
     </div>
@@ -177,12 +177,12 @@
                 //         ],
                 language: {
                     "sProcessing": "جاري التحميل...",
-                    "sLengthMenu": "عـرض _MENU_ العهد",
+                    "sLengthMenu": "عـرض _MENU_ الصنف",
                     "sZeroRecords": "لم يتم العثور على نتائج",
                     "sEmptyTable": "لا توجد بيانات متاحة في هذا الجدول",
-                    "sInfo": "عرض العهد من _START_ إلى _END_ من إجمالي _TOTAL_ من عهده",
-                    "sInfoEmpty": "عرض العهد من 0 إلى 0 من إجمالي 0 عهده",
-                    "sInfoFiltered": "(تصفية إجمالي _MAX_ من العهد)",
+                    "sInfo": "عرض الصنف من _START_ إلى _END_ من إجمالي _TOTAL_ من صنف",
+                    "sInfoEmpty": "عرض الصنف من 0 إلى 0 من إجمالي 0 صنف",
+                    "sInfoFiltered": "(تصفية إجمالي _MAX_ من الصنف)",
                     "sInfoPostFix": "",
                     "sSearch": "بـحــث:",
                     "sUrl": "",
