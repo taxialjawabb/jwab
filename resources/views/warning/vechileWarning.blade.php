@@ -11,9 +11,9 @@
         <a href="{{url('warning/vechile/operating_card_expiry_date')}}" class="btn {{$type === 'operating_card_expiry_date' ? 'btn-primary' : 'btn-light'}} rounded-0 m-0" >انتهاء بطاقة التشغيل</a>
     </div>
 </div>
-{{-- <div class="contriner">
+<div class="contriner">
     <div id="piechart" style="width: 100%; height: 500px;"></div>
-</div> --}}
+</div>
                 <div class="panel panel-default mt-4">
                     <div class="table-responsive">
                         <table class="table " id="datatable">

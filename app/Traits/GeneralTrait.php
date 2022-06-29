@@ -35,7 +35,7 @@ trait GeneralTrait
                 $phoneis
             ],
             "body" => $message,
-            "sender" => "Taqnyat.sa",
+            "sender" => "TaxiAljawab",
             "scheduledDatetime" =>  $now
         ]);
         $resp = json_decode($response);
