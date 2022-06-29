@@ -21,6 +21,10 @@
     </div>
 </div>
 <div class="clearfix "></div>
+<div class="contriner">
+    <div id="piechart" style="width: 100%; height: 500px;"></div>
+</div>
+
 <div class="panel panel-default mt-4">
     <div class="table-responsive">
         <table class="table " id="datatable">
@@ -98,5 +102,60 @@
            $('#datatable_length').addClass('mb-3');
         });
         </script>
-        <script src="{{ asset('js/imgmodel.js') }}" ></script>   
+<script type="text/javascript" src="{{ asset('assets/js/charts.js') }}"></script>
+
+@if ($type === 'Employment_contract_expiration_date')
+<script>
+        var clear = @json($contractClear);
+        var remains = @json($contractRemains);
+        var expired = @json($contractExpired);
+        var title = 'بيانات العقود للمستخدمين';
+        var title1 = "العقود السارية";
+        var title2 = "العقود متبقى عليها اقل من شهرين";
+        var title3 = "العقود المنتهية";
+</script>
+@elseif ($type === 'final_clearance_exity_date')
+<script>
+        var clear = @json($clearanceClear);
+        var remains = @json($clearanceRemains);
+        var expired = @json($clearanceExpired);
+        var title = 'بيانات المخالصةالنهائية للمستخدمين';
+        var title1 = "المخالصات السارية";
+        var title2 = "المخالصات متبقى عليها اقل من شهرين";
+        var title3 = "المخالصات المنتهية";
+</script>
+@endif
+
+<script type="text/javascript">
+$(document).ready(function(){
+google.charts.load('current', {'packages':['corechart']});
+  google.charts.setOnLoadCallback(drawChart);
+
+  function drawChart() {
+    var data = google.visualization.arrayToDataTable([
+      ['Task', 'Hours per Day'],
+      [title1, clear],
+      [title2 , remains],
+      [title3 ,  expired]
+    ]);
+
+    var options = {
+      title: title,
+      legend : {
+      display : true,
+      position : "right",
+            labels: {
+                fontSize:16,
+                fontColor:'black'
+            }
+          }
+    };
+
+    var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+
+    chart.draw(data, options);
+    
+  }
+});
+</script>
 @endsection

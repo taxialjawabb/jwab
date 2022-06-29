@@ -11,6 +11,9 @@
         <a href="{{url('warning/driver/final_clearance_date')}}" class="btn {{$type === 'final_clearance_date' ? 'btn-primary' : 'btn-light'}} rounded-0 m-0" >انتهاء المخالصة النهائية</a>
     </div>
 </div>
+                <div class="contriner">
+                    <div id="piechart" style="width: 100%; height: 500px;"></div>
+                </div>
                 <div class="panel panel-default mt-4">
                     <div class="table-responsive">
                         <table class="table " id="datatable">
@@ -89,4 +92,82 @@
 
 
     </script>
+
+<script type="text/javascript" src="{{ asset('assets/js/charts.js') }}"></script>
+
+@if ($type === 'id_expiration_date')
+<script>
+        var clear = @json($idClear ?? 0);
+        var remains = @json($idRemains);
+        var expired = @json($idExpired);
+        var title = 'بيانات الهوية للسائقين';
+        var title1 = "الهويات السارية";
+        var title2 = "الهويات متبقى عليها اقل من شهرين";
+        var title3 = "الهويات المنتهية";
+        
+</script>
+@elseif ($type === 'license_expiration_date')  
+<script>
+        var clear = @json($licenseClear);
+        var remains = @json($licenseRemains);
+        var expired = @json($licenseExpired);   
+        var title = 'بيانات الرخصة للسائقين';
+        var title1 = "الرخصة السارية";
+        var title2 = "الرخص متبقى عليها اقل من شهرين";
+        var title3 = "الرخصة المنتهية"; 
+</script> 
+@elseif ($type === 'contract_end_date')
+<script>
+        var clear = @json($contractClear);
+        var remains = @json($contractRemains);
+        var expired = @json($contractExpired);
+        var title = 'بيانات العقود للسائقين';
+        var title1 = "العقود السارية";
+        var title2 = "العقود متبقى عليها اقل من شهرين";
+        var title3 = "العقود المنتهية";
+</script>
+@elseif ($type === 'final_clearance_date')
+<script>
+        var clear = @json($clearanceClear);
+        var remains = @json($clearanceRemains);
+        var expired = @json($clearanceExpired);
+        var title = 'بيانات المخالصةالنهائية للسائقين';
+        var title1 = "المخالصات السارية";
+        var title2 = "المخالصات متبقى عليها اقل من شهرين";
+        var title3 = "المخالصات المنتهية";
+</script>
+@endif
+
+<script type="text/javascript">
+$(document).ready(function(){
+google.charts.load('current', {'packages':['corechart']});
+  google.charts.setOnLoadCallback(drawChart);
+
+  function drawChart() {
+    var data = google.visualization.arrayToDataTable([
+      ['Task', 'Hours per Day'],
+      [title1, clear],
+      [title2 , remains],
+      [title3 ,  expired]
+    ]);
+
+    var options = {
+      title: title,
+      legend : {
+      display : true,
+      position : "right",
+            labels: {
+                fontSize:16,
+                fontColor:'black'
+            }
+          }
+    };
+
+    var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+
+    chart.draw(data, options);
+    
+  }
+});
+</script>
 @endsection
