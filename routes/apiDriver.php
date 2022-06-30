@@ -73,6 +73,11 @@ Route::group([
             Route::post('/transfer/review', [ App\Http\Controllers\Api\Transfer\TransferController::class, 'check_transfer_driver']);
             Route::post('/transfer/confirm', [ App\Http\Controllers\Api\Transfer\ConfirmTransferController::class, 'transfer_driver']);
             Route::post('/transfer/show/{page?}', [ App\Http\Controllers\Api\Transfer\ShowTransferedController::class, 'get_transfered_bonds_driver']);
+
+ 
+        // Bank Transfer
+        Route::post('/transfer/add', [App\Http\Controllers\Api\Transfer\TransferBankController::class, 'transfer_bank_driver']);
+        Route::post('/transfer/bank/show/{page?}', [App\Http\Controllers\Api\Transfer\TransferBankController::class, 'show_driver']);           
         
     });
     
