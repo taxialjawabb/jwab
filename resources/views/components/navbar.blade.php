@@ -159,6 +159,42 @@
                     </li>
                     @endif
 
+                    
+                    @if(Auth::user()->isAbleTo('user_manage') || Auth::user()->isAbleTo('user_own_tasks'))
+                    <li class="mb-1">
+                        <button class="btn btn-toggle btn-toggle-second align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#manage-tasks" aria-expanded="false">
+                        المهام
+                        </button>
+                        <div class="collapse " id="manage-tasks">
+                        <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                        
+                        @if(Auth::user()->isAbleTo('user_manage'))
+                        <li class="mb-1">
+                            <a  class="btn rider align-items-center rounded collapsed" href="{{ url('tasks/show/unseen') }}" class="link-dark rounded">
+                                أدارة المهام                        
+                            </a>
+                        </li>
+                        @endif
+                        
+
+                        @if(Auth::user()->isAbleTo('user_own_tasks'))
+                        <li class="mb-1">
+                            <a  class="btn rider align-items-center rounded collapsed" href="{{ url('tasks/user/show/unseen') }}"  class="link-dark rounded">
+                                مهامى الخاصة
+                            </a>
+                        </li>
+                        @endif
+
+                        @if(Auth::user()->isAbleTo('add_task'))
+                        <li class="mb-1">
+                            <a  class="btn rider align-items-center rounded collapsed" href="{{ url('tasks/add') }}" class="link-dark rounded">إضافة مهمة</a>
+                        </li>                              
+                        @endif
+                        
+                        </ul>
+                        </div>
+                    </li>
+                    @endif
 
                     @if(Auth::user()->isAbleTo('warning_driver') || Auth::user()->isAbleTo('warning_vechile') || Auth::user()->isAbleTo('warning_user'))
                     <li class="mb-1">
@@ -226,21 +262,6 @@
 
                     <li class="border-top my-1"></li>
                     
-                    @if(Auth::user()->isAbleTo('user_manage'))
-                    <li class="mb-1">
-                        <a  class="btn rider align-items-center rounded collapsed" href="{{ url('tasks/show/unseen') }}" class="link-dark rounded">
-                            أدارة المهام                        
-                        </a>
-                    </li>
-                    @endif
-
-                    @if(Auth::user()->isAbleTo('user_own_tasks'))
-                    <li class="mb-1">
-                        <a  class="btn rider align-items-center rounded collapsed" href="{{ url('tasks/user/show/unseen') }}"  class="link-dark rounded">
-                            مهام القسم                          
-                        </a>
-                    </li>
-                    @endif
                     
                     @if(Auth::user()->isAbleTo('manage_covenant'))
                     <li class="mb-1">

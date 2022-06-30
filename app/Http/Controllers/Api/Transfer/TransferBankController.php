@@ -52,11 +52,15 @@ class TransferBankController extends Controller
             ]);
             return $this -> returnData('data' , $bankTransfer, 'add transfer successfully watting for review');  
         }
-       
+    }
 
-      
-
-       
+    public function show(Request $request)
+    {
+        $request->validate([
+            'rider_id'   => 'required|string'            
+        ]);
+        $data = BankTransfer::where('rider_id', $request->rider_id)->paginate(10);;
+        return $this -> returnData('data' , $data, 'request for bank transfer add balance');  
 
     }
 }

@@ -84,6 +84,7 @@ Route::group([
 
         // Bank Transfer
         Route::post('/transfer/add', [App\Http\Controllers\Api\Transfer\TransferBankController::class, 'transfer_bank_rider']);
+        Route::post('/transfer/bank/show/{page?}', [App\Http\Controllers\Api\Transfer\TransferBankController::class, 'show']);
     });
     
     

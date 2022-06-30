@@ -173,6 +173,11 @@ class PermissionSeeder extends Seeder
                     'display_name' => 'مركز الصيانة' , // optional
                     'description' => 'يستطيع المستخدم من خلالها متابعة بيانات مركز الصيانة واضافة منتاجة و صيانة للسائقين', // optional
                     ]);
+                $editUser = Permission::create([
+                    'name' => 'add_task',
+                    'display_name' => 'أضافة مهمة' , // optional
+                    'description' => 'يستطيع المستخدم من خلالها أضافة مهمة جديدة', // optional
+                    ]);
                         
     }
 }
