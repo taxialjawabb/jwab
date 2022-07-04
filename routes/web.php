@@ -324,7 +324,7 @@ Route::group([
         'prefix' => 'tasks',
         'middleware' => ['permission:user_manage']
     ],function () { 
-        Route::get('/add', [App\Http\Controllers\Admin\Tasks\ManageTaskController::class, 'add_show']);
+        Route::get('/add', [App\Http\Controllers\Admin\Tasks\ManageTaskController::class, 'add_show'])->middleware(['permission:add_task']);
         Route::post('/add', [App\Http\Controllers\Admin\Tasks\ManageTaskController::class, 'add_task']);
         Route::get('/show/{state}', [App\Http\Controllers\Admin\Tasks\ManageTaskController::class, 'show_tasks']);
         Route::get('/show/complete/{state}', [App\Http\Controllers\Admin\Tasks\ManageTaskController::class, 'show_complete_tasks'])->middleware(['permission:complete_task']);

@@ -168,16 +168,137 @@ class PermissionSeeder extends Seeder
                 // 'display_name' => 'تنبيهات المستخدمين ', // optional
                 // 'description' => 'يستطيع المستخدم من خلالها عرض تنبيهات المستخدمين عن انتهاء عقد العمل و تاريخ المخالصة النهائية', // optional
                 // ]);
+                // $editUser = Permission::create([
+                //     'name' => 'maintenance_center',
+                //     'display_name' => 'مركز الصيانة' , // optional
+                //     'description' => 'يستطيع المستخدم من خلالها متابعة بيانات مركز الصيانة واضافة منتاجة و صيانة للسائقين', // optional
+                //     ]);
+                // $editUser = Permission::create([
+                //     'name' => 'add_task',
+                //     'display_name' => 'أضافة مهمة' , // optional
+                //     'description' => 'يستطيع المستخدم من خلالها أضافة مهمة جديدة', // optional
+                //     ]);
+                // $editUser = Permission::create([
+                //     'name' => 'add_task',
+                //     'display_name' => 'أضافة مهمة' , // optional
+                //     'description' => 'يستطيع المستخدم من خلالها أضافة مهمة جديدة', // optional
+                //     ]);
+                // $editUser = Permission::create([
+                //     'name' => 'direct_task',
+                //     'display_name' => 'توجيه المهام' , // optional
+                //     'description' => 'يستطيع المستخدم من خلالها توجيه المهمه الى مستخدم محدد او تغير الشخص المسؤال عن المهمة', // optional
+                //     ]);
                 $editUser = Permission::create([
-                    'name' => 'maintenance_center',
-                    'display_name' => 'مركز الصيانة' , // optional
-                    'description' => 'يستطيع المستخدم من خلالها متابعة بيانات مركز الصيانة واضافة منتاجة و صيانة للسائقين', // optional
+                    'name' => 'show_driver_take',
+                    'display_name' => 'عرض السائقين المستلمين ' , // optional
+                    'description' => 'يستطيع المستخدم من خلالها عرض السائقين المقيدين بالفعل بالنظام', // optional
                     ]);
                 $editUser = Permission::create([
-                    'name' => 'add_task',
-                    'display_name' => 'أضافة مهمة' , // optional
-                    'description' => 'يستطيع المستخدم من خلالها أضافة مهمة جديدة', // optional
+                    'name' => 'show_driver_waiting',
+                    'display_name' => 'عرض السائقين المنتظرين' , // optional
+                    'description' => 'يستطيع المستخدم من خلالها عرض السائقين المنتظرين الذين ليس بحوزتهم مركبة', // optional
                     ]);
+                $editUser = Permission::create([
+                    'name' => 'show_driver_blocked',
+                    'display_name' => 'عرض السائقين المستبعدين' , // optional
+                    'description' => 'يستطيع المستخدم من خلالها عرض السائقين المستعدين من النظام', // optional
+                    ]);
+                $editUser = Permission::create([
+                    'name' => 'new_driver',
+                    'display_name' => 'السائقين المسجل حديثا' , // optional
+                    'description' => 'يستطيع المستخدم من خلالها عرض السائقين المسجل حديثا', // optional
+                    ]);
+                $editUser = Permission::create([
+                    'name' => 'add_driver',
+                    'display_name' => 'أضافة سائق' , // optional
+                    'description' => 'يستطيع المستخدم من خلالها أضافة سائق جديد للنظام', // optional
+                    ]);
+                $editUser = Permission::create([
+                    'name' => 'add_maintenance_center',
+                    'display_name' => 'أضافة صيانة المركز' , // optional
+                    'description' => 'يستطيع المستخدم من خلالها أضافة صيانة للسائق من خلال مركز الصيانة الخاص بنا', // optional
+                    ]);
+                $editUser = Permission::create([
+                    'name' => 'show_maintenance_center',
+                    'display_name' => 'عرض صيانة المركز' , // optional
+                    'description' => 'يستطيع المستخدم من خلالها عرض الصيانات بالمركز الخاص بنا', // optional
+                    ]);
+                $editUser = Permission::create([
+                    'name' => 'covenant_show',
+                    'display_name' => 'عرض العهد' , // optional
+                    'description' => 'يستطيع المستخدم من خلالها عرض العهد لدى السائق', // optional
+                    ]);
+                $editUser = Permission::create([
+                    'name' => 'covenant_add',
+                    'display_name' => 'أضافة عهد للسائق' , // optional
+                    'description' => 'يستطيع المستخدم من خلالها أضافة عهد للسائق', // optional
+                    ]);
+                $editUser = Permission::create([
+                    'name' => 'vechile_recieved',
+                    'display_name' => 'عرض المركبات المستلمة' , // optional
+                    'description' => 'يستطيع المستخدم من خلالها عرض المركبات المستلمة', // optional
+                    ]);
+                $editUser = Permission::create([
+                    'name' => 'change_state_driver',
+                    'display_name' => 'تحويل  حالة السائق' , // optional
+                    'description' => 'يستطيع المستخدم من خلالها', // optional
+                    ]);
+                $editUser = Permission::create([
+                    'name' => 'driver_take_vechile',
+                    'display_name' => 'تسليم مركبة للسائق' , // optional
+                    'description' => 'يستطيع المستخدم من خلالها', // optional
+                    ]);
+                $editUser = Permission::create([
+                    'name' => 'maintenance_outdoor',
+                    'display_name' =>  'الصيانات الخارجية للسائق' , // optional
+                    'description' => 'يستطيع المستخدم من خلالها عرض الصيانات الخارجية للسائق', // optional
+                    ]);
+                $editUser = Permission::create([
+                    'name' => 'user_show',
+                    'display_name' => 'عرض المستخدمين' , // optional
+                    'description' => 'يستطيع المستخدم من خلالها عرض المستخدمين للنظام', // optional
+                    ]);
+                $editUser = Permission::create([
+                    'name' => 'user_add',
+                    'display_name' => 'أضافة مستخدم' , // optional
+                    'description' => 'يستطيع المستخدم من خلالها أضافة مستخدم جديد', // optional
+                    ]);
+                $editUser = Permission::create([
+                    'name' => 'user_box',
+                    'display_name' => 'صندوق المستخدم' , // optional
+                    'description' => 'يستطيع المستخدم من خلالها روئية الصندوق الخاص بالمستخدم', // optional
+                    ]);
+                $editUser = Permission::create([
+                    'name' => 'user_note',
+                    'display_name' => 'ملاحظات المستخدم' , // optional
+                    'description' => 'يستطيع المستخدم من خلالها عرض المستندات الخاصة بالمستخدم ', // optional
+                    ]);
+                $editUser = Permission::create([
+                    'name' => 'user_document',
+                    'display_name' => 'مستندات المستخدم' , // optional
+                    'description' => 'يستطيع المستخدم من خلالها عرض المستندات الخاصة بالمستخدم', // optional
+                    ]);
+                $editUser = Permission::create([
+                    'name' => 'user_state',
+                    'display_name' => 'استبعاد المستخدم' , // optional
+                    'description' => 'يستطيع المستخدم من خلالها أضافة صلاحية لمستخدم', // optional
+                    ]);
+                $editUser = Permission::create([
+                    'name' => 'user_role',
+                    'display_name' => 'أضافة دور للمستخدم' , // optional
+                    'description' => 'يستطيع المستخدم من خلالها أضافة دور للمستخدم', // optional
+                    ]);
+                $editUser = Permission::create([
+                    'name' => 'role_add',
+                    'display_name' => 'أضافة دور' , // optional
+                    'description' => 'يستطيع المستخدم من خلالها', // optional
+                    ]);
+                $editUser = Permission::create([
+                    'name' => 'role_update',
+                    'display_name' => 'تعديل دور' , // optional
+                    'description' => 'يستطيع المستخدم من خلالها', // optional
+                    ]);
+                
                         
     }
 }

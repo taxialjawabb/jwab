@@ -21,7 +21,6 @@
         @if(Auth::user()->isAbleTo('complete_task'))
         <a href="{{ url('tasks/show/complete/complete') }}" class="btn {{$state === 'complete'? 'btn-primary': ''}} rounded-0 m-0" >مكتملة</a>        
         @endif
-        <a href="{{url('tasks/add')}}" class="btn btn-success rounded-0 m-0" >أضـافـة مهمة</a>
     </div>
 </div>
 <div class="clearfix "></div>
@@ -81,7 +80,7 @@
                                         @if($state !== 'complete')
                                         <a href="{{ url('tasks/user/add/'.$task->id.'/'.$task->type) }}" class="btn btn-danger m-1">ملاحظة</a>
                                         @endif
-                                        @if( $task->state !== 'complete')
+                                        @if( $task->state !== 'complete' && Auth::user()->isAbleTo('direct_task'))
                                         <a href="{{ url('tasks/direct/'.$task->id.'/'.$task->type) }}" class="btn btn-danger m-1">توجيه</a>
                                         @endif
                                     </td>

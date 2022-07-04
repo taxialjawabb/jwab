@@ -106,7 +106,7 @@ class CirtyTripController extends Controller
     {
         $data = DB::select(' select category.id as categoryId, category.category_name,
                     city.id as cityId, city.city, city.going_cost, city.going_back_cost, city.city_cancel_cost 
-                    from category , city where category.id = city.category_id order by categoryId;');
+                    from category , city where category.id = city.category_id and category_id.show_in_app = true order by categoryId ;');
         
         return $this -> returnData('data' , $data, 'city');   
         
