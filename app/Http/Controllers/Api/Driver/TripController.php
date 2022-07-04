@@ -259,6 +259,7 @@ class TripController extends Controller
         $data = DB::select("select 
         trips.id as idTrip, 
         trips.state, 
+        trips.vechile_id, 
         trips.trip_type, 
         trips.start_loc_name, 
         trips.start_loc_latitude,
