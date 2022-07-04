@@ -422,4 +422,17 @@ Route::group([
 }); //end middleware auth:admin all
 
  Route::get('data', [ App\Http\Controllers\AuthController::class , 'data']);
- 
+
+
+ Route::get('/ios/client', function() {
+    return redirect('https://apps.apple.com/sa/app/%D8%AA%D8%A7%D9%83%D8%B3%D9%8A-%D8%A7%D9%84%D8%AC%D9%88%D8%A7%D8%A8-%D8%AA%D8%B7%D8%A8%D9%8A%D9%82-%D8%A7%D9%84%D8%B9%D9%85%D9%8A%D9%84/id1626082288?l=ar');
+ });
+ Route::get('/ios/driver', function() {
+    return redirect('https://apps.apple.com/sa/app/%D9%83%D8%A7%D8%A8%D8%AA%D9%86-%D8%A7%D9%84%D8%AC%D9%88%D8%A7%D8%A8/id1626634706?l=ar');
+ });
+ Route::get('/android/client', function() {
+    return redirect('https://play.google.com/store/apps/details?id=com.taxialjawabb.aljwab_cleint.aljwab_cleint');
+ });
+ Route::get('/android/driver', function() {
+    return redirect('https://play.google.com/store/apps/details?id=com.taxialjawabb.aljwab_driver.aljwab_driver');
+ });
