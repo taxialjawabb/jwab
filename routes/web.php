@@ -422,3 +422,4 @@ Route::group([
 }); //end middleware auth:admin all
 
  Route::get('data', [ App\Http\Controllers\AuthController::class , 'data']);
+ 
