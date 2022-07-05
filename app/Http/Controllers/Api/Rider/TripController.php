@@ -129,7 +129,7 @@ class TripController extends Controller
     {
         $request->validate([
             'trip_id' =>'required',
-            'cancel_cost' =>'required|numeric',
+            'cancel_cost' =>'required|string',
             
             ]);
         $trip = Trip::find($request->trip_id);

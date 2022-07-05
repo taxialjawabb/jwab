@@ -34,4 +34,7 @@ class Booking extends Model
         'driver_id',
         'category_id'
     ];
+    public function rider(){
+        return $this->belongsTo(\App\Models\Rider::class,  'foreign_key', 'rider_id');
+    }
 }
