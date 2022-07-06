@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\Booking;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Traits\GeneralTrait;
+use App\Models\Rider\BoxRider;
 
 class BookingController extends Controller
 {
@@ -64,7 +65,7 @@ class BookingController extends Controller
 
         $booking = \App\Models\Booking\Booking::create($requestData);
 
-        $boxRider = new \App\Models\Rider\boxRider();            
+        $boxRider = new BoxRider();            
         $boxRider->rider_id = $rider->id;
         $boxRider->bond_type = 'spend';
         $boxRider->payment_type = 'internal transfer';
