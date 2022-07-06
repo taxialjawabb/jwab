@@ -19,7 +19,8 @@ class BookingDriverController extends Controller
         ]);
         $vechile = \App\Models\Vechile::find($request->vechile_id);
         if($vechile !== null){
-            $data =  Booking::where('category_id' , $vechile->category_id )->with('rider:id,name,phone')->get();
+            $data =  Booking::where('category_id' , $vechile->category_id )->with('rider:id,name,phone')
+            ->paginate(10);
             return $this->returnData('data' , $data, 'show available books for driver by vechile category');
         }
         else{
@@ -34,7 +35,7 @@ class BookingDriverController extends Controller
         ]);
         $driver = \App\Models\Driver::find($request->driver_id);
         if($driver !== null){
-            $data =  Booking::where('driver_id'  , $driver->id )->with('rider:id,name,phone')->get();
+            $data =  Booking::where('driver_id'  , $driver->id )->with('rider:id,name,phone')->paginate(10);
             return $this->returnData('data' , $data, "show driver's books by id");
         }
         else{

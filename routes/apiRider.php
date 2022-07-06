@@ -88,8 +88,8 @@ Route::group([
 
         //booking
         Route::post('/booking/add', [App\Http\Controllers\Api\Booking\BookingController::class, 'booking_trip']);
-        Route::post('/booking/category', [App\Http\Controllers\Api\Booking\BookingController::class, 'category']);
-        Route::post('/mybooking/show', [App\Http\Controllers\Api\Booking\BookingController::class, 'show_mybooks']);
+        Route::post('/booking/category/{page?}', [App\Http\Controllers\Api\Booking\BookingController::class, 'category']);
+        Route::post('/mybooking/show/{page?}', [App\Http\Controllers\Api\Booking\BookingController::class, 'show_mybooks']);
         
     });
     

@@ -113,7 +113,8 @@ class BookingController extends Controller
         ]);
         $rider = \App\Models\Rider::find($request->rider_id);
         if($rider !== null){
-            $data =  \App\Models\Booking\Booking::where('rider_id'  , $rider->id )->with('driver:id,name,phone')->get();
+            $data =  \App\Models\Booking\Booking::where('rider_id'  , $rider->id )
+            ->with('driver:id,name,phone')->paginate(10);
             return $this->returnData('data' , $data, "show rider's books by id");
         }
         else{

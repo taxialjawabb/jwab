@@ -80,8 +80,8 @@ Route::group([
         Route::post('/transfer/bank/show/{page?}', [App\Http\Controllers\Api\Transfer\TransferBankController::class, 'show_driver']);           
         
         //booking
-        Route::post('/booking/show', [App\Http\Controllers\Api\Booking\BookingDriverController::class, 'show_books']);
-        Route::post('/mybooking/show', [App\Http\Controllers\Api\Booking\BookingDriverController::class, 'show_mybooks']);
+        Route::post('/booking/show/{page?}', [App\Http\Controllers\Api\Booking\BookingDriverController::class, 'show_books']);
+        Route::post('/mybooking/show/{page?}', [App\Http\Controllers\Api\Booking\BookingDriverController::class, 'show_mybooks']);
         Route::post('/booking/accept', [App\Http\Controllers\Api\Booking\BookingDriverController::class, 'accept_book']);
 
     });
