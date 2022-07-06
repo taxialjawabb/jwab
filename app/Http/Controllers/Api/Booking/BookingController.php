@@ -33,7 +33,7 @@ class BookingController extends Controller
         ]);
         
         $rider = \App\Models\Rider::find($request->rider_id);
-        if($rider == null){
+        if($rider === null){
             return $this->returnError('E001',"حدث خطاء الرجاء المحاولة فى وقت لاحق");
         }
         else if($rider->account < $request->price){
@@ -62,7 +62,9 @@ class BookingController extends Controller
         ]);
         $requestData['state']="pending";
 
-        $boxRider = new \App\Models\Rider\boxRider;            
+        $booking = \App\Models\Booking\Booking::create($requestData);
+
+        $boxRider = new \App\Models\Rider\boxRider();            
         $boxRider->rider_id = $rider->id;
         $boxRider->bond_type = 'spend';
         $boxRider->payment_type = 'internal transfer';
@@ -70,15 +72,14 @@ class BookingController extends Controller
         $boxRider->money = $request->price;
         $boxRider->tax = 0;
         $boxRider->total_money = $request->price;
-        $boxRider->descrpition =  'تم خصم مبلغ '. $request->price .' للإشتراك فى خدمة توصيل من الفترة '. $request->start_date .' إلى الفترة' . $request->end_date;
+        $boxRider->descrpition =  'تم خصم مبلغ '. $request->price .' للإشتراك فى خدمة توصيل من الفترة '. $request->start_date .' إلى الفترة' . $request->end_date .'إشتراك رقم '. $booking->id;
         $boxRider->add_date = \Carbon\Carbon::now();
 
         $rider->account -=  $request->price;
         $boxRider->save();
         $rider->save();
 
-        $booking = \App\Models\Booking\Booking::create($requestData);
-        return $this -> returnData('data' , $booking, 'successfully added watting for review');  
+        return $this -> returnData('data' , $booking,  $boxRider->descrpition);  
     }
     public function category()
     {

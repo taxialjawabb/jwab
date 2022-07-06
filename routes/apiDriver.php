@@ -81,6 +81,8 @@ Route::group([
         
         //booking
         Route::post('/booking/show', [App\Http\Controllers\Api\Booking\BookingDriverController::class, 'show_books']);
+        Route::post('/mybooking/show', [App\Http\Controllers\Api\Booking\BookingDriverController::class, 'show_mybooks']);
+        Route::post('/booking/accept', [App\Http\Controllers\Api\Booking\BookingDriverController::class, 'accept_book']);
 
     });
     
