@@ -105,4 +105,19 @@ class BookingController extends Controller
 
             return $this -> returnData('booking' , $array, 'booking category and discount');
     }
+
+    public function show_mybooks(Request $request)
+    {
+        $request->validate([
+            'rider_id'   => 'required|string',
+        ]);
+        $rider = \App\Models\Rider::find($request->rider_id);
+        if($rider !== null){
+            $data =  \App\Models\Booking\Booking::where('rider_id'  , $rider->id )->with('driver:id,name,phone')->get();
+            return $this->returnData('data' , $data, "show rider's books by id");
+        }
+        else{
+            return $this->returnError('E001',"حدث خطاء الرجاء المحاولة فى وقت لاحق");
+        }
+    }
 }

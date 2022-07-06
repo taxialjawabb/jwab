@@ -37,4 +37,7 @@ class Booking extends Model
     public function rider(){
         return $this->belongsTo(\App\Models\Rider::class, 'rider_id');
     }
+    public function driver(){
+        return $this->belongsTo(\App\Models\Driver::class, 'driver_id');
+    }
 }

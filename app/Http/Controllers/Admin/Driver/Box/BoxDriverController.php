@@ -30,7 +30,11 @@ class BoxDriverController extends Controller
             }
             else if($type === 'take'){
                 $bonds = DB::select("select boxd.id,boxd.bond_type,boxd.payment_type,boxd.money,boxd.tax,boxd.total_money,boxd.descrpition,boxd.add_date,admins.name as admin_name
-                from box_driver as boxd , driver ,admins  where  boxd.add_by = admins.id and boxd.driver_id = driver.id and driver.id = ? and boxd.bond_type = 'take' ;", [$id]);
+                from box_driver as boxd , driver ,admins  where  boxd.add_by = admins.id and boxd.driver_id = driver.id and driver.id = ? and boxd.bond_type = 'take' 
+                union
+                select boxd.id,boxd.bond_type,boxd.payment_type,boxd.money,boxd.tax,boxd.total_money,boxd.descrpition,boxd.add_date , '' as admin_name
+                from box_vechile as boxd  where ( boxd.foreign_type='driver' and boxd.foreign_id = ? and boxd.bond_type = 'spend') ;
+                ;", [$id, $id]);
                 return view('driver.box.showBoxDriver', compact('driver', 'bonds','type'));
             }
             else{

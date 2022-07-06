@@ -59,6 +59,7 @@ class BookingDriverController extends Controller
                 return $this->returnError('E001',"الرجاء الرجوع للشركة لمراجعت بياناتك");
             }
             if($booking->state === 'pending'){
+
                 $campany_cost = 0;
                 $driver_cost = 0;
                 if($secondaryCategory->percentage_type == 'fixed'){
@@ -67,8 +68,8 @@ class BookingDriverController extends Controller
                 }
                 else if($secondaryCategory->percentage_type == 'percent'){
 
-                    $campany_cost = $booking->price -  ($booking->price * ($secondaryCategory->category_percent /100));
-                    $driver_cost = $booking->price - $campany_cost;
+                    $campany_cost =  ($booking->price * ($secondaryCategory->category_percent /100));
+                    $driver_cost = $booking->price -  $campany_cost;
                 }
                 // return $campany_cost ."=====". $driver_cost;
                 $boxVechile1 = new BoxVechile();
@@ -78,7 +79,7 @@ class BookingDriverController extends Controller
                 $boxVechile1->bond_type = 'take';
                 $boxVechile1->payment_type = 'internal transfer';
                 $boxVechile1->bond_state = 'deposited';
-                $boxVechile1->descrpition =  'تم أضافة مبلغ '. $request->price .' للإشتراك فى خدمة توصيل من الفترة '. $request->start_date .' إلى الفترة' . $request->end_date .'إشتراك رقم '. $booking->id;
+                $boxVechile1->descrpition =  'تم أضافة مبلغ '. $campany_cost .' للمركبة وذلك للإشتراك فى خدمة توصيل من الفترة '. $booking->start_date .' إلى الفترة' . $booking->end_date .'إشتراك رقم '. $booking->id;
                 $boxVechile1->money = $campany_cost;
                 $boxVechile1->tax = 0;
                 $boxVechile1->total_money = $campany_cost;
@@ -91,7 +92,7 @@ class BookingDriverController extends Controller
                 $boxVechile2->bond_type = 'spend';
                 $boxVechile2->payment_type = 'internal transfer';
                 $boxVechile2->bond_state = 'deposited';
-                $boxVechile2->descrpition =  'تم أضافة مبلغ '. $request->price .' للإشتراك فى خدمة توصيل من الفترة '. $request->start_date .' إلى الفترة' . $request->end_date .'إشتراك رقم '. $booking->id;
+                $boxVechile2->descrpition =  'تم أضافة مبلغ '. $driver_cost .' للسائق وذلك للإشتراك فى خدمة توصيل من الفترة '. $booking->start_date .' إلى الفترة' . $booking->end_date .'إشتراك رقم '. $booking->id;
                 $boxVechile2->money = $driver_cost;
                 $boxVechile2->tax = 0;
                 $boxVechile2->total_money = $driver_cost;
@@ -103,6 +104,11 @@ class BookingDriverController extends Controller
 
                 $vechile->save();
                 $driver->save();
+                $booking->state = 'active';
+                $booking->save();
+                $rider = \App\Models\Rider::find($booking->rider_id);
+                $this->push_notification( $rider->remember_token , 'تم قبول الإشتراك  الخاص بك', 'الإشتراك يبداء من '. $request->start_date .' إلى الفترة' . $request->end_date .'إشتراك رقم '. $booking->id , 'discount');
+
                 return $this->returnSuccessMessage("تم حفظ قبول هذا الاشتراك بنجاح ");
             }
             else{
