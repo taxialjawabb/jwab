@@ -35,7 +35,9 @@ class BookingDriverController extends Controller
             'driver_id'   => 'required|string',
         ]);
         $driver = \App\Models\Driver::find($request->driver_id);
-        return Booking::all();
+        return Booking::where('driver_id'  , $request->driver_id )
+                        ->where('state' , 'pending')
+                        ->with('rider:id,name,phone')->get();
         if($driver !== null){
             $data =  Booking::where('driver_id'  , $request->driver_id )
                             ->where('state' , 'pending')
