@@ -39,6 +39,7 @@ class BookingDriverController extends Controller
             $data =  Booking::where('driver_id'  , $request->driver_id )
                             ->where('state' , 'pending')
                             ->with('rider:id,name,phone')->paginate(10);
+            return $data;
             return $this->returnData('data' , $data, "show driver's books by id");
         }
         else{
@@ -108,8 +109,8 @@ class BookingDriverController extends Controller
 
                 $vechile->save();
                 $driver->save();
-                $booking->driver_id = $driver->id;
                 $booking->state = 'active';
+                $booking->driver_id = $driver->id;
                 $booking->save();
                 $rider = \App\Models\Rider::find($booking->rider_id);
                 $this->push_notification( $rider->remember_token , 'تم قبول الإشتراك  الخاص بك', 'الإشتراك يبداء من '. $request->start_date .' إلى الفترة' . $request->end_date .'إشتراك رقم '. $booking->id , 'discount');
