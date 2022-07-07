@@ -107,6 +107,7 @@ class BookingDriverController extends Controller
 
                 $vechile->save();
                 $driver->save();
+                $booking->driver_id = $driver->id;
                 $booking->state = 'active';
                 $booking->save();
                 $rider = \App\Models\Rider::find($booking->rider_id);
