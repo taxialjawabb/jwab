@@ -114,8 +114,8 @@ class BookingController extends Controller
         $rider = \App\Models\Rider::find($request->rider_id);
         if($rider !== null){
             $data =  \App\Models\Booking\Booking::where('rider_id'  , $rider->id )
-            ->where('state' , 'pending')
-            ->with('driver:id,name,phone')->paginate(10);
+                                                    ->where('state' , 'pending')
+                                                    ->with('driver:id,name,phone')->paginate(10);
             return $this->returnData('data' , $data, "show rider's books by id");
         }
         else{
