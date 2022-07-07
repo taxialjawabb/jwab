@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Traits\GeneralTrait;
 use App\Models\Rider\BoxRider;
+use App\Models\SecondaryCategory;
+use App\Models\Vechile\BoxVechile;
 
 class BookingController extends Controller
 {
@@ -132,9 +134,17 @@ class BookingController extends Controller
         $booking = \App\Models\Booking\Booking::find($request->book_id);
 
         if($rider !== null && $booking !== null){
-            if($booking->driver === null){
-                $booking = \App\Models\Booking\Booking::create($requestData);
+            
+            // return  \Carbon\Carbon::parse($booking->start_date)->format('Y-m-d')."======". \Carbon\Carbon::now()->format('Y-m-d');
 
+            if(\Carbon\Carbon::parse($booking->start_date)->format('Y-m-d') < \Carbon\Carbon::now()->format('Y-m-d')){
+                return $this->returnError('E002',"لم يعد بأمكان إلغاء هذه الرحلة ");
+            }
+            if($booking->state === 'canceled'){
+                return $this->returnError('E003',"تم إلغاء  هذه الرحلة من قبل");
+            }
+            if($booking->driver === null){
+                
                 $boxRider = new BoxRider();            
                 $boxRider->rider_id = $rider->id;
                 $boxRider->bond_type = 'take';
@@ -201,6 +211,7 @@ class BookingController extends Controller
                     $rider->account +=  $driver_cost;
                     $driver->account -=  $driver_cost;
                     $boxRider->save();
+                    $boxVechile1->save();
                     $rider->save();
     
                     $booking->state = 'canceled';
