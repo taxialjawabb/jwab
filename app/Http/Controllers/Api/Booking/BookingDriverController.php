@@ -35,11 +35,11 @@ class BookingDriverController extends Controller
             'driver_id'   => 'required|string',
         ]);
         $driver = \App\Models\Driver::find($request->driver_id);
+        return Booking::all();
         if($driver !== null){
             $data =  Booking::where('driver_id'  , $request->driver_id )
                             ->where('state' , 'pending')
                             ->with('rider:id,name,phone')->paginate(10);
-            return $data;
             return $this->returnData('data' , $data, "show driver's books by id");
         }
         else{
