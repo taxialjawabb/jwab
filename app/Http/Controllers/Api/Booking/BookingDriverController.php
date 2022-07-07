@@ -19,7 +19,8 @@ class BookingDriverController extends Controller
         ]);
         $vechile = \App\Models\Vechile::find($request->vechile_id);
         if($vechile !== null){
-            $data =  Booking::where('category_id' , $vechile->category_id )->with('rider:id,name,phone')
+            $data =  Booking::where('category_id' , $vechile->category_id )
+                            ->where('state' , 'pending')->with('rider:id,name,phone')
             ->paginate(10);
             return $this->returnData('data' , $data, 'show available books for driver by vechile category');
         }
@@ -57,7 +58,7 @@ class BookingDriverController extends Controller
 
             $secondaryCategory = SecondaryCategory::find($vechile->secondary_id);
             if($secondaryCategory === null){
-                return $this->returnError('E001',"الرجاء الرجوع للشركة لمراجعت بياناتك");
+                return $this->returnError('E003',"الرجاء الرجوع للشركة لمراجعت بياناتك");
             }
             if($booking->state === 'pending'){
 
@@ -117,7 +118,7 @@ class BookingDriverController extends Controller
             }
         }
         else{
-            return $this->returnError('E001',"حدث خطاء الرجاء المحاولة فى وقت لاحق");
+            return $this->returnError('E002',"حدث خطاء الرجاء المحاولة فى وقت لاحق");
         }
     }
 
