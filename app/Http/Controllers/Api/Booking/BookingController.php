@@ -116,7 +116,8 @@ class BookingController extends Controller
         $rider = \App\Models\Rider::find($request->rider_id);
         if($rider !== null){
             $data =  \App\Models\Booking\Booking::where('rider_id'  , $rider->id )
-                                                    ->where('state' , 'active')
+                                                        ->where('state' , 'active')
+                                                        ->orWhere('state' , 'pending')
                                                     ->with('driver:id,name,phone')->paginate(10);
             return $this->returnData('data' , $data, "show rider's books by id");
         }
@@ -144,7 +145,7 @@ class BookingController extends Controller
                 return $this->returnError('E003',"تم إلغاء  هذه الرحلة من قبل");
             }
             if($booking->driver === null){
-                
+
                 $boxRider = new BoxRider();            
                 $boxRider->rider_id = $rider->id;
                 $boxRider->bond_type = 'take';

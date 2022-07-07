@@ -38,7 +38,6 @@ class BookingDriverController extends Controller
         if($driver !== null){
             $data =  Booking::where('driver_id'  , $request->driver_id )
                             ->where('state' , 'active')
-                            ->orWhere('state' , 'canceled')
                             ->with('rider:id,name,phone')->paginate(10);
             return $this->returnData('data' , $data, "show driver's books by id");
         }
