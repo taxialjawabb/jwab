@@ -26,6 +26,9 @@ Route::group([
             //driver Logout
             Route::post('logout', [DriverAuthController::class, 'logout']);
             
+            // Delete account 
+            Route::post('delete/account', [DriverAuthController::class, 'block_account']);
+            
             // Rider modifications
             Route::post('modify/email', [DriverAuthController::class, 'email_update']);
             Route::post('modify/name', [DriverAuthController::class, 'name_update']);

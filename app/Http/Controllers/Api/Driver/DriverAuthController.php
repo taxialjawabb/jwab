@@ -334,4 +334,27 @@ class DriverAuthController extends Controller
     return $this->returnError('E001', 'حدث خطاء ما');
 
     }
+
+    public function block_account(Request $request)
+    {
+        $token = $request->header('auth-token');
+        if($token){
+            try {
+                $driverData = Auth::guard('driver-api') -> user();
+                $driverData -> state = 'blocked';
+                $driverData -> remember_token = '';
+                $driverData->update();
+
+                JWTAuth::setToken($token)->invalidate(); //logout
+            }catch (\Tymon\JWTAuth\Exceptions\TokenInvalidException $e){
+                return  $this -> returnError('','some thing went wrongs');
+            }
+            // catch(\Exception $ex){
+            //     return $this->returnError($ex->getCode(), $ex->getMessage());
+            // }   
+            return $this->returnSuccessMessage("delete account succesfully");
+        }else{
+            return $this->returnError('', 'some thing is wrongs');
+        }
+    }
 }

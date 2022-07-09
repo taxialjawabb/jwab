@@ -332,5 +332,29 @@ class RiderAuthController extends Controller
         
     }
 
+    
+    public function block_account(Request $request)
+    {
+        $token = $request->header('auth-token');
+        if($token){
+            try {
+                $riderData = Auth::guard('rider-api') -> user();
+                $riderData -> state = 'blocked';
+                $riderData -> remember_token = '';
+                $riderData->update();
+
+                JWTAuth::setToken($token)->invalidate(); //logout
+            }catch (\Tymon\JWTAuth\Exceptions\TokenInvalidException $e){
+                return  $this -> returnError('','some thing went wrongs');
+            }
+            // catch(\Exception $ex){
+            //     return $this->returnError($ex->getCode(), $ex->getMessage());
+            // }   
+            return $this->returnSuccessMessage("delete account succesfully");
+        }else{
+            return $this->returnError('', 'some thing is wrongs');
+        }
+        
+    }    
 }
 

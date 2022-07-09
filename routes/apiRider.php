@@ -25,6 +25,10 @@ Route::group([
     Route::Group(['middleware' =>'auth.guard:rider-api'], function(){
         //Rider Logout
         Route::post('logout', [RiderAuthController::class, 'logout']);
+        
+        // Delete account 
+        Route::post('delete/account', [RiderAuthController::class, 'block_account']);
+
 
         // Rider modifications
         Route::post('modify/email', [RiderAuthController::class, 'email_update']);
