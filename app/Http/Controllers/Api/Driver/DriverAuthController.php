@@ -46,8 +46,9 @@ class DriverAuthController extends Controller
                 $driverData->available = 0;
                 $driverData->update();
                 $driverData->api_token = $token;
-                $verison = Version::find(1);
-                $driverData -> version = $verison->driver;
+                $verison = Version::all();
+                $driverData -> version = $verison[0]->driver;
+                $driverData -> iosVersion = $verison[1]->driver;
                 return $this -> returnData('driver' , $driverData,'login successfuly');  
             }    
         }catch(\Exception $ex){
@@ -85,8 +86,9 @@ class DriverAuthController extends Controller
             $driverData->available = 1;
             $driverData->save();
             $driverData->api_token  = $request->header('auth-token');
-            $verison = Version::find(1);
-            $driverData -> version = $verison->driver;
+            $verison = Version::all();
+            $driverData -> version = $verison[0]->driver;
+            $driverData -> iosVersion = $verison[1]->driver;
             return $this -> returnData('driver' , $driverData,'driver data');
         }
         else{
@@ -129,8 +131,9 @@ class DriverAuthController extends Controller
                     $driverData -> email = $request->email;
                     $driverData->save();
                     $driverData->api_token = $token;
-                    $verison = Version::find(1);
-                    $driverData -> version = $verison->driver;
+                    $verison = Version::all();
+                    $driverData -> version = $verison[0]->driver;
+                    $driverData -> iosVersion = $verison[1]->driver;
                     return $this -> returnData('driver' , $driverData,'Email updated successfuly');
                 }
             }catch (\Tymon\JWTAuth\Exceptions\TokenInvalidException $e){
@@ -152,8 +155,9 @@ class DriverAuthController extends Controller
                     $driverData -> name = $request->name;
                     $driverData->save();
                     $driverData->api_token = $token;
-                    $verison = Version::find(1);
-                    $driverData -> version = $verison->driver;
+                    $verison = Version::all();
+                    $driverData -> version = $verison[0]->driver;
+                    $driverData -> iosVersion = $verison[1]->driver;
                     return $this -> returnData('driver' , $driverData,'Name updated successfuly');
                 }
             }catch (\Tymon\JWTAuth\Exceptions\TokenInvalidException $e){
@@ -179,8 +183,9 @@ class DriverAuthController extends Controller
                     $driverData->phone = $request->phone;
                     $driverData->save();
                     $driverData->api_token = $token;
-                    $verison = Version::find(1);
-                    $driverData -> version = $verison->driver;
+                    $verison = Version::all();
+                    $driverData -> version = $verison[0]->driver;
+                    $driverData -> iosVersion = $verison[1]->driver;
                     return $this -> returnData('driver' , $driverData,'Phone updated successfuly');
                 }
             }catch (\Tymon\JWTAuth\Exceptions\TokenInvalidException $e){
@@ -205,8 +210,9 @@ class DriverAuthController extends Controller
                         $driverData -> password =  Hash::make($request->new_password);
                         $driverData->save();
                         $driverData->api_token = $token;
-                        $verison = Version::find(1);
-                        $driverData -> version = $verison->driver;
+                        $verison = Version::all();
+                        $driverData -> version = $verison[0]->driver;
+                        $driverData -> iosVersion = $verison[1]->driver;
                         return $this -> returnData('driver' , $driverData,'Password updated successfuly');
                     }
                     else{
@@ -235,8 +241,9 @@ class DriverAuthController extends Controller
                     $driverData -> id_expiration_date = $request->id_expiration_date;
                     $driverData->save();
                     $driverData->api_token = $token;
-                    $verison = Version::find(1);
-                    $driverData -> version = $verison->driver;
+                    $verison = Version::all();
+                    $driverData -> version = $verison[0]->driver;
+                    $driverData -> iosVersion = $verison[1]->driver;
                     return $this -> returnData('driver' , $driverData,'id expiration date has ben updated successfuly');
                 }
             }catch (\Tymon\JWTAuth\Exceptions\TokenInvalidException $e){
@@ -265,8 +272,9 @@ class DriverAuthController extends Controller
                 return $this->returnError('E001', 'some thing went wrongs');
             }else{
                 $driver->api_token = $token;
-                $verison = Version::find(1);
-                $driver -> version = $verison->driver;
+                $verison = Version::all();
+                $driverData -> version = $verison[0]->driver;
+                $driverData -> iosVersion = $verison[1]->driver;
                 return $this -> returnData('driver' , $driver,'reset password successfuly');    
             }  
         }
