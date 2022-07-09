@@ -330,7 +330,7 @@ class RiderAuthController extends Controller
                 $verison = Version::all();
                 $riderData -> version = $verison[0]->rider;
                 $riderData -> iosVersion = $verison[1]->rider;
-                return $this -> returnData('rider' , $riderData , $verison->rider);                 
+                return $this -> returnData('rider' , $riderData ,'rider data' );                 
             }    
             else{
                 return $this->returnError('E001', 'some thing went wrongs');
