@@ -63,10 +63,14 @@ class RiderAuthController extends Controller
             'phone_id'    => ['required', 'string'],
         ]);
         $rider = Rider::where("phone",$request->phone)->get();
+        if(count($rider) > 0 && $rider[0]->state === 'deleted'){
+            return $this->returnError('E001', "phone number is deleted ");
+        }
         if(count($rider) > 0){
             return $this -> returnSuccessMessage('true');
 
-        }else{
+        }
+        else{
             $message ="مرحبا عميل الجواب الرمز  ";    
             $code = $this->send_code($request->phone, $message , $request->phone_id);
             if($code !== false){
@@ -349,7 +353,7 @@ class RiderAuthController extends Controller
         if($token){
             try {
                 $riderData = Auth::guard('rider-api') -> user();
-                $riderData -> state = 'blocked';
+                $riderData -> state = 'deleted';
                 $riderData -> remember_token = '';
                 $riderData->update();
 

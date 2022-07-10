@@ -349,7 +349,7 @@ class DriverAuthController extends Controller
         if($token){
             try {
                 $driverData = Auth::guard('driver-api') -> user();
-                $driverData -> state = 'blocked';
+                $driverData -> state = 'deleted';
                 $driverData -> remember_token = '';
                 $driverData->update();
 
