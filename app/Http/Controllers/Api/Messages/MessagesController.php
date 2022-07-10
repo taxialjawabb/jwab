@@ -58,10 +58,13 @@ class MessagesController extends Controller
         ]);
         $rider = Rider::Where('phone', $request->phone)->get();
         if(count($rider) === 0){
-            return $this->returnError('', 'phone number is not exist');
+            return $this->returnError('E002', 'phone number is not exist');
         }
         else if(count($rider) > 0 && $rider[0]->state === 'deleted'){
-            return $this->returnError('', 'phone number is not exist');
+            return $this->returnError('E001', 'phone number is deleted');
+        }
+        else if(count($rider) > 0 && $rider[0]->state === 'blocked'){
+            return $this->returnError('E003', 'phone number is blocked');
         }
         else{
             $message ="مرحبا عميل الجواب تغيير كلمة السرى الرمز ";
@@ -107,7 +110,13 @@ class MessagesController extends Controller
         $driver = Driver::Where('phone', $request->phone)->get();
 
         if(count($driver) === 0){
-            return $this->returnError('', 'phone number is not exist');
+            return $this->returnError('E002', 'phone number is not exist');
+        }
+        else if(count($driver) > 0 && $driver[0]->state === 'deleted'){
+            return $this->returnError('E001', 'phone number is deleted');
+        }
+        else if(count($driver) > 0 && $driver[0]->state === 'blocked'){
+            return $this->returnError('E003', 'phone number is blocked');
         }
         else{
             $message ="مرحبا سائق الجواب تغيير كلمة المرور الرمز ";
