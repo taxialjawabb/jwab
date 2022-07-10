@@ -315,8 +315,8 @@ class RiderAuthController extends Controller
             }else{
                 $rider->api_token = $token;
                 $verison = Version::all();
-                $riderData -> version = $verison[0]->rider;
-                $riderData -> iosVersion = $verison[1]->rider;
+                $rider -> version = $verison[0]->rider;
+                $rider -> iosVersion = $verison[1]->rider;
                 return $this -> returnData('rider' , $rider,'reset password successfuly');    
             }  
         }
