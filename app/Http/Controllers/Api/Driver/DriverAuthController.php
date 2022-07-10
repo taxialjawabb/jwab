@@ -64,10 +64,18 @@ class DriverAuthController extends Controller
             'phone_id'    => ['required', 'string'],
         ]);
         $driver = Driver::where("phone",$request->phone)->get();
+        if(count($driver) > 0 && $driver->state === 'deleted'){
+            return $this->returnError('E001', "phone number is deleted ");
+            
+        }
+        if(count($driver) > 0 && $driver->state === 'blocked'){
+            return $this->returnError('E002', "phone number is blocked ");            
+        }
         if(count($driver) > 0){
             return $this -> returnSuccessMessage('true');
             
-        }else{
+        }
+        else{
             $message ="مرحبا سائق الجواب الرمز ";
             // return $this->send_code($request->phone, $message);
             $code = $this->send_code($request->phone, $message , $request->phone_id);

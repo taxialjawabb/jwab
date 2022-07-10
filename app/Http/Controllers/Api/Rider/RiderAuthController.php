@@ -66,6 +66,9 @@ class RiderAuthController extends Controller
         if(count($rider) > 0 && $rider[0]->state === 'deleted'){
             return $this->returnError('E001', "phone number is deleted ");
         }
+        if(count($rider) > 0 && $rider[0]->state === 'blocked'){
+            return $this->returnError('E002', "phone number is blocked ");
+        }
         if(count($rider) > 0){
             return $this -> returnSuccessMessage('true');
 
