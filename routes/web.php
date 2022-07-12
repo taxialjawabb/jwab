@@ -418,6 +418,13 @@ Route::group([
         Route::post('/center/item', [App\Http\Controllers\Admin\Maintenance\MaintenaceCenterController::class, 'confirm_item']);
         Route::post('/center/item/save', [App\Http\Controllers\Admin\Maintenance\MaintenaceCenterController::class, 'save_item'])->name('items');
     });
+
+    Route::group([
+        'prefix' => 'bookings',
+        
+    ],function () {  
+        Route::get('/{request_state}', [ \App\Http\Controllers\Admin\Booking\BookingController::class, 'requestsBooking']);
+    });
     
 }); //end middleware auth:admin all
 

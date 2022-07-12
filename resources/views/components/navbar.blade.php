@@ -87,6 +87,22 @@
                     </li>
                     @endif
 
+                    <li class="mb-1">
+                        <button class="btn btn-toggle  btn-toggle-second  align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#booking-all" aria-expanded="false">
+                        الاشتراكات الشهريه  
+                        </button>
+                        <div class="collapse  margin-second" id="booking-all">
+                        <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                        <!-- enum('request','inprogress','canceled','rejected','expired','reserve') -->
+                            <li><a href="{{url('bookings/active')}}" class="link-dark rounded">طلبات تعمل حاليا </a></li>
+                            <li><a href="{{url('bookings/expired')}}" class="link-dark rounded">طلبات  تم تنفيذها</a></li>
+                            <li><a href="{{url('bookings/pending')}}" class="link-dark rounded">طلبات قيد الإنتظار</a></li>
+                            <li><a href="{{url('bookings/canceled')}}" class="link-dark rounded">طلبات تم إلغاءها من العميل</a></li>
+                            
+                        </ul>
+                        </div>
+                    </li>
+
                     {{-- @if(Auth::user()->isAbleTo('user_manage'))
                     <li class="mb-1">
                         <button class="btn btn-toggle btn-toggle-second align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#support" aria-expanded="false">
