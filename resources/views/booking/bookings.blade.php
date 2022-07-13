@@ -49,8 +49,8 @@
                                     <td>{{ $trip->rider_phone }}</td>
                                     <td>{{ $trip->driver_name }}</td>
                                     <td>{{ $trip->driver_phone }}</td>
-                                    <td>{{ $trip->price }}</td>
                                     <td>{{ $trip->days }}</td>
+                                    <td>{{ $trip->price }}</td>
                                 </tr>
                                 @endforeach
                             </tbody>

@@ -17,7 +17,7 @@ class BookingController extends Controller
         {
 
             $bookings = DB::select("
-                select booking.id, booking.price,  DATEDIFF(booking.end_date , booking.start_date) as days,
+                select booking.id, ROUND(booking.price, 2) as price,  DATEDIFF(booking.end_date , booking.start_date) as days,
                 rider.name as rider_name , rider.phone as rider_phone , driver.name as driver_name, driver.phone as driver_phone
                 from booking  left join rider on booking.rider_id = rider.id
                 left join driver on booking.driver_id = driver.id
@@ -29,7 +29,7 @@ class BookingController extends Controller
         else
         {
         $bookings = DB::select("
-                select booking.id, booking.price,  DATEDIFF(booking.end_date , booking.start_date) as days,
+                select booking.id, ROUND(booking.price, 2) as price,  DATEDIFF(booking.end_date , booking.start_date) as days,
                 rider.name as rider_name , rider.phone as rider_phone , driver.name as driver_name, driver.phone as driver_phone
                 from booking  left join rider on booking.rider_id = rider.id
                 left join driver on booking.driver_id = driver.id
