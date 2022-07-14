@@ -17,6 +17,7 @@
             <div class="float-end mt-3">        
                 <a href="{{url('bank/transfer/rider/show/state/confimed')}}" class="btn  rounded-0 m-0 {{ $type === 'confimed'?  'btn-primary' : 'btn-light' }}" >التحويلات المقبولة </a>
                 <a href="{{url('bank/transfer/rider/show/state/refused')}}" class="btn  rounded-0 m-0  {{ $type === 'refused'?   'btn-primary' : 'btn-light' }}" >التحويلات المرفوضة </a>
+                <a href="{{url('bank/transfer/rider/show')}}" class="btn  rounded-0 m-0  btn-success" >إدارة التحويلات </a>
             </div>
         </div>
                 <div class="panel panel-default mt-4">
