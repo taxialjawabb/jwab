@@ -53,7 +53,7 @@
                                     <td>{{ $d->money  }}</td>
                                     <td>{{ $d->created_at }}</td>
                                     <td>
-                                        <a href="{{ route('accept.transfer',  ['data' => $d]) }}" class="btn btn-primary ">قبول</a>
+                                        <a href="{{ route('accept.driver.transfer',  ['data' => $d]) }}" class="btn btn-primary ">قبول</a>
                                         <a href="{{ url('bank/transfer/driver/refused/'. $d->id) }}" class="btn btn-danger print" id="reject" bond='{{ $d->id }}'>رفض</a>
                                     </td>
                                     
