@@ -83,10 +83,10 @@ class BookingDriverController extends Controller
                 $boxVechile1->bond_type = 'take';
                 $boxVechile1->payment_type = 'internal transfer';
                 $boxVechile1->bond_state = 'deposited';
-                $boxVechile1->descrpition =  'تم أضافة مبلغ '. $campany_cost .' للمركبة وذلك للإشتراك فى خدمة توصيل من الفترة '. $booking->start_date .' إلى الفترة' . $booking->end_date .'إشتراك رقم '. $booking->id;
-                $boxVechile1->money = $campany_cost;
+                $boxVechile1->descrpition =  'تم أضافة مبلغ '. $booking->price .' للمركبة وذلك للإشتراك فى خدمة توصيل من الفترة '. $booking->start_date .' إلى الفترة' . $booking->end_date .'إشتراك رقم '. $booking->id;
+                $boxVechile1->money = $booking->price;
                 $boxVechile1->tax = 0;
-                $boxVechile1->total_money = $campany_cost;
+                $boxVechile1->total_money = $booking->price;
                 $boxVechile1->add_date = \Carbon\Carbon::now();
                 
                 $boxVechile2 = new BoxVechile();
@@ -96,15 +96,15 @@ class BookingDriverController extends Controller
                 $boxVechile2->bond_type = 'spend';
                 $boxVechile2->payment_type = 'internal transfer';
                 $boxVechile2->bond_state = 'deposited';
-                $boxVechile2->descrpition =  'تم أضافة مبلغ '. $driver_cost .' للسائق وذلك للإشتراك فى خدمة توصيل من الفترة '. $booking->start_date .' إلى الفترة' . $booking->end_date .'إشتراك رقم '. $booking->id;
-                $boxVechile2->money = $driver_cost;
+                $boxVechile2->descrpition =  'تم خصم مبلغ '. $campany_cost .' للسائق وذلك للإشتراك فى خدمة توصيل من الفترة '. $booking->start_date .' إلى الفترة' . $booking->end_date .'إشتراك رقم '. $booking->id;
+                $boxVechile2->money = $campany_cost;
                 $boxVechile2->tax = 0;
-                $boxVechile2->total_money = $driver_cost;
+                $boxVechile2->total_money = $campany_cost;
                 $boxVechile2->add_date = \Carbon\Carbon::now();
                 $boxVechile1->save();
                 $boxVechile2->save();
                 $vechile->account += $campany_cost;
-                $driver->account += $driver_cost;
+                $driver->account += $booking->price - $campany_cost;
 
                 $vechile->save();
                 $driver->save();
