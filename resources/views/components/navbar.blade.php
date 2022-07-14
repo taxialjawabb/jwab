@@ -87,6 +87,7 @@
                     </li>
                     @endif
 
+                    @if(Auth::user()->isAbleTo('show_booking'))
                     <li class="mb-1">
                         <button class="btn btn-toggle  btn-toggle-second  align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#booking-all" aria-expanded="false">
                         الاشتراكات الشهريه  
@@ -102,6 +103,7 @@
                         </ul>
                         </div>
                     </li>
+                    @endif
 
                     {{-- @if(Auth::user()->isAbleTo('user_manage'))
                     <li class="mb-1">
@@ -254,21 +256,16 @@
                     </li>
                     @endif
                     
-                    @if(Auth::user()->isAbleTo('maintenance_center') )
+                    @if(Auth::user()->isAbleTo('bank_transfer') )
                     <li class="mb-1">
-                        <button class="btn btn-toggle  btn-toggle-second  align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#maintenance" aria-expanded="false">
+                        <button class="btn btn-toggle  btn-toggle-second  align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#bank-transfer" aria-expanded="false">
                             طلبات التحويل البنكية
                         </button>
-                        <div class="collapse " id="maintenance">
+                        <div class="collapse " id="bank-transfer">
                         <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                             
-                            @if(Auth::user()->isAbleTo('maintenance_center'))
-                                <li><a href="{{ url('bank/transfer/client/show') }}" class="link-dark rounded">التحويلات للعملاء</a></li>
-                            @endif
-                            @if(Auth::user()->isAbleTo('maintenance_center'))
-                                <li><a href="{{ url('bank/transfer/driver/show') }}" class="link-dark rounded">التحويلات للسائقين</a></li>
-                            @endif
-        
+                            <li><a href="{{ url('bank/transfer/rider/show') }}" class="link-dark rounded">التحويلات للعملاء</a></li>
+                            <li><a href="{{ url('bank/transfer/driver/show') }}" class="link-dark rounded">التحويلات للسائقين</a></li>
                         </ul>
                         </div>
                     </li>

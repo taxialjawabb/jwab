@@ -442,10 +442,15 @@ Route::group([
             Route::post('/add', [ \App\Http\Controllers\Admin\BankTransfer\BankTransferDriverController::class, 'accept_save']);
         });
         Route::group([
-            'prefix' => '/client',
+            'prefix' => '/rider',
             
         ],function () {  
             Route::get('/show', [ \App\Http\Controllers\Admin\BankTransfer\BankTransferClientController::class, 'show_request']);
+            Route::get('/show/state/{type}', [ \App\Http\Controllers\Admin\BankTransfer\BankTransferClientController::class, 'show_state']);
+            Route::get('/refused/{id}', [ \App\Http\Controllers\Admin\BankTransfer\BankTransferClientController::class, 'refused_request']);
+            Route::get('/accept', [ \App\Http\Controllers\Admin\BankTransfer\BankTransferClientController::class, 'accept_request'])->name('accept.transfer');
+            Route::get('/add', [ \App\Http\Controllers\Admin\BankTransfer\BankTransferClientController::class, 'accept_request']);
+            Route::post('/add', [ \App\Http\Controllers\Admin\BankTransfer\BankTransferClientController::class, 'accept_save']);
         });
     });
     

@@ -188,7 +188,8 @@ class PermissionSeeder extends Seeder
                 //     'display_name' => 'توجيه المهام' , // optional
                 //     'description' => 'يستطيع المستخدم من خلالها توجيه المهمه الى مستخدم محدد او تغير الشخص المسؤال عن المهمة', // optional
                 //     ]);
-                $editUser = Permission::create([
+                //***************** */
+/*                $editUser = Permission::create([
                     'name' => 'show_driver_take',
                     'display_name' => 'عرض السائقين المستلمين ' , // optional
                     'description' => 'يستطيع المستخدم من خلالها عرض السائقين المقيدين بالفعل بالنظام', // optional
@@ -298,6 +299,22 @@ class PermissionSeeder extends Seeder
                     'display_name' => 'تعديل دور' , // optional
                     'description' => 'يستطيع المستخدم من خلالها', // optional
                     ]);
+*/
+
+                // $editUser = Permission::create([
+                //     'name' => 'bank_transfer',
+                //     'display_name' => 'أدارة التحويلات البنكية' , // optional
+                //     'description' => 'يستطيع المستخدم من خلالها أدارة التحويلات البنكية من قبول ورفض وعرض التحويلات', // optional
+                //     ]);
+
+                
+                $editUser = Permission::create([
+                    'name' => 'show_booking',
+                    'display_name' => 'أدارة الإشتركات' , // optional
+                    'description' => 'يستطيع المستخدم من خلالها أدارة الإشتركات', // optional
+                    ]);
+
+                
                 
                         
     }
