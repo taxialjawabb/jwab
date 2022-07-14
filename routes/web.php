@@ -425,6 +425,29 @@ Route::group([
     ],function () {  
         Route::get('/{request_state}', [ \App\Http\Controllers\Admin\Booking\BookingController::class, 'requestsBooking']);
     });
+
+    Route::group([
+        'prefix' => 'bank/transfer',
+        
+    ],function () {  
+        Route::group([
+            'prefix' => '/driver',
+            
+        ],function () {  
+            Route::get('/show', [ \App\Http\Controllers\Admin\BankTransfer\BankTransferDriverController::class, 'show_request']);
+            Route::get('/show/state/{type}', [ \App\Http\Controllers\Admin\BankTransfer\BankTransferDriverController::class, 'show_state']);
+            Route::get('/refused/{id}', [ \App\Http\Controllers\Admin\BankTransfer\BankTransferDriverController::class, 'refused_request']);
+            Route::get('/accept', [ \App\Http\Controllers\Admin\BankTransfer\BankTransferDriverController::class, 'accept_request'])->name('accept.transfer');
+            Route::get('/add', [ \App\Http\Controllers\Admin\BankTransfer\BankTransferDriverController::class, 'accept_request']);
+            Route::post('/add', [ \App\Http\Controllers\Admin\BankTransfer\BankTransferDriverController::class, 'accept_save']);
+        });
+        Route::group([
+            'prefix' => '/client',
+            
+        ],function () {  
+            Route::get('/show', [ \App\Http\Controllers\Admin\BankTransfer\BankTransferClientController::class, 'show_request']);
+        });
+    });
     
 }); //end middleware auth:admin all
 

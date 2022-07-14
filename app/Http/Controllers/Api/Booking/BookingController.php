@@ -99,7 +99,8 @@ class BookingController extends Controller
             'category_percent'
             ])->where('show_in_app', true)->get();
 
-            $bookingDiscount = \App\Models\Booking\BookingDiscount::all();
+            $bookingDiscount = \App\Models\Booking\BookingDiscount::select(['percentage_to', 'percentage'])
+                                ->orderBy('percentage_to')->get();
             $array = [
                         'category' => $categories, 
                         'discount' => $bookingDiscount
