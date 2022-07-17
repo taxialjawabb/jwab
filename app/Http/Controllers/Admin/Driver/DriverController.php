@@ -406,10 +406,10 @@ class DriverController extends Controller
             $request->session()->flash('error', 'خطاء لا يوجد مستخدم مستلم العهد  ');
             return back(); 
         }
-        else if($userCovenants[0]->forign_id !== Auth::guard('admin')->user()->id){
-            $request->session()->flash('error', 'يجب ان يكون مستخدم مستلم العهدة هو من يقوم بتسليم العهد ');
-            return back(); 
-        }
+        // else if($userCovenants[0]->forign_id !== Auth::guard('admin')->user()->id){
+        //     $request->session()->flash('error', 'يجب ان يكون مستخدم مستلم العهدة هو من يقوم بتسليم العهد ');
+        //     return back(); 
+        // }
         if($request->has('covenant_item')){
             foreach ($request->covenant_item as $item) {
                 $prevUserReceive =  CovenantRecord::where('item_id', $item)
