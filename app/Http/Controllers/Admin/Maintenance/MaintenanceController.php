@@ -95,9 +95,9 @@ class MaintenanceController extends Controller
             }
             $product[0]->save();
             if($request->has('price') && $request->price > 0){
-                $stakeholder = \App\Models\Nathiraat\Stakeholders::find(8);
+                $stakeholder = \App\Models\Nathiraat\Stakeholders::find(9);
                 $boxNathriaat = new \App\Models\Nathiraat\BoxNathriaat;
-                $boxNathriaat->stakeholders_id = 8;
+                $boxNathriaat->stakeholders_id = 9;
                 $boxNathriaat->bond_type = 'spend';
                 $boxNathriaat->payment_type = $request->payment_type;
                 $boxNathriaat->money = $request->price;

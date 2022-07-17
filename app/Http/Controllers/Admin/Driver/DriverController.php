@@ -14,6 +14,8 @@ use App\Models\Driver\DriverNotes;
 use Illuminate\Support\Facades\Auth;
 use  App\Models\Covenant\CovenantItem;
 use App\Models\Covenant\CovenantRecord;
+use App\Models\Driver\BoxDriver;
+use App\Models\Nathiraat\Stakeholders;
 
 class DriverController extends Controller
 {
@@ -109,6 +111,9 @@ class DriverController extends Controller
                                     vechile.operating_card_expiry_date,
                                     vechile.add_date,
                                     vechile.state,
+                                    vechile.daily_revenue_cost,
+                                    vechile.maintenance_revenue_cost,
+                                    vechile.identity_revenue_cost,
                                     driver.name,
                                     driver.phone,
                                     admins.name as admin_name,
@@ -260,6 +265,9 @@ class DriverController extends Controller
         if($driver !== null ){
         //check if driver has vechile now
         $prefVechile = Vechile::find($driver->current_vechile);
+        $maintenance = Stakeholders::find(9);
+        $identity = Stakeholders::find(10);
+        $totalMoneyAddForDriver = 0;
         if($prefVechile){
             //change vechile state and the time campany back vechile
             $prefVechile->state = 'waiting';
@@ -272,28 +280,68 @@ class DriverController extends Controller
                     $daysDriverHasVechile = $prefDriverVechile[0]->start_date_drive->diffInDays(Carbon::now()->addDay());
                     $payedRegister    = $prefDriverVechile[0]->payedRegister ;
                     $daysNotRegister = $daysDriverHasVechile - $payedRegister ;
+                    $prefDriverVechile[0]->payedRegister = $daysDriverHasVechile;                 
 
                     if($daysNotRegister > 0){
                         $addMoney = $prefVechile->daily_revenue_cost * $daysNotRegister;
-                        
-                        $boxVechile = new BoxVechile;
-                        $boxVechile->vechile_id = $prefVechile->id;
-                        $boxVechile->foreign_type = 'driver';
-                        $boxVechile->foreign_id = $driver->id;
-                        $boxVechile->bond_type = 'take';
-                        $boxVechile->payment_type = 'internal transfer';
-                        $boxVechile->money = $addMoney;
-                        $boxVechile->tax = 0;
-                        $boxVechile->total_money = $addMoney;
-                        $boxVechile->bond_state = 'deposited';
-                        $boxVechile->descrpition = 'ايام لم يتم تسجلها بشكل يوم عدد الايام ' .$daysNotRegister .'المبالغ المضاف : ' .$addMoney;
-                        $boxVechile->add_date = Carbon::now();
+                        if($addMoney > 0){
+                            $boxVechile = new BoxVechile;
+                            $boxVechile->vechile_id = $prefVechile->id;
+                            $boxVechile->foreign_type = 'driver';
+                            $boxVechile->foreign_id = $driver->id;
+                            $boxVechile->bond_type = 'take';
+                            $boxVechile->payment_type = 'internal transfer';
+                            $boxVechile->money = $addMoney;
+                            $boxVechile->tax = 0;
+                            $boxVechile->total_money = $addMoney;
+                            $boxVechile->bond_state = 'deposited';
+                            $boxVechile->descrpition = 'ايام لم يتم تسجلها بشكل يومي عائد يومى للمركبة عدد الايام ' .$daysNotRegister .'المبالغ المضاف : ' .$addMoney;
+                            $boxVechile->add_date = Carbon::now();
+                            $totalMoneyAddForDriver +=  $addMoney;
 
-                        $driver->account -=  $addMoney;
-                        $prefVechile->account =$prefVechile->account +($addMoney);                
-                        $prefDriverVechile[0]->payedRegister = $daysDriverHasVechile;                 
-                        $boxVechile->save();
+                            $prefVechile->account =$prefVechile->account +($addMoney);                
+                            $boxVechile->save();
                         }
+                        $maintenance_revenue_cost = $prefVechile->maintenance_revenue_cost * $daysNotRegister;
+                        if($maintenance_revenue_cost > 0){
+                            $boxDriver = new BoxDriver;
+                            $boxDriver->driver_id = $driver->id;
+                            $boxDriver->foreign_type = 'stakeholders';
+                            $boxDriver->foreign_id = $maintenance->id;
+                            $boxDriver->bond_type = 'spend';
+                            $boxDriver->payment_type = 'internal transfer';
+                            $boxDriver->bond_state = 'deposited';
+                            $boxDriver->descrpition =  'ايام لم يتم تسجلها بشكل يومي عائد يومى لصيانة المركبة عدد الايام  ' .$daysNotRegister .'المبالغ المضاف : ' .$maintenance_revenue_cost;
+                            $boxDriver->money = $maintenance_revenue_cost;
+                            $boxDriver->tax = 0;
+                            $boxDriver->total_money = $maintenance_revenue_cost;
+                            $boxDriver->add_date = Carbon::now();
+                            $maintenance->account +=  $maintenance_revenue_cost;
+                            $maintenance->save();
+                            $totalMoneyAddForDriver +=  $maintenance_revenue_cost;
+                            $boxDriver->save();
+                        }
+
+                        $identity_revenue_cost = $prefVechile->identity_revenue_cost * $daysNotRegister;
+                        if($identity_revenue_cost > 0){
+                            $boxDriver = new BoxDriver;
+                            $boxDriver->driver_id = $driver->id;
+                            $boxDriver->foreign_type = 'stakeholders';
+                            $boxDriver->foreign_id = $identity->id;
+                            $boxDriver->bond_type = 'spend';
+                            $boxDriver->payment_type = 'internal transfer';
+                            $boxDriver->bond_state = 'deposited';
+                            $boxDriver->descrpition =  'ايام لم يتم تسجلها بشكل يومي عائد يومى للتجديد الإقامة عدد الايام  ' .$daysNotRegister .'المبالغ المضاف : ' .$identity_revenue_cost;
+                            $boxDriver->money = $identity_revenue_cost;
+                            $boxDriver->tax = 0;
+                            $boxDriver->total_money = $identity_revenue_cost;
+                            $boxDriver->add_date = Carbon::now();
+                            $totalMoneyAddForDriver +=  $identity_revenue_cost;
+                            $identity->account +=  $identity_revenue_cost;
+                            $identity->save();
+                            $boxDriver->save();
+                        }
+                    }
                     
                 
                 $prefDriverVechile[0]->end_date_drive = Carbon::now();
@@ -310,6 +358,7 @@ class DriverController extends Controller
             $note->note_type ='تغير حالة السائق من' . $driver->state .'الى'. $request->state;
             $driver->state = $request->state;
             $driver->current_vechile = null;
+            $driver->account -=  $totalMoneyAddForDriver;
             $note->content = $request->reason;
             $driver->save();
             $note->save();
@@ -346,8 +395,11 @@ class DriverController extends Controller
         $request->validate([ 
             'driver_id' =>'required|integer',
             'vechile_id' => 'required|integer',
-            'daily_revenue_cost' => 'required|numeric'
+            'daily_revenue_cost' => 'required|numeric',
+            'maintenance_revenue_cost' => 'required|numeric',
+            'identity_revenue_cost' => 'required|numeric',
         ]); 
+        // return $request->all();
         $userCovenants =  CovenantRecord::where('forign_type', 'user')
         ->where('receive_by', null)->where('receive_date', null)->orderBy('delivery_date', 'desc')->get(); 
         if(count($userCovenants) == 0){
@@ -401,6 +453,8 @@ class DriverController extends Controller
         }
 
         $totalMoneyAddForDriver= 0;
+        $maintenance = Stakeholders::find(9);
+        $identity = Stakeholders::find(10);
         //check if driver has vechile now
         $prefVechile = Vechile::find($driver->current_vechile);
         if($prefVechile !== null){
@@ -408,33 +462,80 @@ class DriverController extends Controller
             $prefVechile->state = 'waiting';
             $prefDriverVechile =  DriverVechile::where('vechile_id', $prefVechile->id)->where('driver_id', $driver->id)->where('end_date_drive', null)->where('reason', null)->orderBy('start_date_drive', 'desc')
             ->limit(1)->get();
-
+            
             if(count($prefDriverVechile) > 0){
                 //$dailyCost = DB::select("select category.daily_revenue_cost from vechile, category where vechile.category_id = category.id and vechile.id = ? and (category.percentage_type ='daily' or category.percentage_type = 'daily_percent') limit 1;", [$prefVechile->id]);
                     $daysDriverHasVechile = $prefDriverVechile[0]->start_date_drive->diffInDays(Carbon::now()->addDay());
                     $payedRegister    = $prefDriverVechile[0]->payedRegister ;
                     $daysNotRegister = $daysDriverHasVechile - $payedRegister ;
+                    $prefDriverVechile[0]->payedRegister = $daysDriverHasVechile;     
 
+                    // $maintenance_revenue_cost = $request->maintenance_revenue_cost * $daysNotRegister;
+                    // return $prefVechile;
                     if($daysNotRegister > 0){
                         $addMoney = $prefVechile->daily_revenue_cost * $daysNotRegister;
-                        
-                        $boxVechile = new BoxVechile;
-                        $boxVechile->vechile_id = $prefVechile->id;
-                        $boxVechile->foreign_type = 'driver';
-                        $boxVechile->foreign_id = $driver->id;
-                        $boxVechile->bond_type = 'take';
-                        $boxVechile->payment_type = 'internal transfer';
-                        $boxVechile->money = $addMoney;
-                        $boxVechile->tax = 0;
-                        $boxVechile->total_money = $addMoney;
-                        $boxVechile->bond_state = 'deposited';
-                        $boxVechile->descrpition = 'ايام لم يتم تسجلها بشكل يوم عدد الايام ' .$daysNotRegister .'المبالغ المضاف : ' .$addMoney;
-                        $boxVechile->add_date = Carbon::now();
+                        if($addMoney > 0){
+                            $boxVechile = new BoxVechile;
+                            $boxVechile->vechile_id = $prefVechile->id;
+                            $boxVechile->foreign_type = 'driver';
+                            $boxVechile->foreign_id = $driver->id;
+                            $boxVechile->bond_type = 'take';
+                            $boxVechile->payment_type = 'internal transfer';
+                            $boxVechile->money = $addMoney;
+                            $boxVechile->tax = 0;
+                            $boxVechile->total_money = $addMoney;
+                            $boxVechile->bond_state = 'deposited';
+                            $boxVechile->descrpition = 'ايام لم يتم تسجلها بشكل يومي عائد يومى للمركبة عدد الايام ' .$daysNotRegister .'المبالغ المضاف : ' .$addMoney;
+                            $boxVechile->add_date = Carbon::now();
+                            $boxVechile->save();
+    
+                            $totalMoneyAddForDriver +=  $addMoney;
+                            $prefVechile->account =$prefVechile->account +($addMoney);                
+                            }
+                            
+                            $maintenance_revenue_cost = $prefVechile->maintenance_revenue_cost * $daysNotRegister;
+                            if($maintenance_revenue_cost > 0){
+                                $boxDriver = new BoxDriver;
+                                $boxDriver->driver_id = $driver->id;
+                                $boxDriver->foreign_type = 'stakeholders';
+                                $boxDriver->foreign_id = $maintenance->id;
+                                $boxDriver->bond_type = 'spend';
+                                $boxDriver->payment_type = 'internal transfer';
+                                $boxDriver->bond_state = 'deposited';
+                                $boxDriver->descrpition =  'ايام لم يتم تسجلها بشكل يومي عائد يومى لصيانة المركبة عدد الايام  ' .$daysNotRegister .'المبالغ المضاف : ' .$maintenance_revenue_cost;
+                                $boxDriver->money = $maintenance_revenue_cost;
+                                $boxDriver->tax = 0;
+                                $boxDriver->total_money = $maintenance_revenue_cost;
+                                $boxDriver->add_date = Carbon::now();
+                                
+                                $maintenance->account +=  $maintenance_revenue_cost;
+                                $maintenance->save();
+                                $totalMoneyAddForDriver +=  $maintenance_revenue_cost;
+                                $boxDriver->save();
+                            }
 
-                        $totalMoneyAddForDriver +=  $addMoney;
-                        $prefVechile->account =$prefVechile->account +($addMoney);                
-                        $prefDriverVechile[0]->payedRegister = $daysDriverHasVechile;                 
-                        $boxVechile->save();
+                            $identity_revenue_cost = $prefVechile->identity_revenue_cost * $daysNotRegister;
+                            if($identity_revenue_cost > 0){
+                                $boxDriver = new BoxDriver;
+                                $boxDriver->driver_id = $driver->id;
+                                $boxDriver->foreign_type = 'stakeholders';
+                                $boxDriver->foreign_id = $identity->id;
+                                $boxDriver->bond_type = 'spend';
+                                $boxDriver->payment_type = 'internal transfer';
+                                $boxDriver->bond_state = 'deposited';
+                                $boxDriver->descrpition =  'ايام لم يتم تسجلها بشكل يومي عائد يومى للتجديد الإقامة عدد الايام  ' .$daysNotRegister .'المبالغ المضاف : ' .$identity_revenue_cost;
+                                $boxDriver->money = $identity_revenue_cost;
+                                $boxDriver->tax = 0;
+                                $boxDriver->total_money = $identity_revenue_cost;
+                                $boxDriver->add_date = Carbon::now();
+                                
+                                $totalMoneyAddForDriver +=  $identity_revenue_cost;
+
+                                $identity->account +=  $identity_revenue_cost;
+                                $identity->save();
+                                $boxDriver->save();
+                            }
+                            
                         }
                     
                     
@@ -443,6 +544,7 @@ class DriverController extends Controller
                 $prefDriverVechile[0]->reason = 'تغير السيارة و استلام سيارة اخرى';                
                 $prefDriverVechile[0]->save();
             }
+
             $prefVechile->save();
         }
         $vechile = Vechile::find($request->vechile_id);
@@ -458,12 +560,13 @@ class DriverController extends Controller
             
             $vechile->state = 'active';
             $vechile->save();
-            
+            $driver->account -=$totalMoneyAddForDriver;
             $driver->state = 'active';
             $driver->current_vechile = $vechile->id;
             
             //$dailyCost = DB::select("select category.daily_revenue_cost from vechile, category where vechile.category_id = category.id and vechile.id = ? and (category.percentage_type ='daily' or category.percentage_type = 'daily_percent') limit 1;", [$vechile->id]);
-            
+            if($request->daily_revenue_cost > 0){
+
                 $boxVechile = new BoxVechile;
                 $boxVechile->vechile_id = $vechile->id;
                 $boxVechile->foreign_type = 'driver';
@@ -477,10 +580,55 @@ class DriverController extends Controller
                 $boxVechile->descrpition = 'عائد يومى للمركبة ' .$vechile->id .' على السائق ' . $driver->name;
                 $boxVechile->add_date = Carbon::now();
                 $totalMoneyAddForDriver +=  $request->daily_revenue_cost;
-                $vechile->account =$vechile->account +  $request->daily_revenue_cost;
-                $vechile->daily_revenue_cost = $request->daily_revenue_cost;
                 
                 $boxVechile->save();
+            }
+
+            if($request->maintenance_revenue_cost > 0){
+                $boxDriver = new BoxDriver;
+                $boxDriver->driver_id = $driver->id;
+                $boxDriver->foreign_type = 'stakeholders';
+                $boxDriver->foreign_id = $maintenance->id;
+                $boxDriver->bond_type = 'spend';
+                $boxDriver->payment_type = 'internal transfer';
+                $boxDriver->bond_state = 'deposited';
+                $boxDriver->descrpition = 'عائد يومى لصيانة للمركبة ' .$driver->id .' على السائق ' . $driver->name;
+                $boxDriver->money = $request->maintenance_revenue_cost;
+                $boxDriver->tax = 0;
+                $boxDriver->total_money = $request->maintenance_revenue_cost;
+                $boxDriver->add_date = Carbon::now();
+                $maintenance->account +=  $request->maintenance_revenue_cost;
+                $maintenance->save();
+                $totalMoneyAddForDriver +=  $request->maintenance_revenue_cost;
+                
+                $boxDriver->save();
+            }
+
+            
+            if($request->identity_revenue_cost > 0){
+                $boxDriver = new BoxDriver;
+                $boxDriver->driver_id = $driver->id;
+                $boxDriver->foreign_type = 'stakeholders';
+                $boxDriver->foreign_id = $identity->id;
+                $boxDriver->bond_type = 'spend';
+                $boxDriver->payment_type = 'internal transfer';
+                $boxDriver->bond_state = 'deposited';
+                $boxDriver->descrpition =   'عائد يومى للتجديد الإقامة ' .$driver->id .' على السائق ' . $driver->name;
+                $boxDriver->money = $request->identity_revenue_cost;
+                $boxDriver->tax = 0;
+                $boxDriver->total_money = $request->identity_revenue_cost;
+                $boxDriver->add_date = Carbon::now();
+                // $driver->account -=  $request->identity_revenue_cost;
+                $totalMoneyAddForDriver +=  $request->identity_revenue_cost;
+
+                $identity->account +=  $request->identity_revenue_cost;
+                $identity->save();
+                $boxDriver->save();
+            }
+                $vechile->account =$vechile->account +  $request->daily_revenue_cost;
+                $vechile->daily_revenue_cost = $request->daily_revenue_cost;
+                $vechile->maintenance_revenue_cost = $request->maintenance_revenue_cost;
+                $vechile->identity_revenue_cost = $request->identity_revenue_cost;
                 $vechile->save();
             
             $driver->account -=$totalMoneyAddForDriver;

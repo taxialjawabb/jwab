@@ -263,6 +263,7 @@ class DriverAuthController extends Controller
 
     public function send_message_driver_reset(Request $request)
     {
+
         $request->validate([
             'phone'    => ['required', 'string'],
             'new_password' => ['required', 'string'],
@@ -281,10 +282,12 @@ class DriverAuthController extends Controller
             }else{
                 $driver->api_token = $token;
                 $verison = Version::all();
-                $driverData -> version = $verison[0]->driver;
-                $driverData -> iosVersion = $verison[1]->driver;
+                $driver-> version = $verison[0]->driver;
+                $driver-> iosVersion = $verison[1]->driver;
                 return $this -> returnData('driver' , $driver,'reset password successfuly');    
             }  
+        }else{
+            return $this->returnError('E002', 'error in driver data');
         }
     }
     

@@ -66,7 +66,6 @@
         <input type="text" value="{{ $vechile->color }}" name="color" class="form-control" id="color"  required>
       </div>
 
-      <!-- <div class="mt-4  col-sm-12 col-md-6 col-lg-6 col-xl-6 "></div> -->
 
       <div class="mt-4  col-sm-12 col-md-6 col-lg-6 col-xl-6 ">
         <label for="driving_license_expiration_date" class="form-label">تاريخ إنتهاء رخصة السير</label>
@@ -87,7 +86,24 @@
         <label for="operating_card_expiry_date" class="form-label">تاريخ إنتهاء بطاقة التشغيل</label>
         <input type="date" style="text-direction:rtl" value="{{ $vechile->operating_card_expiry_date->format('Y-m-d') }}" name="operating_card_expiry_date" class="form-control" id="operating_card_expiry_date"  required>
       </div>
-      
+
+      <div class="mt-4  col-sm-12 col-md-6 col-lg-6 col-xl-6 "></div> 
+
+      <div class="mt-4  col-sm-12 col-md-6 col-lg-6 col-xl-6">
+        <label for="daily_revenue_cost" class="form-label">تكلفة العائد اليومي للمركبة</label>
+        <input type="text" value="{{$vechile->daily_revenue_cost }}" name="daily_revenue_cost" class="form-control" id="daily_revenue_cost"  required>
+    </div>
+
+    <div class="mt-4  col-sm-12 col-md-6 col-lg-6 col-xl-6">
+        <label for="maintenance_revenue_cost" class="form-label">تكلفة العائد اليومي للصيانة</label>
+        <input type="text" value="{{$vechile->maintenance_revenue_cost }}" name="maintenance_revenue_cost" class="form-control" id="maintenance_revenue_cost"  required>
+    </div>
+    
+    <div class="mt-4  col-sm-12 col-md-6 col-lg-6 col-xl-6">
+        <label for="identity_revenue_cost" class="form-label">تكلفة العائد اليومي للأقامة</label>
+        <input type="text" value="{{  $vechile->identity_revenue_cost }}" name="identity_revenue_cost" class="form-control" id="identity_revenue_cost"  required>
+    </div>
+
      
     </div>
   </div>

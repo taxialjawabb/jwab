@@ -31,8 +31,18 @@
                         </select>
                     </div>
                     <div class="mt-4  col-sm-12 col-md-6 col-lg-6 col-xl-6">
-                        <label for="daily_revenue_cost" class="form-label">تكلفة العائد اليومي</label>
+                        <label for="daily_revenue_cost" class="form-label">تكلفة العائد اليومي للمركبة</label>
                         <input type="text" value="{{ old('daily_revenue_cost') }}" name="daily_revenue_cost" class="form-control" id="daily_revenue_cost"  required>
+                    </div>
+
+                    <div class="mt-4  col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                        <label for="maintenance_revenue_cost" class="form-label">تكلفة العائد اليومي للصيانة</label>
+                        <input type="text" value="{{ old('maintenance_revenue_cost') }}" name="maintenance_revenue_cost" class="form-control" id="maintenance_revenue_cost"  required>
+                    </div>
+                    
+                    <div class="mt-4  col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                        <label for="identity_revenue_cost" class="form-label">تكلفة العائد اليومي للأقامة</label>
+                        <input type="text" value="{{ old('identity_revenue_cost') }}" name="identity_revenue_cost" class="form-control" id="identity_revenue_cost"  required>
                     </div>
 
                     
@@ -101,7 +111,6 @@
             </div>
             `);
             index++;
-           
         });
         $('#remove-covenant').on('click', function(){ 
             if(index  > 0){

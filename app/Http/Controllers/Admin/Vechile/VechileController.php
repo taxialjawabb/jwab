@@ -153,6 +153,9 @@ class VechileController extends Controller
             'operating_card_expiry_date' => ['required','date'],
             'category_id' => ['required','integer'],
             'secondary_id' => ['required','integer'],
+            'daily_revenue_cost' => ['required', 'numeric'],
+            'maintenance_revenue_cost' => ['required', 'numeric'],
+            'identity_revenue_cost' => ['required', 'numeric'],
 
         ]);
         $vechile = Vechile::find($request->id);
@@ -176,6 +179,10 @@ class VechileController extends Controller
             $vechile->operating_card_expiry_date = $request-> operating_card_expiry_date;
             $vechile->category_id = $request-> category_id;
             $vechile->secondary_id = $request-> secondary_id;
+            $vechile->daily_revenue_cost = $request->daily_revenue_cost;
+            $vechile->maintenance_revenue_cost = $request->maintenance_revenue_cost;
+            $vechile->identity_revenue_cost = $request->identity_revenue_cost;
+
             $vechile->save();               
             $request->session()->flash('status', 'تم تعديل بيانات المركبة بنجاح');
             return back();    

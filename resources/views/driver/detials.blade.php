@@ -165,6 +165,22 @@
     <div class="row">
     
       <div class="  col-sm-12 col-md-6 col-lg-6 col-xl-6 ">
+        <label for="daily_revenue_cost" class="form-label">تكلفة العائد اليومي للمركبة</label>
+        <p class="alert alert-secondary p-1">{{$vechile->daily_revenue_cost}}</p>
+      </div>
+
+      <div class="  col-sm-12 col-md-6 col-lg-6 col-xl-6 ">
+        <label for="maintenance_revenue_cost" class="form-label">تكلفة العائد اليومي للصيانة</label>
+        <p class="alert alert-secondary p-1">{{$vechile->maintenance_revenue_cost??'لا يوجد'}}</p>
+      </div>
+
+      <div class="  col-sm-12 col-md-6 col-lg-6 col-xl-6 ">
+        <label for="identity_revenue_cost" class="form-label">تكلفة العائد اليومي للأقامة</label>
+        <p class="alert alert-secondary p-1">{{$vechile->identity_revenue_cost}}</p>
+      </div>
+      
+
+      <div class="  col-sm-12 col-md-6 col-lg-6 col-xl-6 ">
         <label for="category_name" class="form-label">التصنيف</label>
         <p class="alert alert-secondary p-1">{{$vechile->category_name}}</p>
       </div>

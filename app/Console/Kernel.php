@@ -19,6 +19,8 @@ class Kernel extends ConsoleKernel
     ];
     protected function schedule(Schedule $schedule)
     {
+        // php artisan schedule:work
+        // php artisan schedule:run
         // $schedule->command('inspire')->hourly();
         // $schedule->command('daily:revenue')->everyMinute();
         $schedule->command('daily:revenue')->hourly();

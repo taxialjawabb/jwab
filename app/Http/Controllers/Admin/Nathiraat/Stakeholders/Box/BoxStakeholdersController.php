@@ -23,8 +23,11 @@ class BoxStakeholdersController extends Controller
                 select boxd.id,boxd.bond_type,boxd.payment_type,boxd.money,boxd.tax,boxd.total_money,
                 boxd.descrpition,boxd.add_date, admins.name as admin_name
                 from box_nathriaat as boxd , admins  where boxd.add_by=admins.id 
-                and  stakeholders_id = ? and boxd.bond_type = 'spend';
-                ", [$id]);
+                and  stakeholders_id = ? and boxd.bond_type = 'spend'
+                union
+                select boxd.id,boxd.bond_type,boxd.payment_type,boxd.money,boxd.tax,boxd.total_money,boxd.descrpition,boxd.add_date , '' as admin_name
+                from box_driver as boxd  where ( boxd.foreign_type='stakeholders' and boxd.foreign_id = ? and boxd.bond_type = 'take') ;
+                ", [$id , $id]);
                 return view('nathiraat.stakeholders.box.showBoxStakeholders', compact('stakeholder', 'bonds','type'));
             }
             else if($type === 'take'){
@@ -32,8 +35,11 @@ class BoxStakeholdersController extends Controller
                 select boxd.id,boxd.bond_type,boxd.payment_type,boxd.money,boxd.tax,boxd.total_money,
                 boxd.descrpition,boxd.add_date, admins.name as admin_name
                 from box_nathriaat as boxd , admins  where boxd.add_by=admins.id 
-                and  stakeholders_id = ? and boxd.bond_type = 'take';
-                ", [$id]);
+                and  stakeholders_id = ? and boxd.bond_type = 'take'
+                union
+                select boxd.id,boxd.bond_type,boxd.payment_type,boxd.money,boxd.tax,boxd.total_money,boxd.descrpition,boxd.add_date , '' as admin_name
+                from box_driver as boxd  where ( boxd.foreign_type='stakeholders' and boxd.foreign_id = ? and boxd.bond_type = 'spend') ;
+                ", [$id, $id]);
                 return view('nathiraat.stakeholders.box.showBoxStakeholders', compact('stakeholder', 'bonds','type'));
             }
             else{
