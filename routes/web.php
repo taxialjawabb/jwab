@@ -424,6 +424,9 @@ Route::group([
         
     ],function () {  
         Route::get('/{request_state}', [ \App\Http\Controllers\Admin\Booking\BookingController::class, 'requestsBooking']);
+        Route::get('/discount/show', [ \App\Http\Controllers\Admin\Booking\BookingController::class, 'show_discount']);
+        Route::post('/discount', [ \App\Http\Controllers\Admin\Booking\BookingController::class, 'save_discount']);
+        Route::post('/discount/update', [ \App\Http\Controllers\Admin\Booking\BookingController::class, 'save_update']);
     });
 
     Route::group([

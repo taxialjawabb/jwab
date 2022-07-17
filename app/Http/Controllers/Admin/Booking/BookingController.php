@@ -38,4 +38,43 @@ class BookingController extends Controller
         return view('booking.bookings', compact('bookings', 'state'));
 }
     }
+
+    public function save_discount(Request $request)
+    {
+        $request->validate([            
+            'trip_count' =>     'required|integer',
+            'discount' =>          'required|numeric',
+        ]);
+        $discount = \App\Models\Booking\BookingDiscount::create([
+                'percentage_to' => $request->trip_count,
+                'percentage' => $request->discount,
+        ]);
+        $request->session()->flash('status', 'تم إضافة نسبة الخصم بنجاح');
+        return back();
+    }
+    public function save_update(Request $request)
+    {
+        $request->validate([            
+            'discount_id' =>  'required|integer',
+            'trip_count' =>   'required|integer',
+            'discount' =>     'required|numeric',
+        ]);
+        $discount = \App\Models\Booking\BookingDiscount::find($request->discount_id);
+        if($discount !== null){
+            $discount->id  =$request->discount_id ;
+            $discount->percentage_to  =$request->trip_count ;
+            $discount->percentage  =$request->discount ;
+            $discount->save();
+
+            $request->session()->flash('status', 'تم إضافة نسبة الخصم بنجاح');
+        }else{
+            $request->session()->flash('error', 'خطاء فى البيانات الرجاء المحاولة فى وقت لاحق');
+        }
+        return back();
+    }
+    public function show_discount()
+    {
+        $data = \App\Models\Booking\BookingDiscount::all();
+        return view('booking.showDiscountBookings', compact('data'));
+    }
 }
