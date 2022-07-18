@@ -319,4 +319,41 @@ class TripController extends Controller
             return $this->returnError('E003', 'خطاء هذه الرحلة غير متاحة');
         }
     }
+
+    public function request_created_by_driver(Request $request)
+    {
+        $request->validate([
+            'driver_id' =>'required|numeric',
+            'start_loc_latitude' =>'required|numeric',
+            'start_loc_longtitude' =>'required|numeric',
+            'start_loc_name' =>'required|string',
+            'start_loc_id' =>'required',
+            // 'end_loc_latitude' =>'required|numeric',
+            // 'end_loc_longtitude' =>'required|numeric',
+            // 'end_loc_name' =>'required',
+            // 'end_loc_id' =>'required',
+            'reqest_time' =>'required',
+            'distance' =>'required',
+            'trip_time' =>'required'
+            ]);
+            
+            $driver = Driver::find($request->driver_id);
+            
+            if($driver !== null){
+                $vehcile = Vechile::find($driver->current_vechile);
+                if($vechile !== null){
+
+                    $data = App\Models\Trip::create([
+
+                    ]);
+                    return $this -> returnData('data' , $data,'تم حفظ طلبك قيد الانتظار');                
+                }
+                else{
+                    return $this->returnError('E002', 'حدث خطاء فى بيانات المركبة  الرجاء المحاولة فى وقت لاحق');
+                }
+            }
+            else{
+                return $this->returnError('E001', 'حدث خطاء فى بيانات السائق الرجاء المحاولة فى وقت لاحق');
+            }
+    }
 }
