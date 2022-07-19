@@ -16,7 +16,7 @@ class DocumentDriverController extends Controller
     {
         $driver = Driver::find($id);
         if($driver !== null){
-            $documents = DB::select('select documents_driver.id, document_type, content, add_date, attached, admins.name as admin_name from documents_driver, admins where documents_driver.admin_id = admins.id and driver_id=?;', [$id]);
+            $documents = DB::select('select documents_driver.id, document_type, content, add_date, attached, admins.name as admin_name from documents_driver left join admins on documents_driver.admin_id = admins.id  where driver_id=?;', [$id]);
             return view('driver.documents.showDocsDriver', compact('documents','driver'));
         }else{
             return redirect('driver/show');

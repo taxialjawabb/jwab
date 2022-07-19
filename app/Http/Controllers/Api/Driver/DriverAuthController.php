@@ -13,6 +13,7 @@ use App\Models\Version;
 use Hash;
 use Illuminate\Support\Facades\Http;
 use Carbon\Carbon;
+use App\Models\Driver\DriverDocuments;
 
 
 class DriverAuthController extends Controller
@@ -309,6 +310,8 @@ class DriverAuthController extends Controller
             // 'final_clearance_date' => 'required|string',
             'phone' => 'required|string',
             'image' => 'required|mimes:jpeg,png,jpg,',
+            'id_image' => 'required|mimes:jpeg,png,jpg,',
+            'license_image' => 'required|mimes:jpeg,png,jpg,',
         ]);
 
         $driverData = Driver::where('ssd', $request->ssd)->orWhere('phone', $request->phone)->get();
@@ -348,6 +351,9 @@ class DriverAuthController extends Controller
 	
 		}
         $driver->save();
+
+        $this->add_document($driver->id, 'صورة الهوية للسائق' , 'صورة الهوية للسائق تمت اضافتها عن طريق التطبيق', $request->file('id_image'));
+        $this->add_document($driver->id, 'صورة رخصة القيادة للسائق' , 'صورة رخصة القيادة للسائق تمت اضافتها عن طريق التطبيق', $request->file('license_image'));
         return $this->returnSuccessMessage("تم أضافة بياناتك بنجاح ");
     }
     return $this->returnError('E001', 'حدث خطاء ما');
@@ -375,5 +381,24 @@ class DriverAuthController extends Controller
         }else{
             return $this->returnError('', 'some thing is wrongs');
         }
+    }
+
+    public function add_document($driver_id, $title , $content, $file)
+    {
+        $name = $file->getClientOriginalName();
+        $ext  = $file->getClientOriginalExtension();
+        $size = $file->getSize();
+        $mim  = $file->getMimeType();
+        $realpath = $file->getRealPath();
+        $image = time().'.'.$ext;
+        $file->move(public_path('images/drivers/documents'),$image);
+        $document = new DriverDocuments;
+        $document->document_type = $title;
+        $document->content = $content;
+        $document->add_date = Carbon::now();
+        // $document->admin_id = Auth::guard('admin')->user()->id;
+        $document->driver_id = $driver_id;
+        $document->attached = $image;
+        $document->save();
     }
 }
