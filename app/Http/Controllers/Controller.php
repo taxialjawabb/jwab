@@ -28,7 +28,7 @@ class Controller extends BaseController
                 ],
                 'notification' =>[
                     "title" => $title,
-                    "sound"=> "alert.mp3"
+                    "sound"=> "sound.caf"
                 ],
                 "data" =>  [
                     "type" => $body,   
@@ -42,7 +42,7 @@ class Controller extends BaseController
                     "payload" =>[
                         "aps" => [
                             "alert" => $title,
-                            "sound" => "soundnote.aiff"
+                            "sound" => "sound.caf"
                         ],
                     ]
                 ]
