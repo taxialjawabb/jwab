@@ -28,7 +28,7 @@ class Controller extends BaseController
                 ],
                 'notification' =>[
                     "title" => $title,
-                    "sound"=> "sound.mp3"
+                    "sound"=> "sound.caf"
                 ],
                 "data" =>  [
                     "type" => $body,   
