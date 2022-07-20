@@ -28,19 +28,17 @@ class Controller extends BaseController
                 ],
                 'notification' =>[
                     "title" => $title,
-                    "sound"=> "default"
+                    "sound"=> "alert.mp3"
                 ],
                 "data" =>  [
                     "type" => $body,   
                     "subtitle" => $subtitle,   
                 ], 
-                "apns" => [
-                    "payload" => [
-                      "aps" => [
-                        "alert" => "new message",
-                        "sound" => "alert.aiff"
-                      ]
-                    ]
+                "payload" => [
+                  "aps" => [
+                    "alert" => $title,
+                    "sound" => "soundnote.aiff"
+                  ]
                 ]
             ];
             $encodedData = json_encode($data);
