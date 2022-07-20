@@ -33,7 +33,11 @@ class Controller extends BaseController
                 "data" =>  [
                     "type" => $body,   
                     "subtitle" => $subtitle,   
-                ],  
+                ], 
+                "aps" => [
+                    "alert" => "new message",
+                    "sound" => "alert.aiff"
+                ]
             ];
             $encodedData = json_encode($data);
         
