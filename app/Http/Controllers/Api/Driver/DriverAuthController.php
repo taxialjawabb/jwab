@@ -49,7 +49,9 @@ class DriverAuthController extends Controller
                 $driverData->api_token = $token;
                 $verison = Version::all();
                 $driverData -> version = $verison[0]->driver;
+                $driverData -> updating = $verison[0]->driver_state;
                 $driverData -> iosVersion = $verison[1]->driver;
+                $driverData -> iosUpdating = $verison[1]->driver_state;
                 return $this -> returnData('driver' , $driverData,'login successfuly');  
             }    
         }catch(\Exception $ex){
@@ -97,7 +99,9 @@ class DriverAuthController extends Controller
             $driverData->api_token  = $request->header('auth-token');
             $verison = Version::all();
             $driverData -> version = $verison[0]->driver;
+            $driverData -> updating = $verison[0]->driver_state;            
             $driverData -> iosVersion = $verison[1]->driver;
+            $driverData -> iosUpdating = $verison[1]->driver_state;
             return $this -> returnData('driver' , $driverData,'driver data');
         }
         else{
@@ -142,7 +146,9 @@ class DriverAuthController extends Controller
                     $driverData->api_token = $token;
                     $verison = Version::all();
                     $driverData -> version = $verison[0]->driver;
+                    $driverData -> updating = $verison[0]->driver_state;
                     $driverData -> iosVersion = $verison[1]->driver;
+                    $driverData -> iosUpdating = $verison[1]->driver_state;    
                     return $this -> returnData('driver' , $driverData,'Email updated successfuly');
                 }
             }catch (\Tymon\JWTAuth\Exceptions\TokenInvalidException $e){
@@ -166,7 +172,9 @@ class DriverAuthController extends Controller
                     $driverData->api_token = $token;
                     $verison = Version::all();
                     $driverData -> version = $verison[0]->driver;
+                    $driverData -> updating = $verison[0]->driver_state;
                     $driverData -> iosVersion = $verison[1]->driver;
+                    $driverData -> iosUpdating = $verison[1]->driver_state;    
                     return $this -> returnData('driver' , $driverData,'Name updated successfuly');
                 }
             }catch (\Tymon\JWTAuth\Exceptions\TokenInvalidException $e){
@@ -194,7 +202,9 @@ class DriverAuthController extends Controller
                     $driverData->api_token = $token;
                     $verison = Version::all();
                     $driverData -> version = $verison[0]->driver;
+                    $driverData -> updating = $verison[0]->driver_state;                    
                     $driverData -> iosVersion = $verison[1]->driver;
+                    $driverData -> iosUpdating = $verison[1]->driver_state;
                     return $this -> returnData('driver' , $driverData,'Phone updated successfuly');
                 }
             }catch (\Tymon\JWTAuth\Exceptions\TokenInvalidException $e){
@@ -221,7 +231,9 @@ class DriverAuthController extends Controller
                         $driverData->api_token = $token;
                         $verison = Version::all();
                         $driverData -> version = $verison[0]->driver;
+                        $driverData -> updating = $verison[0]->driver_state;
                         $driverData -> iosVersion = $verison[1]->driver;
+                        $driverData -> iosUpdating = $verison[1]->driver_state;        
                         return $this -> returnData('driver' , $driverData,'Password updated successfuly');
                     }
                     else{
@@ -252,7 +264,9 @@ class DriverAuthController extends Controller
                     $driverData->api_token = $token;
                     $verison = Version::all();
                     $driverData -> version = $verison[0]->driver;
+                    $driverData -> updating = $verison[0]->driver_state;
                     $driverData -> iosVersion = $verison[1]->driver;
+                    $driverData -> iosUpdating = $verison[1]->driver_state;    
                     return $this -> returnData('driver' , $driverData,'id expiration date has ben updated successfuly');
                 }
             }catch (\Tymon\JWTAuth\Exceptions\TokenInvalidException $e){
@@ -284,7 +298,9 @@ class DriverAuthController extends Controller
                 $driver->api_token = $token;
                 $verison = Version::all();
                 $driver-> version = $verison[0]->driver;
+                $driver-> updating = $verison[0]->driver_state;
                 $driver-> iosVersion = $verison[1]->driver;
+                $driver-> iosUpdating = $verison[1]->driver_state;
                 return $this -> returnData('driver' , $driver,'reset password successfuly');    
             }  
         }else{
@@ -336,6 +352,7 @@ class DriverAuthController extends Controller
             // $driver->final_clearance_date = $request->final_clearance_date;
             $driver->phone = $request->phone;
             // $driver->admin_id = Auth::guard('admin')->user()->id;
+            $driver->group_id = 1;
             $driver->add_date = Carbon::now();
         
         if($request->hasFile('image')){

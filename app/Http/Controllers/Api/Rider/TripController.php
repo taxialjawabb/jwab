@@ -148,7 +148,7 @@ class TripController extends Controller
                 $driver = Driver::find($trip->driver_id);
                 
                 if($driver != null ){
-                    $this->push_notification( $driver->remember_token , "تم إلغاء الرحلة", "trip canceled by client",'cancel');
+                    $this->push_notification( $driver->remember_token , "تم إلغاء الرحلة", $trip->id,'cancel');
                     if($request->cancel_cost > 0){
                     
                             $vechile = Vechile::find($driver->current_vechile);

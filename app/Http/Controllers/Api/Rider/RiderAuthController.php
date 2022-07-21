@@ -47,7 +47,9 @@ class RiderAuthController extends Controller
                 $riderData -> api_token = $token;
                 $verison = Version::all();
                 $riderData -> version = $verison[0]->rider;
+                $riderData -> updating = $verison[0]->rider_state;
                 $riderData -> iosVersion = $verison[1]->rider;
+                $riderData -> iosUpdating = $verison[1]->rider_state;    
                 return $this -> returnData('rider' , $riderData,'register successfuly');
             }    
         }catch(\Exception $ex){
@@ -103,7 +105,9 @@ class RiderAuthController extends Controller
                 $riderData -> api_token = $token;
                 $verison = Version::all();
                 $riderData -> version = $verison[0]->rider;
+                $riderData -> updating = $verison[0]->rider_state;
                 $riderData -> iosVersion = $verison[1]->rider;
+                $riderData -> iosUpdating = $verison[1]->rider_state;    
                 return $this -> returnData('rider' , $riderData,'login successfuly');
             }    
         }catch(\Exception $ex){
@@ -151,7 +155,9 @@ class RiderAuthController extends Controller
                     $riderData -> api_token = $token;
                     $verison = Version::all();
                     $riderData -> version = $verison[0]->rider;
+                    $riderData -> updating = $verison[0]->rider_state;
                     $riderData -> iosVersion = $verison[1]->rider;
+                    $riderData -> iosUpdating = $verison[1]->rider_state;        
                     return $this -> returnData('rider' , $riderData,'Email updated successfuly');
                 }
             }catch (\Tymon\JWTAuth\Exceptions\TokenInvalidException $e){
@@ -175,7 +181,9 @@ class RiderAuthController extends Controller
                     $riderData -> api_token = $token;
                     $verison = Version::all();
                     $riderData -> version = $verison[0]->rider;
+                    $riderData -> updating = $verison[0]->rider_state;
                     $riderData -> iosVersion = $verison[1]->rider;
+                    $riderData -> iosUpdating = $verison[1]->rider_state;        
                     return $this -> returnData('rider' , $riderData,'Name updated successfuly');
                 }
             }catch (\Tymon\JWTAuth\Exceptions\TokenInvalidException $e){
@@ -203,7 +211,9 @@ class RiderAuthController extends Controller
                     $riderData -> api_token = $token;
                     $verison = Version::all();
                     $riderData -> version = $verison[0]->rider;
+                    $riderData -> updating = $verison[0]->rider_state;
                     $riderData -> iosVersion = $verison[1]->rider;
+                    $riderData -> iosUpdating = $verison[1]->rider_state;        
                     return $this -> returnData('rider' , $riderData,'Phone updated successfuly');
                 }
             }catch (\Tymon\JWTAuth\Exceptions\TokenInvalidException $e){
@@ -230,7 +240,9 @@ class RiderAuthController extends Controller
                         $riderData -> api_token = $token;
                         $verison = Version::all();
                         $riderData -> version = $verison[0]->rider;
+                        $riderData -> updating = $verison[0]->rider_state;
                         $riderData -> iosVersion = $verison[1]->rider;
+                        $riderData -> iosUpdating = $verison[1]->rider_state;            
                         return $this -> returnData('rider' , $riderData,'Password updated successfuly');
                     }
                     else{
@@ -263,7 +275,9 @@ class RiderAuthController extends Controller
                     $riderData -> api_token = $token;
                     $verison = Version::all();
                     $riderData -> version = $verison[0]->rider;
+                    $riderData -> updating = $verison[0]->rider_state;
                     $riderData -> iosVersion = $verison[1]->rider;
+                    $riderData -> iosUpdating = $verison[1]->rider_state;        
                     return $this -> returnData('rider' , $riderData,'Gender updated successfuly');
                 }
             }catch (\Tymon\JWTAuth\Exceptions\TokenInvalidException $e){
@@ -289,7 +303,9 @@ class RiderAuthController extends Controller
                     $riderData -> api_token = $token;
                     $verison = Version::all();
                     $riderData -> version = $verison[0]->rider;
+                    $riderData -> updating = $verison[0]->rider_state;
                     $riderData -> iosVersion = $verison[1]->rider;
+                    $riderData -> iosUpdating = $verison[1]->rider_state;        
                     return $this -> returnData('rider' , $riderData,'Birth date updated successfuly');
                 }
             }catch (\Tymon\JWTAuth\Exceptions\TokenInvalidException $e){
@@ -319,7 +335,9 @@ class RiderAuthController extends Controller
                 $rider->api_token = $token;
                 $verison = Version::all();
                 $rider -> version = $verison[0]->rider;
+                $rider -> updating = $verison[0]->rider_state;
                 $rider -> iosVersion = $verison[1]->rider;
+                $rider -> iosUpdating = $verison[1]->rider_state;    
                 return $this -> returnData('rider' , $rider,'reset password successfuly');    
             }  
         }
@@ -336,7 +354,9 @@ class RiderAuthController extends Controller
                 $riderData->api_token = $token;
                 $verison = Version::all();
                 $riderData -> version = $verison[0]->rider;
+                $riderData -> updating = $verison[0]->rider_state;
                 $riderData -> iosVersion = $verison[1]->rider;
+                $riderData -> iosUpdating = $verison[1]->rider_state;    
                 return $this -> returnData('rider' , $riderData ,'rider data' );                 
             }    
             else{
