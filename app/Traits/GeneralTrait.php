@@ -32,10 +32,11 @@ trait GeneralTrait
         // return $code;
 
         $now =  \Carbon\Carbon::now();
+        $token = env('SMS_TOKEN', '');
         $phoneis = '966'.substr($phone, 1);
         $response = Http::withHeaders([
             'Content-Type' => 'application/json',
-            'Authorization' => '66f73eb01c6da0ed70da3b0eea090862'
+            'Authorization' => $token
         ])->post('https://api.taqnyat.sa/v1/messages', [
             "recipients" =>  [
                 $phoneis
