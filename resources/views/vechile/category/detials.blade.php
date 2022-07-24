@@ -28,7 +28,7 @@
       </div>
       
       <div class="  col-sm-12 col-md-6 col-lg-6 col-xl-6 ">
-        <label for="km_cost" class="form-label">تكلفة الكيلو متر</label>
+        <label for="km_cost" class="form-label">تكلفة الدقيقة</label>
         <p class="alert alert-secondary p-1">{{ $cat->minute_cost }}</p>
       </div>
 

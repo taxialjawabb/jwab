@@ -36,7 +36,23 @@
       
       <div class="  col-sm-12 col-md-6 col-lg-6 col-xl-6 ">
         <label for="vechile_type" class="form-label">الإيميل</label>
-        <p class="alert alert-secondary p-1">{{$rider->email ?? null}}</p>
+        <p class="alert alert-secondary p-1">{{$rider->email ?? 'لا يوجد'}}</p>
+      </div>
+
+      <div class="  col-sm-12 col-md-6 col-lg-6 col-xl-6 ">
+        <label for="birth_date" class="form-label">تاريخ الميلاد</label>
+        <p class="alert alert-secondary p-1">{{$rider->birth_date ?? 'لا يوجد'}}</p>
+      </div>
+
+      <div class="  col-sm-12 col-md-6 col-lg-6 col-xl-6 ">
+        <label for="gender" class="form-label">الجنس(النوع)</label>
+        <p class="alert alert-secondary p-1">
+          @if ($rider->gender === 'male')
+            ذكر
+          @elseif ($rider->gender === 'female')
+            انثى
+          @endif
+        </p>
       </div>
 
       <div class="  col-sm-12 col-md-6 col-lg-6 col-xl-6 ">

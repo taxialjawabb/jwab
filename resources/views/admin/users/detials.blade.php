@@ -78,17 +78,17 @@
       <!-- <div class="  col-sm-12 col-md-6 col-lg-6 col-xl-6 "></div> -->
 
       <div class="  col-sm-12 col-md-6 col-lg-6 col-xl-6 ">
-        <label for="final_clearance_exity_date" class="form-label">تاريخ إنتهاء رخصة السير</label>
+        <label for="final_clearance_exity_date" class="form-label">تاريخ انتهاء تصريح العمل</label>
         <p class="alert alert-secondary p-1">{{$user->final_clearance_exity_date}}</p>
       </div>
 
       <div class="  col-sm-12 col-md-6 col-lg-6 col-xl-6 ">
-        <label for="working_hours" class="form-label">تاريخ إنتهاء الفحص الدورى</label>
+        <label for="working_hours" class="form-label">عدد ساعات العمل</label>
         <p class="alert alert-secondary p-1">{{$user->working_hours}}</p>
       </div>
 
       <div class="  col-sm-12 col-md-6 col-lg-6 col-xl-6 ">
-        <label for="monthly_salary" class="form-label">تاريخ إنتهاء التأمين</label>
+        <label for="monthly_salary" class="form-label">الراتب الشهرى</label>
         <p class="alert alert-secondary p-1">{{$user->monthly_salary}}</p>
       </div>
 

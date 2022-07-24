@@ -11,6 +11,7 @@
                         <table class="table " id="datatable">
                             <thead>
                                 <tr>
+                                    <th>#</th>
                                     <th>اسم الراكب</th>
                                     <th>الجوال</th>
                                     <th>الإيميل</th>
@@ -21,6 +22,7 @@
                             <tbody>
                                 @foreach($riders as $rider)
                                 <tr>
+                                    <td>{{ $rider->id }}</td>
                                     <td>{{ $rider->name }}</td>
                                     <td>{{ $rider->phone }}</td>
                                     <td>{{ $rider->email }}</td>

@@ -65,6 +65,7 @@ class TripController extends Controller
                 $cat = Category::find($request->category_id);
                 $drivers = Driver::select(['driver.id', 'driver.name', 'remember_token', 'vechile.secondary_id'])
                 ->leftJoin('vechile', 'driver.current_vechile', '=', 'vechile.id')
+                ->where('driver.account' , '>', 0 )
                 ->where('vechile.category_id' , $request->category_id)->get();
                 $data->basic_price   =$cat->basic_price ;
                 $data->km_cost   =$cat->km_cost ;
